@@ -1,249 +1,47 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>1805 | Our Story</title>
-    
-    <!-- Tailwind CSS (via CDN for rapid styling) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Premium Typography: Playfair Display (Serif) & Montserrat (Sans) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
     
-    <!-- Link to external data file -->
+    <link rel="stylesheet" href="style.css">
     <script src="data.js"></script>
-    
-    <style>
-        /* ==========================================================================
-           ROOT VARIABLES & BASE SETUP
-           ========================================================================== */
-        :root {
-            --color-champagne: #fcf3d7;
-            --color-gold: #d4af37;
-            --color-emerald: #34d399;
-            --glass-bg: rgba(20, 12, 16, 0.35);
-            --glass-border: rgba(230, 208, 163, 0.15);
-            --glass-highlight: rgba(255, 255, 255, 0.2);
-        }
-
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: #030102; /* Deepest Obsidian */
-            color: #ffffff;
-            perspective: 1200px; /* Essential for the 3D tilt effects */
-            overflow-x: hidden;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .font-playfair { font-family: 'Playfair Display', serif; }
-
-        /* ==========================================================================
-           BACKGROUND & ENVIRONMENT ANIMATIONS
-           ========================================================================== */
-        @keyframes ken-burns { 
-            0% { transform: scale(1) translate(0, 0); } 
-            100% { transform: scale(1.18) translate(-1%, -1%); } 
-        }
-        
-        .animate-ken-burns { 
-            animation: ken-burns 40s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite alternate; 
-            will-change: transform;
-        }
-        
-        /* The signature dark cinematic blur that settles over the clear image */
-        .cinematic-overlay {
-            position: absolute; 
-            inset: 0; 
-            background: linear-gradient(to bottom, rgba(10, 5, 8, 0.3) 0%, rgba(5, 2, 4, 0.98) 100%);
-            backdrop-filter: blur(20px); 
-            -webkit-backdrop-filter: blur(20px); 
-            opacity: 0; 
-            animation: fade-in-overlay 2.5s ease-in-out 3s forwards; 
-            z-index: 5;
-            pointer-events: none;
-        }
-        
-        @keyframes fade-in-overlay { 
-            0% { opacity: 0; backdrop-filter: blur(0px); } 
-            100% { opacity: 1; backdrop-filter: blur(20px); } 
-        }
-
-        /* ==========================================================================
-           ULTRA-SMOOTH CINEMATIC REVEALS (STAGGERED)
-           ========================================================================== */
-        @keyframes luxury-reveal { 
-            0% { opacity: 0; transform: translateY(40px) scale(0.98); filter: blur(10px); } 
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
-        }
-        
-        .reveal-element { 
-            opacity: 0; 
-            animation: luxury-reveal 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
-        }
-        
-        .delay-1 { animation-delay: 3.5s; } 
-        .delay-2 { animation-delay: 3.8s; } 
-        .delay-3 { animation-delay: 4.1s; } 
-        .delay-4 { animation-delay: 4.4s; } 
-        .delay-5 { animation-delay: 4.8s; }
-
-        /* ==========================================================================
-           FOOLPROOF CHAMPAGNE FOIL TYPOGRAPHY
-           ========================================================================== */
-        /* This multi-layer approach ensures it never vanishes on mobile browsers */
-        .foil-text-container {
-            position: relative;
-            display: inline-block;
-            z-index: 10;
-        }
-
-        .champagne-foil {
-            background: linear-gradient(
-                110deg, 
-                var(--color-gold) 0%, 
-                var(--color-champagne) 25%, 
-                #ffffff 45%, 
-                var(--color-champagne) 65%, 
-                var(--color-gold) 100%
-            );
-            background-size: 250% auto; 
-            color: var(--color-champagne); /* Fallback */
-            -webkit-text-fill-color: transparent; 
-            -webkit-background-clip: text; 
-            background-clip: text; 
-            animation: shine 6s linear infinite;
-            display: inline-block;
-            text-shadow: 0px 10px 30px rgba(0,0,0,0.8);
-        }
-        
-        @keyframes shine { to { background-position: 250% center; } }
-
-        /* Rapid Count Pop Animation */
-        #heroNumber { transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .number-pop { transform: scale(1.15) translateY(-8px); text-shadow: 0 0 50px rgba(212, 175, 55, 0.8); }
-
-        /* ==========================================================================
-           3D MAGNETIC GLASS MORPHISM
-           ========================================================================== */
-        .luxury-glass {
-            position: relative; 
-            overflow: hidden; 
-            background: var(--glass-bg);
-            backdrop-filter: blur(40px); 
-            -webkit-backdrop-filter: blur(40px);
-            border: 1px solid var(--glass-border); 
-            border-top: 1px solid var(--glass-highlight);
-            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            transform-style: preserve-3d; 
-            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        
-        /* Sheer Light Sweep Reflection */
-        .luxury-glass::before {
-            content: ''; position: absolute; top: 0; left: -150%; width: 60%; height: 100%;
-            background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0) 100%);
-            transform: skewX(-25deg); animation: glass-sweep 9s infinite 5s; pointer-events: none;
-        }
-        @keyframes glass-sweep { 0% { left: -150%; } 15% { left: 200%; } 100% { left: 200%; } }
-
-        /* ==========================================================================
-           PARTICLE ENGINE: HEARTS & STARDUST
-           ========================================================================== */
-        .particle {
-            position: fixed; 
-            pointer-events: none;
-            z-index: 9999;
-            will-change: transform, opacity;
-            /* Physics variables controlled by JS */
-            animation: particle-drift var(--duration) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-        
-        .particle-stardust {
-            width: var(--size); height: var(--size);
-            background-color: var(--color-champagne);
-            border-radius: 50%;
-            box-shadow: 0 0 15px 3px rgba(212, 175, 55, 0.7);
-            mix-blend-mode: screen;
-        }
-
-        .particle-heart {
-            font-size: var(--size);
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
-            line-height: 1;
-        }
-
-        @keyframes particle-drift { 
-            0% { transform: translate(0, 0) rotate(var(--rot-start)) scale(0.5); opacity: 0; } 
-            15% { opacity: 1; transform: translate(calc(var(--dx) * 0.2), calc(var(--dy) * 0.2)) rotate(var(--rot-mid)) scale(1.2); }
-            100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot-end)) scale(0); opacity: 0; } 
-        }
-
-        /* Ambient floating environment */
-        @keyframes ambient-float { 
-            0% { transform: translateY(100vh) scale(0); opacity: 0; } 
-            20% { opacity: var(--max-opacity); } 
-            80% { opacity: var(--max-opacity); } 
-            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } 
-        }
-        
-        .ambient-orb {
-            position: absolute; 
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--color-champagne) 0%, transparent 80%);
-            animation: ambient-float linear infinite; 
-            z-index: 2; 
-            pointer-events: none;
-        }
-    </style>
 </head>
 <body class="selection:bg-[#d4af37] selection:text-black cursor-crosshair">
 
-    <!-- LAYER 1: Cinematic Background Environment -->
     <div class="fixed inset-0 z-0 overflow-hidden" id="environment-layer">
         <img id="bgImage" src="" alt="Background" class="w-full h-full object-cover object-[center_20%] opacity-90 animate-ken-burns" />
         <div class="cinematic-overlay"></div>
     </div>
     
-    <!-- LAYER 2: Main Interactive UI -->
     <div class="relative z-10 flex flex-col min-h-screen p-6 md:p-12" id="main-ui-layer">
-        
-        <!-- Header -->
         <header class="flex justify-between items-center mb-auto reveal-element delay-1">
             <h1 class="text-3xl md:text-4xl font-playfair font-black tracking-widest drop-shadow-2xl">
                 <span class="text-emerald-500">18</span><span style="color: var(--color-champagne)">05</span>
             </h1>
         </header>
 
-        <!-- Story / Hero Section -->
         <main class="max-w-4xl mt-12 mb-auto pointer-events-none relative z-20">
-            
-            <!-- Guaranteed Visible Title Container -->
-            <!-- The 00 is hardcoded. It will NEVER be blank. JS takes over after fade-in. -->
             <div class="foil-text-container mb-4 reveal-element delay-2">
                 <h2 class="font-playfair font-bold tracking-tighter uppercase flex items-baseline gap-2 md:gap-4 drop-shadow-2xl">
                     <span id="heroNumber" class="champagne-foil text-[6rem] md:text-[9rem] leading-none">00</span>
                     <span id="heroLabel" class="champagne-foil text-3xl md:text-5xl tracking-[0.2em] mb-2 md:mb-4">MONTHS</span>
                 </h2>
             </div>
-            
-            <!-- Dynamic Text Elements -->
             <p id="togetherText" class="text-emerald-400 font-semibold text-xs md:text-lg tracking-[0.6em] uppercase mb-8 drop-shadow-md reveal-element delay-3"></p>
             <p id="synopsisText" class="text-gray-300 text-base md:text-2xl leading-relaxed mb-12 max-w-2xl drop-shadow-lg font-light reveal-element delay-4"></p>
             
-            <!-- Interactive Action Buttons -->
             <div class="flex flex-wrap gap-5 mb-12 reveal-element delay-5 pointer-events-auto">
-                <!-- Primary Action -->
                 <button class="relative bg-[#fcf3d7] text-[#0a0508] px-10 py-5 rounded-full font-bold text-xs md:text-sm tracking-[0.2em] uppercase transition-all flex items-center gap-4 hover:-translate-y-1 duration-500 group overflow-hidden shadow-[0_0_25px_rgba(212,175,55,0.3)] hover:shadow-[0_0_50px_rgba(212,175,55,0.7)]">
                     <span class="text-xl relative z-10 group-hover:scale-125 transition-transform duration-500 text-emerald-700">▶</span> 
                     <span class="relative z-10">Play Our Story</span>
                     <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-30 transition-opacity duration-500 z-0"></div>
                 </button>
-                
-                <!-- Secondary Action (Moments Menu Trigger) -->
                 <button class="luxury-glass text-white px-10 py-5 rounded-full font-bold text-xs md:text-sm tracking-[0.2em] uppercase hover:bg-white/10 transition-all flex items-center gap-4 hover:-translate-y-1 duration-500 group">
                     <span class="text-[#fcf3d7] text-lg group-hover:rotate-180 transition-transform duration-700">✧</span> 
                     <span>Moments</span>
@@ -251,270 +49,17 @@
             </div>
         </main>
 
-        <!-- The 3D Magnetic Clock Panel -->
         <div class="luxury-glass rounded-[2.5rem] p-8 md:p-12 w-full max-w-5xl mx-auto mt-4 mb-4 reveal-element delay-5" id="tilt-card">
-            
-            <!-- Elegant Header Line -->
             <div class="flex items-center justify-center gap-6 mb-12 transform translate-z-10">
                 <div class="h-[1px] w-12 md:w-32 bg-gradient-to-r from-transparent to-[#fcf3d7]/60"></div>
                 <p class="text-center text-[#fcf3d7] opacity-90 uppercase tracking-[0.6em] text-[10px] md:text-sm font-bold">Time Together</p>
                 <div class="h-[1px] w-12 md:w-32 bg-gradient-to-l from-transparent to-[#fcf3d7]/60"></div>
             </div>
-            
-            <!-- Clock Grid (Injected by JS) -->
             <div class="grid grid-cols-4 md:grid-cols-7 gap-y-10 gap-x-4 justify-center items-center transform translate-z-20" id="countdown-container">
-                <!-- JavaScript generates the elegant numbers here -->
             </div>
         </div>
     </div>
 
-    <!-- ==========================================================================
-         THE MASTER JAVASCRIPT ENGINE
-         ========================================================================== -->
-    <script>
-        /**
-         * 1. DATA INITIALIZATION & SANITIZATION
-         * Safely loads data from your data.js file and prepares the DOM.
-         */
-        const Engine = {
-            init() {
-                // Ensure data exists, provide fallbacks to prevent crashes
-                const data = window.websiteData || {
-                    mainHeroImage: '', togetherSinceText: 'Together Forever', startDate: '2025-11-30T00:00:00', synopsis: ''
-                };
-                
-                document.getElementById('bgImage').src = data.mainHeroImage;
-                document.getElementById('togetherText').innerText = data.togetherSinceText;
-                
-                this.startDate = new Date(data.startDate);
-                this.startTime = this.startDate.getTime();
-                this.titleHasCounted = false;
-                
-                // Start subsystems
-                this.startClock();
-                InteractionManager.init();
-                ParticleSystem.init();
-            },
-
-            /**
-             * 2. THE PRECISION CLOCK & TITLE UPDATER
-             * Calculates exact time differences and handles the rapid title counter.
-             */
-            startClock() {
-                const update = () => {
-                    const nowObj = new Date();
-                    const now = nowObj.getTime();
-                    const diff = now - this.startTime;
-
-                    // Standard time unit calculations
-                    const daysTotal = Math.floor(diff / (1000 * 60 * 60 * 24));
-                    const years = Math.floor(daysTotal / 365);
-                    const months = Math.floor((daysTotal % 365) / 30);
-                    const weeks = Math.floor(((daysTotal % 365) % 30) / 7);
-                    const days = ((daysTotal % 365) % 30) % 7;
-                    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                    const secs = Math.floor((diff % (1000 * 60)) / 1000);
-
-                    // Robust Milestone Math (Accounts for exact dates)
-                    let totalMonths = (nowObj.getFullYear() - this.startDate.getFullYear()) * 12 + (nowObj.getMonth() - this.startDate.getMonth());
-                    if (nowObj.getDate() < this.startDate.getDate()) totalMonths--;
-                    
-                    let isYears = totalMonths >= 12;
-                    let targetNum = isYears ? Math.floor(totalMonths / 12) : totalMonths;
-                    let targetLabel = isYears ? `YEAR${Math.floor(totalMonths / 12) > 1 ? 'S' : ''}` : `MONTHS`;
-                    let paddedTarget = String(targetNum).padStart(2, '0');
-                    
-                    // Update Synopsis live
-                    const rawSynopsis = window.websiteData.synopsis || '';
-                    document.getElementById('synopsisText').innerText = rawSynopsis.replace(/7 months|1 year/i, `${targetNum} ${targetLabel.toLowerCase()}`);
-
-                    // --- CINEMATIC TITLE TICKER ---
-                    // This guarantees the title is visible first (00), then rapidly counts to the target.
-                    if (!this.titleHasCounted) {
-                        this.titleHasCounted = true;
-                        document.getElementById('heroLabel').innerText = targetLabel;
-                        
-                        // Wait for the CSS fade-in overlay to finish (3.9s)
-                        setTimeout(() => {
-                            let current = 0;
-                            const numberEl = document.getElementById('heroNumber');
-                            
-                            const rapidCounter = setInterval(() => {
-                                current += 1;
-                                numberEl.innerText = String(current).padStart(2, '0');
-                                
-                                if (current >= targetNum) {
-                                    clearInterval(rapidCounter);
-                                    numberEl.innerText = paddedTarget; 
-                                    
-                                    // Trigger the luxurious "Lock-in" pulse
-                                    numberEl.classList.add('number-pop');
-                                    setTimeout(() => numberEl.classList.remove('number-pop'), 400);
-                                }
-                            }, 100); // 100ms per tick for smooth cinematic speed
-                        }, 3900); 
-                    } else {
-                        // Keeps it accurate if a month rolls over while the page is open
-                        document.getElementById('heroNumber').innerText = paddedTarget;
-                        document.getElementById('heroLabel').innerText = targetLabel;
-                    }
-
-                    // --- RENDER 3D CLOCK PANEL ---
-                    const timeUnits = [
-                        { label: 'Years', val: years }, { label: 'Months', val: valPad(months) }, 
-                        { label: 'Weeks', val: valPad(weeks) }, { label: 'Days', val: valPad(days) }, 
-                        { label: 'Hours', val: valPad(hours) }, { label: 'Mins', val: valPad(mins) }, 
-                        { label: 'Secs', val: valPad(secs), isLive: true }
-                    ];
-
-                    let html = '';
-                    timeUnits.forEach(u => {
-                        const style = u.isLive ? 'text-emerald-300 font-medium drop-shadow-[0_0_15px_rgba(52,211,153,0.6)]' : 'text-[#fcf3d7] font-light drop-shadow-[0_5px_15px_rgba(212,175,55,0.25)]';
-                        html += `
-                            <div class="flex flex-col items-center justify-center">
-                                <span class="font-playfair text-5xl md:text-7xl ${style} transition-all duration-300 tracking-wider">${u.val}</span>
-                                <span class="text-[9px] md:text-xs text-gray-400 mt-4 uppercase tracking-[0.5em] font-semibold opacity-70">${u.label}</span>
-                            </div>
-                        `;
-                    });
-                    document.getElementById('countdown-container').innerHTML = html;
-                };
-
-                // Helper to pad single digits
-                const valPad = (val) => String(val).padStart(2, '0');
-
-                update();
-                setInterval(update, 1000);
-            }
-        };
-
-        /**
-         * 3. MAGNETIC 3D INTERACTION MANAGER
-         * Handles device orientation and mouse movement for the glass clock tilt.
-         */
-        const InteractionManager = {
-            init() {
-                this.card = document.getElementById('tilt-card');
-                this.container = document.getElementById('main-ui-layer');
-                
-                // Desktop Mouse Tilt
-                this.container.addEventListener('mousemove', (e) => {
-                    let x = (window.innerWidth / 2 - e.pageX) / 50;
-                    let y = (window.innerHeight / 2 - e.pageY) / 50;
-                    this.card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-                });
-                
-                this.container.addEventListener('mouseleave', () => {
-                    this.card.style.transform = `rotateY(0deg) rotateX(0deg)`;
-                });
-
-                // Mobile Gyroscope Tilt
-                window.addEventListener('deviceorientation', (e) => {
-                    if (!e.gamma || !e.beta) return; // Ignore if no gyro
-                    let tiltX = Math.max(-15, Math.min(15, e.gamma / 1.5)); 
-                    let tiltY = Math.max(-15, Math.min(15, (e.beta - 45) / 1.5)); 
-                    this.card.style.transform = `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
-                });
-            }
-        };
-
-        /**
-         * 4. HIGH-PERFORMANCE PARTICLE SYSTEM
-         * Spawns a mixture of stardust and hearts that react to touch/mouse velocity.
-         */
-        const ParticleSystem = {
-            lastSpawn: 0,
-            throttle: 25, // ms between spawns to maintain 60fps
-            emojis: ['🤍', '✨', '🤎', '✨'], 
-            
-            init() {
-                this.setupAmbientEnvironment();
-                
-                // Event Listeners for Interaction Trails
-                document.addEventListener('mousemove', (e) => this.spawnMix(e.clientX, e.clientY));
-                document.addEventListener('touchmove', (e) => this.spawnMix(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
-                
-                // Explosive Burst on Click
-                document.addEventListener('click', (e) => { 
-                    for(let i=0; i<30; i++) this.spawnMix(e.clientX, e.clientY, true); 
-                });
-            },
-
-            spawnMix(x, y, isBurst = false) {
-                const now = Date.now();
-                if (!isBurst && now - this.lastSpawn < this.throttle) return; 
-                this.lastSpawn = now;
-                
-                // Randomly choose between a stardust dot or a heart emoji
-                const isHeart = Math.random() > 0.65; 
-                this.createParticle(x, y, isHeart, isBurst);
-            },
-
-            createParticle(x, y, isHeart, isBurst) {
-                const el = document.createElement('div');
-                el.className = `particle ${isHeart ? 'particle-heart' : 'particle-stardust'}`;
-                
-                if (isHeart) {
-                    el.innerText = this.emojis[Math.floor(Math.random() * this.emojis.length)];
-                    el.style.setProperty('--size', `${Math.random() * 1.5 + 1}rem`);
-                } else {
-                    el.style.setProperty('--size', `${Math.random() * 6 + 2}px`);
-                }
-                
-                // Dynamic Physics Properties
-                const spread = isBurst ? 150 : 60;
-                const offsetX = (Math.random() - 0.5) * (isBurst ? 40 : 20);
-                const offsetY = (Math.random() - 0.5) * (isBurst ? 40 : 20);
-                
-                el.style.left = `${x + offsetX}px`;
-                el.style.top = `${y + offsetY}px`;
-                
-                // Calculate trajectory (drifting upwards and outwards)
-                const dx = (Math.random() - 0.5) * spread;
-                const dy = (Math.random() - 0.5) * spread - (Math.random() * 100 + 50); // Strong upward pull
-                
-                // CSS Variables for the Keyframe Animation
-                el.style.setProperty('--dx', `${dx}px`);
-                el.style.setProperty('--dy', `${dy}px`);
-                el.style.setProperty('--rot-start', `${Math.random() * 360}deg`);
-                el.style.setProperty('--rot-mid', `${Math.random() * 360 + 180}deg`);
-                el.style.setProperty('--rot-end', `${Math.random() * 720}deg`);
-                
-                const duration = Math.random() * 1.5 + 1.2; // 1.2s to 2.7s
-                el.style.setProperty('--duration', `${duration}s`);
-
-                document.body.appendChild(el);
-                
-                // Memory Cleanup
-                setTimeout(() => el.remove(), duration * 1000);
-            },
-
-            setupAmbientEnvironment() {
-                const container = document.getElementById('environment-layer');
-                for(let i=0; i<35; i++) {
-                    const orb = document.createElement('div');
-                    orb.className = 'ambient-orb';
-                    orb.style.left = `${Math.random() * 100}vw`;
-                    
-                    const size = Math.random() * 150 + 50;
-                    orb.style.width = `${size}px`;
-                    orb.style.height = `${size}px`;
-                    
-                    orb.style.setProperty('--max-opacity', Math.random() * 0.15 + 0.05);
-                    orb.style.animationDuration = `${Math.random() * 20 + 15}s`;
-                    orb.style.animationDelay = `${Math.random() * -30}s`;
-                    
-                    container.appendChild(orb);
-                }
-            }
-        };
-
-        // Ignite the Engine
-        window.addEventListener('DOMContentLoaded', () => Engine.init());
-        
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
-
-```
