@@ -156,7 +156,7 @@
 
         <main class="max-w-4xl mt-12 mb-auto pointer-events-none">
             <h2 class="font-playfair text-7xl md:text-[8rem] leading-none font-bold tracking-tighter champagne-foil mb-4 drop-shadow-[0_15px_30px_rgba(0,0,0,0.9)] uppercase animate-reveal delay-title flex items-baseline gap-4">
-                <span id="heroNumber">0</span>
+                <span id="heroNumber">00</span>
                 <span id="heroLabel">MONTHS</span>
             </h2>
             
@@ -191,7 +191,7 @@
     <script>
         // --- 1. POPULATE DATA & MATH ---
         document.getElementById('bgImage').src = window.websiteData.mainHeroImage;
-        document.getElementById('togetherText').innerText = window.websiteData.togetherSinceText;
+        document.getElementById('togetherText').innerText = 'of being together since 2025';
 
         const startDate = new Date(window.websiteData.startDate).getTime();
         const startObj = new Date(window.websiteData.startDate);
@@ -238,11 +238,11 @@
                     // The rapid speed counter
                     let timer = setInterval(() => {
                         current += 1;
-                        numberEl.innerText = current;
+                        numberEl.innerText = current.toString().padStart(2, '0');
                         
                         if (current >= targetNum) {
                             clearInterval(timer);
-                            numberEl.innerText = targetNum; // Lock it exactly
+                            numberEl.innerText = targetNum.toString().padStart(2, '0'); // Lock it exactly
                             
                             // The luxurious "Lock-in Pop" effect
                             numberEl.style.transform = 'scale(1.15) translateY(-5px)';
@@ -276,7 +276,7 @@
 
                 html += `
                     <div class="flex flex-col items-center justify-center">
-                        <span class="font-playfair text-5xl md:text-7xl ${textStyle} transition-all duration-300 tracking-wider">${displayValue}</span>
+                        <span class="font-playfair text-5xl md:text-7xl \( {textStyle} transition-all duration-300 tracking-wider"> \){displayValue}</span>
                         <span class="text-[8px] md:text-xs text-gray-400 mt-3 md:mt-5 uppercase tracking-[0.5em] font-medium opacity-70">${unit.label}</span>
                     </div>
                 `;
@@ -296,7 +296,7 @@
         container.addEventListener('mousemove', (e) => {
             let xAxis = (window.innerWidth / 2 - e.pageX) / 45;
             let yAxis = (window.innerHeight / 2 - e.pageY) / 45;
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            card.style.transform = `rotateY(\( {xAxis}deg) rotateX( \){yAxis}deg)`;
         });
 
         // Reset when mouse leaves
@@ -308,188 +308,7 @@
         window.addEventListener('deviceorientation', (e) => {
             let tiltX = Math.max(-15, Math.min(15, e.gamma / 2)); 
             let tiltY = Math.max(-15, Math.min(15, (e.beta - 45) / 2)); 
-            card.style.transform = `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
-        });
-
-        // --- 5. STARDUST TOUCH TRAIL ---
-        let lastSpawnTime = 0;
-        function spawnStardust(x, y) {
-            const now = Date.now();
-            if (now - lastSpawnTime < 30) return; 
-            lastSpawnTime = now;
-
-            const stardust = document.createElement('div');
-            stardust.className = 'stardust';
-            const offsetX = (Math.random() - 0.5) * 40;
-            const offsetY = (Math.random() - 0.5) * 40;
-            stardust.style.left = (x + offsetX) + 'px';
-            stardust.style.top = (y + offsetY) + 'px';
-            
-            const size = Math.random() * 5 + 2;
-            stardust.style.width = size + 'px';
-            stardust.style.height = size + 'px';
-            stardust.style.opacity = Math.random() * 0.6 + 0.4;
-
-            document.body.appendChild(stardust);
-            setTimeout(() => stardust.remove(), 800);
-        }
-
-        document.addEventListener('mousemove', (e) => spawnStardust(e.clientX, e.clientY));
-        document.addEventListener('touchmove', (e) => spawnStardust(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
-        document.addEventListener('click', (e) => {
-            for(let i=0; i<12; i++) spawnStardust(e.clientX, e.clientY);
-        });
-
-        // --- 6. AMBIENT BACKGROUND DUST ---
-        function createAmbientDust() {
-            const dust = document.createElement('div');
-            dust.className = 'ambient-dust';
-            dust.style.left = Math.random() * 100 + 'vw';
-            
-            // Randomize speed and size for natural look
-            const duration = Math.random() * 10 + 15; // 15s to 25s
-            dust.style.animationDuration = duration + 's';
-            
-            const size = Math.random() * 2 + 1;
-            dust.style.width = size + 'px';
-            dust.style.height = size + 'px';
-            
-            document.getElementById('background-container').appendChild(dust);
-            
-            // Remove and replace after it floats to top
-            setTimeout(() => {
-                dust.remove();
-                createAmbientDust();
-            }, duration * 1000);
-        }
-
-        // Generate 25 ambient particles to float continuously
-        for(let i=0; i<25; i++) {
-            setTimeout(createAmbientDust, Math.random() * 5000);
-        }
-        <script>
-        // --- 1. POPULATE DATA & MATH ---
-        document.getElementById('bgImage').src = window.websiteData.mainHeroImage;
-        document.getElementById('togetherText').innerText = window.websiteData.togetherSinceText;
-
-        const startDate = new Date(window.websiteData.startDate).getTime();
-        const startObj = new Date(window.websiteData.startDate);
-        let titleHasCounted = false; // Prevents the ticker from running more than once
-
-        function updateClock() {
-            const now = new Date().getTime();
-            const nowObj = new Date();
-            const difference = now - startDate;
-
-            const daysTotal = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const years = Math.floor(daysTotal / 365);
-            const months = Math.floor((daysTotal % 365) / 30);
-            const weeks = Math.floor(((daysTotal % 365) % 30) / 7);
-            const days = ((daysTotal % 365) % 30) % 7;
-            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-            // Math for the Title
-            let totalMonths = (nowObj.getFullYear() - startObj.getFullYear()) * 12 + (nowObj.getMonth() - startObj.getMonth());
-            if (nowObj.getDate() < startObj.getDate()) {
-                totalMonths--;
-            }
-            
-            let isYears = totalMonths >= 12;
-            let targetNum = isYears ? Math.floor(totalMonths / 12) : totalMonths;
-            let targetLabel = isYears ? `YEAR${Math.floor(totalMonths / 12) > 1 ? 'S' : ''}` : `MONTHS`;
-            
-            let timeString = `${targetNum} ${targetLabel}`;
-            
-            // Replaces "7 months" or "1 year" in your data.js with the live text
-            let dynamicSynopsis = window.websiteData.synopsis.replace(/7 months|1 year/i, timeString.toLowerCase());
-            document.getElementById('synopsisText').innerText = dynamicSynopsis;
-
-            // --- 2. THE CINEMATIC TICKER REVEAL ---
-            if (!titleHasCounted) {
-                titleHasCounted = true;
-                document.getElementById('heroLabel').innerText = targetLabel;
-                
-                // Wait EXACTLY for the title to fade up from the blur (3.8 seconds delay)
-                setTimeout(() => {
-                    let current = 0;
-                    let numberEl = document.getElementById('heroNumber');
-                    
-                    // The rapid speed counter
-                    let timer = setInterval(() => {
-                        current += 1;
-                        numberEl.innerText = current;
-                        
-                        if (current >= targetNum) {
-                            clearInterval(timer);
-                            numberEl.innerText = targetNum; // Lock it exactly
-                            
-                            // The luxurious "Lock-in Pop" effect
-                            numberEl.style.transform = 'scale(1.15) translateY(-5px)';
-                            numberEl.style.textShadow = '0 0 30px rgba(230,208,163,0.8)';
-                            setTimeout(() => {
-                                numberEl.style.transform = 'scale(1) translateY(0)';
-                                numberEl.style.textShadow = 'none';
-                            }, 200);
-                        }
-                    }, 90); // 90ms speed per number
-                }, 3800); 
-            }
-
-            // --- 3. ELEGANT CLOCK RENDERING ---
-            const timeUnits = [
-                { label: 'Years', value: years },
-                { label: 'Months', value: months },
-                { label: 'Weeks', value: weeks },
-                { label: 'Days', value: days },
-                { label: 'Hours', value: hours },
-                { label: 'Mins', value: minutes },
-                { label: 'Secs', value: seconds, isLive: true }
-            ];
-
-            let html = '';
-            timeUnits.forEach(unit => {
-                const displayValue = unit.value.toString().padStart(2, '0');
-                const textStyle = unit.isLive 
-                    ? 'text-emerald-300 font-medium drop-shadow-[0_0_15px_rgba(52,211,153,0.5)]' 
-                    : 'text-champagne font-light drop-shadow-[0_5px_15px_rgba(230,208,163,0.3)]';
-
-                html += `
-                    <div class="flex flex-col items-center justify-center">
-                        <span class="font-playfair text-5xl md:text-7xl ${textStyle} transition-all duration-300 tracking-wider">${displayValue}</span>
-                        <span class="text-[8px] md:text-xs text-gray-400 mt-3 md:mt-5 uppercase tracking-[0.5em] font-medium opacity-70">${unit.label}</span>
-                    </div>
-                `;
-            });
-
-            document.getElementById('countdown-container').innerHTML = html;
-        }
-
-        updateClock();
-        setInterval(updateClock, 1000);
-
-        // --- 4. MAGNETIC 3D TILT EFFECT ---
-        const card = document.getElementById('tilt-card');
-        const container = document.getElementById('main-container');
-
-        // Mouse Move for Desktop
-        container.addEventListener('mousemove', (e) => {
-            let xAxis = (window.innerWidth / 2 - e.pageX) / 45;
-            let yAxis = (window.innerHeight / 2 - e.pageY) / 45;
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        });
-
-        // Reset when mouse leaves
-        container.addEventListener('mouseleave', () => {
-            card.style.transform = `rotateY(0deg) rotateX(0deg)`;
-        });
-
-        // Gyroscope/Touch for Mobile
-        window.addEventListener('deviceorientation', (e) => {
-            let tiltX = Math.max(-15, Math.min(15, e.gamma / 2)); 
-            let tiltY = Math.max(-15, Math.min(15, (e.beta - 45) / 2)); 
-            card.style.transform = `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
+            card.style.transform = `rotateY(\( {tiltX}deg) rotateX( \){-tiltY}deg)`;
         });
 
         // --- 5. STARDUST TOUCH TRAIL ---
@@ -549,6 +368,5 @@
             setTimeout(createAmbientDust, Math.random() * 5000);
         }
     </script>
-
 </body>
 </html>
