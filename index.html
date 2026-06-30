@@ -191,7 +191,7 @@
     <script>
         // --- 1. POPULATE DATA & MATH ---
         document.getElementById('bgImage').src = window.websiteData.mainHeroImage;
-        document.getElementById('togetherText').innerText = 'of being together since 2025';
+        document.getElementById('togetherText').innerText = window.websiteData.togetherSinceText;
 
         const startDate = new Date(window.websiteData.startDate).getTime();
         const startObj = new Date(window.websiteData.startDate);
