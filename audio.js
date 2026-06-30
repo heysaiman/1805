@@ -1,56 +1,30 @@
-// audio.js - 100% Isolated Luxury Audio Engine
+/// audio.js - Direct Play (Bypassing Mobile Volume Locks)
 const AudioEngine = {
     init() {
-        // The music name is locked safely in here, no need to touch data.js!
-        const musicFile = 'bg-music.mp3'; 
-        
-        this.bgm = new Audio(musicFile);
-        this.bgm.loop = true; // Infinite loop
-        this.bgm.volume = 0;  // Start totally silent for the fade-in
+        this.bgm = new Audio('bg-music.mp3');
+        this.bgm.loop = true;
         this.isPlaying = false;
 
-        // The elegant unlock: Browser requires a physical interaction to play audio
-        const unlockAudio = () => {
+        const startPlaying = () => {
             if (this.isPlaying) return;
             this.isPlaying = true;
             
-            // Attempt to play, then trigger the fade-in effect
+            // Force play at default hardware volume
             this.bgm.play().then(() => {
-                this.fadeIn(2500); // 2.5 second smooth fade-in
+                console.log("Music unlocked and playing!");
             }).catch(err => {
-                console.log("Audio waiting for physical screen tap...", err);
+                console.log("Browser blocked play", err);
                 this.isPlaying = false;
             });
-
-            // Once unlocked, remove the listeners so it doesn't re-trigger
-            document.removeEventListener('click', unlockAudio);
-            document.removeEventListener('touchstart', unlockAudio);
+            
+            document.removeEventListener('click', startPlaying);
+            document.removeEventListener('touchstart', startPlaying);
         };
 
-        // Listen for the first touch or click anywhere on the screen
-        document.addEventListener('click', unlockAudio, { once: true });
-        document.addEventListener('touchstart', unlockAudio, { once: true });
-    },
-
-    // Cinematic fade-in logic
-    fadeIn(duration) {
-        const steps = 25;
-        const stepTime = duration / steps;
-        const maxVolume = 0.6; // 60% volume - perfect for background ambiance
-        let currentStep = 0;
-
-        const fadeInterval = setInterval(() => {
-            currentStep++;
-            let vol = (currentStep / steps) * maxVolume;
-            this.bgm.volume = Math.min(vol, maxVolume);
-            
-            if (currentStep >= steps) {
-                clearInterval(fadeInterval);
-            }
-        }, stepTime);
+        // Listen for the absolute first interaction
+        document.addEventListener('click', startPlaying, { once: true });
+        document.addEventListener('touchstart', startPlaying, { once: true });
     }
 };
 
-// Boot up the engine safely when the page loads
 window.addEventListener('DOMContentLoaded', () => AudioEngine.init());
-
