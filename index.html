@@ -11,13 +11,13 @@
     <!-- Premium Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
     
     <!-- Link to your data file -->
     <script src="data.js"></script>
     
     <style>
-        /* Typography overrides */
+        /* Typography overrides for ultimate elegance */
         body { font-family: 'Montserrat', sans-serif; }
         .font-playfair { font-family: 'Playfair Display', serif; }
         
@@ -30,7 +30,7 @@
 
         /* Staggered Cinematic Fade-Up */
         @keyframes fade-up {
-            0% { opacity: 0; transform: translateY(40px); }
+            0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-up { opacity: 0; animation: fade-up 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
@@ -41,29 +41,43 @@
 
         /* High-End Textures */
         .velvet-overlay {
-            background: radial-gradient(circle at center, rgba(60, 10, 30, 0.3) 0%, rgba(10, 0, 5, 0.95) 100%);
+            background: radial-gradient(circle at center, rgba(30, 5, 15, 0.4) 0%, rgba(5, 0, 5, 0.95) 100%);
         }
         .ambient-glow {
             position: absolute;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
             width: 90vw; height: 90vh;
-            background: radial-gradient(circle, rgba(150, 20, 60, 0.15) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(200, 160, 180, 0.08) 0%, transparent 60%);
             pointer-events: none; z-index: 1;
         }
         .glass-panel {
-            background: rgba(20, 10, 15, 0.4);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(245, 230, 206, 0.15);
-            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            background: rgba(15, 10, 12, 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(245, 230, 206, 0.08);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
         }
         
         /* Champagne Gold Custom Color */
         .text-champagne { color: #F5E6CE; }
         .bg-champagne { background-color: #F5E6CE; }
+
+        /* Interactive Heart Burst Animation */
+        @keyframes heart-float {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+            100% { transform: translate(-50%, -150px) scale(1.5); opacity: 0; }
+        }
+        .heart-burst {
+            position: fixed;
+            pointer-events: none;
+            font-size: 1.5rem;
+            animation: heart-float 1.2s ease-out forwards;
+            z-index: 9999;
+            filter: drop-shadow(0 0 10px rgba(255, 100, 150, 0.5));
+        }
     </style>
 </head>
-<body class="bg-black text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-rose-900 selection:text-white">
+<body class="bg-black text-slate-100 min-h-screen relative overflow-x-hidden selection:bg-rose-900 selection:text-white cursor-pointer">
 
     <!-- The Living Background -->
     <div class="absolute inset-0 z-0 overflow-hidden">
@@ -79,55 +93,56 @@
         
         <!-- Navigation / Logo -->
         <header class="flex justify-between items-center mb-auto animate-fade-up">
-            <h1 class="text-4xl font-playfair font-black tracking-widest drop-shadow-xl">
+            <h1 class="text-3xl md:text-4xl font-playfair font-black tracking-widest drop-shadow-xl">
                 <span class="text-emerald-500">18</span><span class="text-champagne">05</span>
             </h1>
         </header>
 
         <!-- Hero Section -->
-        <main class="max-w-4xl mt-16 mb-auto">
-            <h2 id="heroTitle" class="font-playfair text-7xl md:text-[8rem] leading-none font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 mb-4 drop-shadow-2xl uppercase animate-fade-up delay-100"></h2>
+        <main class="max-w-4xl mt-16 mb-auto pointer-events-none">
+            <h2 id="heroTitle" class="font-playfair text-7xl md:text-[8rem] leading-none font-medium tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400 mb-4 drop-shadow-2xl uppercase animate-fade-up delay-100"></h2>
             
-            <p id="togetherText" class="text-emerald-400 font-bold text-sm md:text-xl tracking-[0.3em] uppercase mb-8 drop-shadow-md animate-fade-up delay-200"></p>
+            <p id="togetherText" class="text-emerald-400 font-medium text-sm md:text-xl tracking-[0.4em] uppercase mb-8 drop-shadow-md animate-fade-up delay-200"></p>
             
             <p id="synopsisText" class="text-gray-300 text-lg md:text-2xl leading-relaxed mb-12 max-w-3xl drop-shadow-lg font-light animate-fade-up delay-300"></p>
             
             <!-- Interactive Buttons -->
-            <div class="flex flex-wrap gap-6 mb-16 animate-fade-up delay-400">
-                <button class="bg-champagne text-black px-10 py-4 rounded-sm font-bold text-lg hover:bg-white transition-all flex items-center gap-3 shadow-[0_0_30px_rgba(245,230,206,0.3)] hover:shadow-[0_0_40px_rgba(245,230,206,0.6)] hover:scale-105 duration-500">
-                    <span class="text-xl">▶</span> Play Our Story
+            <div class="flex flex-wrap gap-6 mb-16 animate-fade-up delay-400 pointer-events-auto">
+                <button class="bg-champagne text-black px-10 py-4 rounded-full font-semibold text-sm md:text-base tracking-wider uppercase hover:bg-white transition-all flex items-center gap-3 shadow-[0_0_25px_rgba(245,230,206,0.2)] hover:shadow-[0_0_40px_rgba(245,230,206,0.5)] hover:-translate-y-1 duration-500">
+                    <span class="text-lg">▶</span> Play Our Story
                 </button>
-                <button class="glass-panel text-white px-10 py-4 rounded-sm font-bold text-lg hover:bg-white/10 transition-all flex items-center gap-3 hover:scale-105 duration-500 group">
+                <button class="glass-panel text-white px-10 py-4 rounded-full font-semibold text-sm md:text-base tracking-wider uppercase hover:bg-white/10 transition-all flex items-center gap-3 hover:-translate-y-1 duration-500 group">
                     <span class="text-champagne group-hover:rotate-180 transition-transform duration-700">✧</span> Moments
                 </button>
             </div>
         </main>
 
-        <!-- The Ultra-Premium Flip Clock -->
-        <div class="glass-panel rounded-3xl p-8 w-full max-w-6xl mx-auto mt-4 mb-4 animate-fade-up delay-400">
-            <div class="flex items-center justify-center gap-4 mb-10">
-                <div class="h-[1px] w-12 bg-gradient-to-r from-transparent to-champagne/50"></div>
-                <p class="text-center text-champagne opacity-90 uppercase tracking-[0.4em] text-sm font-bold">Time Together</p>
-                <div class="h-[1px] w-12 bg-gradient-to-l from-transparent to-champagne/50"></div>
+        <!-- The Elegant Minimalist Clock -->
+        <div class="glass-panel rounded-[2rem] p-8 w-full max-w-5xl mx-auto mt-4 mb-4 animate-fade-up delay-400 pointer-events-none">
+            <div class="flex items-center justify-center gap-6 mb-10">
+                <div class="h-[1px] w-16 bg-gradient-to-r from-transparent to-champagne/30"></div>
+                <p class="text-center text-champagne opacity-80 uppercase tracking-[0.5em] text-xs font-medium">Time Together</p>
+                <div class="h-[1px] w-16 bg-gradient-to-l from-transparent to-champagne/30"></div>
             </div>
             
-            <div class="grid grid-cols-4 md:grid-cols-7 gap-3 md:gap-6 justify-center" id="countdown-container">
-                <!-- Flip Cards Injected Here -->
+            <div class="grid grid-cols-4 md:grid-cols-7 gap-6 justify-center items-center" id="countdown-container">
+                <!-- Elegant Numbers Injected Here -->
             </div>
         </div>
     </div>
 
     <!-- The Logic -->
     <script>
+        // --- 1. POPULATE DATA & AUTO-UPDATE TEXT ---
         document.getElementById('bgImage').src = window.websiteData.mainHeroImage;
-        document.getElementById('heroTitle').innerText = window.websiteData.heroTitle;
         document.getElementById('togetherText').innerText = window.websiteData.togetherSinceText;
-        document.getElementById('synopsisText').innerText = window.websiteData.synopsis;
 
         const startDate = new Date(window.websiteData.startDate).getTime();
+        const startObj = new Date(window.websiteData.startDate);
 
         function updateClock() {
             const now = new Date().getTime();
+            const nowObj = new Date();
             const difference = now - startDate;
 
             const daysTotal = Math.floor(difference / (1000 * 60 * 60 * 24));
@@ -139,6 +154,22 @@
             const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
+            // Auto-calculate the header text based on actual current date
+            let totalMonths = (nowObj.getFullYear() - startObj.getFullYear()) * 12 + (nowObj.getMonth() - startObj.getMonth());
+            if (nowObj.getDate() < startObj.getDate()) {
+                totalMonths--;
+            }
+            
+            let timeString = totalMonths >= 12 
+                ? `${Math.floor(totalMonths / 12)} YEAR${Math.floor(totalMonths / 12) > 1 ? 'S' : ''}` 
+                : `${totalMonths} MONTHS`;
+                
+            document.getElementById('heroTitle').innerText = timeString;
+            
+            let dynamicSynopsis = window.websiteData.synopsis.replace(/7 months/i, timeString.toLowerCase());
+            document.getElementById('synopsisText').innerText = dynamicSynopsis;
+
+            // --- 2. ELEGANT CLOCK RENDERING ---
             const timeUnits = [
                 { label: 'Years', value: years },
                 { label: 'Months', value: months },
@@ -152,21 +183,14 @@
             let html = '';
             timeUnits.forEach(unit => {
                 const displayValue = unit.value.toString().padStart(2, '0');
-                const glowClass = unit.isLive ? 'text-emerald-400 drop-shadow-[0_0_15px_rgba(52,211,153,0.5)]' : 'text-champagne drop-shadow-[0_5px_10px_rgba(0,0,0,0.8)]';
+                const textStyle = unit.isLive 
+                    ? 'text-emerald-300 font-medium drop-shadow-[0_0_12px_rgba(52,211,153,0.4)]' 
+                    : 'text-champagne font-light drop-shadow-[0_2px_10px_rgba(245,230,206,0.15)]';
 
                 html += `
-                    <div class="flex flex-col items-center justify-center group">
-                        <div class="relative bg-[#0a0508] border border-champagne/20 rounded-xl shadow-2xl w-[4.5rem] h-24 md:w-28 md:h-36 flex items-center justify-center overflow-hidden transition-transform duration-500 group-hover:-translate-y-2 group-hover:shadow-[0_20px_40px_rgba(245,230,206,0.15)]">
-                            
-                            <div class="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent z-10 border-b border-black/80"></div>
-                            
-                            <span class="font-playfair text-5xl md:text-7xl font-bold ${glowClass} z-20 transition-all duration-300 tracking-tighter">${displayValue}</span>
-                            
-                            <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/90 to-transparent z-10 border-t border-white/5"></div>
-                            
-                            <div class="absolute top-1/2 inset-x-0 h-[2px] bg-black z-30 transform -translate-y-1/2 shadow-[0_1px_0_rgba(255,255,255,0.05)]"></div>
-                        </div>
-                        <span class="text-[10px] md:text-xs text-gray-400 mt-5 uppercase tracking-[0.3em] font-medium transition-colors group-hover:text-champagne">${unit.label}</span>
+                    <div class="flex flex-col items-center justify-center">
+                        <span class="font-playfair text-5xl md:text-7xl ${textStyle} transition-all duration-300 tracking-wider">${displayValue}</span>
+                        <span class="text-[9px] md:text-xs text-gray-400 mt-4 uppercase tracking-[0.4em] font-light opacity-80">${unit.label}</span>
                     </div>
                 `;
             });
@@ -176,6 +200,34 @@
 
         updateClock();
         setInterval(updateClock, 1000);
+
+        // --- 3. INTERACTIVE HEART BURST EFFECT ---
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            // Array of elegant emojis to randomly pick from
+            const emojis = ['🤍', '✨', '🤍', '🤎']; 
+            heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            heart.className = 'heart-burst';
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            document.body.appendChild(heart);
+            
+            // Remove the heart from the code after animation finishes
+            setTimeout(() => {
+                heart.remove();
+            }, 1200);
+        }
+
+        // Listen for mouse clicks
+        document.addEventListener('click', function(e) {
+            createHeart(e.clientX, e.clientY);
+        });
+
+        // Listen for mobile screen taps
+        document.addEventListener('touchstart', function(e) {
+            const touch = e.touches[0];
+            createHeart(touch.clientX, touch.clientY);
+        });
     </script>
 </body>
 </html>
