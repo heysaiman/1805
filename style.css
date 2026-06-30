@@ -1,0 +1,106 @@
+/* ==========================================================================
+   ROOT VARIABLES & BASE SETUP
+   ========================================================================== */
+:root {
+    --color-champagne: #fcf3d7;
+    --color-gold: #d4af37;
+    --color-emerald: #34d399;
+    --glass-bg: rgba(20, 12, 16, 0.35);
+    --glass-border: rgba(230, 208, 163, 0.15);
+    --glass-highlight: rgba(255, 255, 255, 0.2);
+}
+
+body { 
+    font-family: 'Montserrat', sans-serif; 
+    background-color: #030102; 
+    color: #ffffff;
+    perspective: 1200px; 
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.font-playfair { font-family: 'Playfair Display', serif; }
+
+/* ==========================================================================
+   BACKGROUND & ENVIRONMENT ANIMATIONS
+   ========================================================================== */
+@keyframes ken-burns { 
+    0% { transform: scale(1) translate(0, 0); } 
+    100% { transform: scale(1.18) translate(-1%, -1%); } 
+}
+
+.animate-ken-burns { 
+    animation: ken-burns 40s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite alternate; 
+    will-change: transform;
+}
+
+.cinematic-overlay {
+    position: absolute; inset: 0; 
+    background: linear-gradient(to bottom, rgba(10, 5, 8, 0.3) 0%, rgba(5, 2, 4, 0.98) 100%);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+    opacity: 0; animation: fade-in-overlay 2.5s ease-in-out 3s forwards; z-index: 5; pointer-events: none;
+}
+
+@keyframes fade-in-overlay { 0% { opacity: 0; backdrop-filter: blur(0px); } 100% { opacity: 1; backdrop-filter: blur(20px); } }
+
+/* ==========================================================================
+   ULTRA-SMOOTH CINEMATIC REVEALS
+   ========================================================================== */
+@keyframes luxury-reveal { 
+    0% { opacity: 0; transform: translateY(40px) scale(0.98); filter: blur(10px); } 
+    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); } 
+}
+
+.reveal-element { opacity: 0; animation: luxury-reveal 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.delay-1 { animation-delay: 3.5s; } .delay-2 { animation-delay: 3.8s; } .delay-3 { animation-delay: 4.1s; } .delay-4 { animation-delay: 4.4s; } .delay-5 { animation-delay: 4.8s; }
+
+/* ==========================================================================
+   CHAMPAGNE FOIL TYPOGRAPHY
+   ========================================================================== */
+.foil-text-container { position: relative; display: inline-block; z-index: 10; }
+
+.champagne-foil {
+    background: linear-gradient(110deg, var(--color-gold) 0%, var(--color-champagne) 25%, #ffffff 45%, var(--color-champagne) 65%, var(--color-gold) 100%);
+    background-size: 250% auto; color: var(--color-champagne);
+    -webkit-text-fill-color: transparent; -webkit-background-clip: text; background-clip: text; 
+    animation: shine 6s linear infinite; display: inline-block; text-shadow: 0px 10px 30px rgba(0,0,0,0.8);
+}
+
+@keyframes shine { to { background-position: 250% center; } }
+#heroNumber { transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.number-pop { transform: scale(1.15) translateY(-8px); text-shadow: 0 0 50px rgba(212, 175, 55, 0.8); }
+
+/* ==========================================================================
+   3D MAGNETIC GLASS MORPHISM
+   ========================================================================== */
+.luxury-glass {
+    position: relative; overflow: hidden; background: var(--glass-bg);
+    backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px);
+    border: 1px solid var(--glass-border); border-top: 1px solid var(--glass-highlight);
+    box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.luxury-glass::before {
+    content: ''; position: absolute; top: 0; left: -150%; width: 60%; height: 100%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0) 100%);
+    transform: skewX(-25deg); animation: glass-sweep 9s infinite 5s; pointer-events: none;
+}
+@keyframes glass-sweep { 0% { left: -150%; } 15% { left: 200%; } 100% { left: 200%; } }
+
+/* ==========================================================================
+   PARTICLE ENGINE
+   ========================================================================== */
+.particle { position: fixed; pointer-events: none; z-index: 9999; will-change: transform, opacity; animation: particle-drift var(--duration) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards; }
+.particle-stardust { width: var(--size); height: var(--size); background-color: var(--color-champagne); border-radius: 50%; box-shadow: 0 0 15px 3px rgba(212, 175, 55, 0.7); mix-blend-mode: screen; }
+.particle-heart { font-size: var(--size); filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3)); line-height: 1; }
+
+@keyframes particle-drift { 
+    0% { transform: translate(0, 0) rotate(var(--rot-start)) scale(0.5); opacity: 0; } 
+    15% { opacity: 1; transform: translate(calc(var(--dx) * 0.2), calc(var(--dy) * 0.2)) rotate(var(--rot-mid)) scale(1.2); }
+    100% { transform: translate(var(--dx), var(--dy)) rotate(var(--rot-end)) scale(0); opacity: 0; } 
+}
+
+@keyframes ambient-float { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 20% { opacity: var(--max-opacity); } 80% { opacity: var(--max-opacity); } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
+.ambient-orb { position: absolute; border-radius: 50%; background: radial-gradient(circle, var(--color-champagne) 0%, transparent 80%); animation: ambient-float linear infinite; z-index: 2; pointer-events: none; }
+
