@@ -13,7 +13,7 @@ const websiteData = {
     synopsis: "It took just 7 months for our story to feel like a lifetime. From late-night laughs to quiet moments, there's no one else I'd rather share my days with. A kiss from you or even just your smile can turn any day into magic. I'd choose you in every universe, every time. I love you with all my heart...",
     
     // Media Links (Using placeholder links for now, swap out with your Catbox URLs later!)
-    mainHeroImage: "RUIDc79b5c108c044eb180083e8125ff0727.jpg",
+    mainHeroImage: "RUIDdb36c7ecf2214bb2993735b7dc095e92(1).jpg",
 
     // Interactive Moments Rows
     moments: [
