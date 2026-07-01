@@ -62,8 +62,9 @@
         </div>
     </div>
 
-    <!-- ✧ NETFLIX-STYLE MOMENT DETAILS PANEL (HIDDEN BY DEFAULT) ✧ -->
-    <div id="netflix-panel" class="fixed inset-y-0 right-0 w-full md:w-[440px] bg-[#0a0508] z-[10000] transform translate-x-full transition-transform duration-700 cubic-bezier(0.16, 1, 0.3, 1) flex flex-col overflow-y-auto border-l border-white/10 shadow-2xl">
+    <!-- ✧ NETFLIX-STYLE MOMENT DETAILS PANEL ✧ -->
+    <!-- FIXED SCROLLING: Added h-[100dvh] and standard block overflow-y-auto -->
+    <div id="netflix-panel" class="fixed top-0 right-0 w-full md:w-[440px] h-[100dvh] bg-[#0a0508] z-[10000] transform translate-x-full transition-transform duration-700 cubic-bezier(0.16, 1, 0.3, 1) overflow-y-auto overscroll-contain border-l border-white/10 shadow-2xl pb-24">
         
         <!-- Header Controls -->
         <div class="absolute top-4 left-4 right-4 z-20 flex justify-between items-center">
@@ -78,17 +79,21 @@
         <!-- Banner Visual -->
         <div class="relative w-full aspect-[16/10] overflow-hidden flex-shrink-0">
             <div class="absolute inset-0 bg-gradient-to-tr from-[#05110c] to-[#0a0508] flex items-center justify-center">
-                <div class="absolute inset-0 bg-cover bg-center opacity-85 transition-all duration-700" id="netflix-banner-img"></div>
-                <div id="netflix-banner-placeholder" class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center border-b border-white/5 bg-gradient-to-b from-white/5 to-transparent">
-                    <span class="text-4xl mb-2 filter drop-shadow-lg">✨</span>
-                    <p class="text-[10px] text-[#fcf3d7]/60 font-mono tracking-widest uppercase">Upload First Meet Photo</p>
+                
+                <!-- 📸 PASTE YOUR PHOTO URL HERE 📸 -->
+                <!-- Change the URL inside the parenthesis below. Keep the quotes! -->
+                <div class="absolute inset-0 bg-cover bg-center opacity-85" 
+                     style="background-image: url('https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=1000&auto=format&fit=crop');">
                 </div>
+                <!-- 📸 ---------------------------- 📸 -->
+
             </div>
+            <!-- Bottom Deep Fade into Content -->
             <div class="absolute inset-0 bg-gradient-to-t from-[#0a0508] via-transparent to-black/30"></div>
         </div>
 
         <!-- Details Content Area -->
-        <div class="px-6 pb-12 flex-grow flex flex-col -mt-8 relative z-10">
+        <div class="px-6 relative z-10 -mt-8">
             <!-- Series Branding -->
             <div class="flex items-center gap-1.5 mb-1.5 select-none">
                 <span class="text-red-600 font-bold tracking-tighter text-xl">N</span>
@@ -126,7 +131,7 @@
             <!-- Action Controls -->
             <div class="flex items-center gap-6 mb-8">
                 <!-- Play Story Action -->
-                <button id="netflix-play-btn" class="w-14 h-14 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center shadow-lg shadow-red-600/30 transition transform active:scale-90 duration-300">
+                <button class="w-14 h-14 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center shadow-lg shadow-red-600/30 transition transform active:scale-90 duration-300">
                     <span class="text-lg translate-x-[2px]">▶</span>
                 </button>
                 
@@ -217,11 +222,6 @@
 
     <!-- ✧ PIXEL-PERFECT NATIVE-GRADE MOMENTS ENGINE ✧ -->
     <script>
-        // ✧----------------- PHOTO CONFIGURATION -----------------✧
-        // Paste your first-meet photo URL here! (Supports links from Unsplash, Imgur, etc.)
-        const firstMeetPhotoUrl = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800"; 
-        // ✧-------------------------------------------------------✧
-
         const myMoments = [
             "Our first meet",
             "Our first date",
@@ -246,7 +246,7 @@
             overlay.style.willChange = "opacity";
             document.body.appendChild(overlay);
 
-            // 2. Setup the "Ghost" Anchor (Maintains layout structure when button moves)
+            // 2. Setup the "Ghost" Anchor
             const ghostAnchor = document.createElement('div');
             ghostAnchor.style.display = "none";
             ghostAnchor.style.visibility = "hidden";
@@ -260,57 +260,48 @@
                 if (isAnimating || isOpen) return;
                 isAnimating = true;
 
-                // --- STEP 1: CAPTURE EXACT STARTING PIXELS ---
                 const startRect = originalBtn.getBoundingClientRect();
                 const startTop = Math.round(startRect.top);
                 const startLeft = Math.round(startRect.left);
                 const startWidth = Math.round(startRect.width);
                 const startHeight = Math.round(startRect.height);
 
-                // Configure Ghost Anchor to hold the physical space
                 ghostAnchor.style.width = startWidth + "px";
                 ghostAnchor.style.height = startHeight + "px";
                 ghostAnchor.style.margin = window.getComputedStyle(originalBtn).margin;
                 ghostAnchor.style.display = "block";
 
-                // Hide original button immediately
                 originalBtn.style.visibility = "hidden";
                 originalBtn.style.opacity = "0";
 
-                // Lock Body Scroll to prevent viewport shifting
                 document.body.style.overflow = "hidden";
 
-                // --- STEP 2: CREATE THE GPU-ACCELERATED MORPH BOX ---
                 const morphBox = document.createElement('div');
                 morphBox.style.position = "fixed";
                 morphBox.style.zIndex = "9999";
                 
-                // Set initial pure pixel coordinates matching the button exactly
                 morphBox.style.top = startTop + "px";
                 morphBox.style.left = startLeft + "px";
                 morphBox.style.width = startWidth + "px";
                 morphBox.style.height = startHeight + "px";
                 
-                // Set initial visual styles matching the button
                 morphBox.style.borderRadius = "9999px"; 
                 morphBox.style.background = "rgba(255, 255, 255, 0.05)";
                 morphBox.style.border = "1px solid rgba(255, 255, 255, 0.1)";
                 morphBox.style.backdropFilter = "blur(12px)";
                 
-                // Hardware Acceleration Flags
                 morphBox.style.willChange = "top, left, width, height, border-radius, background-color";
                 morphBox.style.transform = "translateZ(0)"; 
                 morphBox.style.boxSizing = "border-box";
                 morphBox.style.overflow = "hidden";
                 
-                // Setup an inner container for the initial button text (so we can fade it out smoothly)
                 const initialTextWrapper = document.createElement('div');
                 initialTextWrapper.style.position = "absolute";
                 initialTextWrapper.style.inset = "0";
                 initialTextWrapper.style.display = "flex";
                 initialTextWrapper.style.alignItems = "center";
                 initialTextWrapper.style.justifyContent = "center";
-                initialTextWrapper.style.gap = "1rem"; // Match gap-4
+                initialTextWrapper.style.gap = "1rem"; 
                 initialTextWrapper.style.opacity = "1";
                 initialTextWrapper.style.transition = "opacity 0.2s ease-out";
                 initialTextWrapper.innerHTML = originalBtn.innerHTML; 
@@ -318,29 +309,21 @@
 
                 document.body.appendChild(morphBox);
 
-                // --- STEP 3: INITIATE SEQUENCE ---
-                // Fade in overlay
                 overlay.classList.remove('pointer-events-none');
                 overlay.style.opacity = "1";
 
-                // Wait 1 frame to ensure the DOM registers the initial box placement
                 await new Promise(requestAnimationFrame);
 
-                // Fade out the initial button text inside the morph box
                 initialTextWrapper.style.opacity = "0";
                 await wait(200); 
 
-                // --- STEP 4: CALCULATE EXACT ENDING PIXELS ---
-                // We calculate this right before moving to ensure window size hasn't shifted
                 const targetWidth = Math.round(Math.min(window.innerWidth * 0.9, 380));
                 const targetHeight = 440;
                 const targetTop = Math.round((window.innerHeight - targetHeight) / 2);
                 const targetLeft = Math.round((window.innerWidth - targetWidth) / 2);
 
-                // Apply the butter-smooth Apple transition curve
                 morphBox.style.transition = "top 0.6s cubic-bezier(0.32, 0.72, 0, 1), left 0.6s cubic-bezier(0.32, 0.72, 0, 1), width 0.6s cubic-bezier(0.32, 0.72, 0, 1), height 0.6s cubic-bezier(0.32, 0.72, 0, 1), border-radius 0.6s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.6s ease";
                 
-                // Execute physical morph (empty box resizing prevents layout stutter)
                 morphBox.style.top = targetTop + "px";
                 morphBox.style.left = targetLeft + "px";
                 morphBox.style.width = targetWidth + "px";
@@ -349,13 +332,10 @@
                 morphBox.style.background = "rgba(10, 5, 8, 0.85)";
                 morphBox.style.border = "1px solid rgba(252, 243, 215, 0.15)";
                 
-                // Wait for the physical resize animation to complete completely
                 await wait(650);
 
-                // Clean up the initial text wrapper now that the box is big
                 initialTextWrapper.remove();
 
-                // --- STEP 5: INJECT AND FADE IN FINAL CONTENT ---
                 const contentContainer = document.createElement('div');
                 contentContainer.style.width = "100%";
                 contentContainer.style.height = "100%";
@@ -366,7 +346,6 @@
                 contentContainer.style.opacity = "0";
                 contentContainer.style.transition = "opacity 0.4s ease-in";
                 
-                // Build Header
                 const title = document.createElement('h3');
                 title.style.color = "#fcf3d7";
                 title.style.fontFamily = "'Playfair Display', serif";
@@ -376,7 +355,6 @@
                 title.innerText = "✧ MOMENTS";
                 contentContainer.appendChild(title);
                 
-                // Build List Container
                 const list = document.createElement('div');
                 list.style.width = "100%";
                 list.style.display = "flex";
@@ -384,7 +362,6 @@
                 list.style.gap = "20px";
                 contentContainer.appendChild(list);
 
-                // Build Action Buttons
                 const actions = document.createElement('div');
                 actions.style.display = "flex";
                 actions.style.justifyContent = "space-between";
@@ -404,21 +381,19 @@
                 closeBtn.style.fontSize = "12px";
                 closeBtn.style.letterSpacing = "0.2em";
                 closeBtn.style.cursor = "pointer";
-                closeBtn.style.padding = "10px"; // Larger touch target
+                closeBtn.style.padding = "10px"; 
                 closeBtn.style.margin = "-10px";
                 
                 actions.appendChild(addBtn);
                 actions.appendChild(closeBtn);
                 contentContainer.appendChild(actions);
                 
-                // Append content and fade it in
                 morphBox.appendChild(contentContainer);
                 await new Promise(requestAnimationFrame);
                 contentContainer.style.opacity = "1";
 
                 await wait(200);
 
-                // --- STEP 6: TYPEWRITER EFFECT WITH ADDED HOVER/CLICK INTERACTIONS ---
                 for (let item of myMoments) {
                     let p = document.createElement('p');
                     p.style.fontFamily = "'Montserrat', sans-serif";
@@ -431,16 +406,14 @@
                     p.style.textAlign = "center";
                     p.style.letterSpacing = "0.05em";
                     
-                    // ADDED: Make it look clickable and add hover effects
                     p.style.cursor = "pointer";
                     p.className = "hover:text-emerald-400 active:scale-[0.98] transition-all duration-200";
 
-                    // ADDED: Trigger Netflix Panel if "Our first meet" is clicked
                     if (item === "Our first meet") {
                         p.addEventListener('click', (e) => {
                             e.stopPropagation();
-                            if(typeof openNetflixPanel === 'function') {
-                                openNetflixPanel();
+                            if(typeof window.openNetflixPanel === 'function') {
+                                window.openNetflixPanel();
                             }
                         });
                     }
@@ -457,18 +430,15 @@
                 isAnimating = false;
                 isOpen = true;
 
-                // --- REVERSE SEQUENCE (CLOSE) ---
                 closeBtn.onclick = async (e) => {
                     e.stopPropagation();
                     if (isAnimating) return;
                     isAnimating = true;
 
-                    // 1. Fade out modal content
                     contentContainer.style.opacity = "0";
                     await wait(300);
                     contentContainer.remove();
 
-                    // 2. Re-create the initial text wrapper (invisible for now)
                     const returnTextWrapper = document.createElement('div');
                     returnTextWrapper.style.position = "absolute";
                     returnTextWrapper.style.inset = "0";
@@ -481,17 +451,14 @@
                     returnTextWrapper.innerHTML = originalBtn.innerHTML; 
                     morphBox.appendChild(returnTextWrapper);
 
-                    // 3. Get exact current pixel location of the Ghost Anchor
                     const returnRect = ghostAnchor.getBoundingClientRect();
                     const returnTop = Math.round(returnRect.top);
                     const returnLeft = Math.round(returnRect.left);
                     const returnWidth = Math.round(returnRect.width);
                     const returnHeight = Math.round(returnRect.height);
 
-                    // Fade out the dark background blur
                     overlay.style.opacity = "0";
 
-                    // 4. Execute physical morph back to anchor pixels
                     morphBox.style.top = returnTop + "px";
                     morphBox.style.left = returnLeft + "px";
                     morphBox.style.width = returnWidth + "px";
@@ -500,38 +467,26 @@
                     morphBox.style.background = "rgba(255, 255, 255, 0.05)";
                     morphBox.style.border = "1px solid rgba(255, 255, 255, 0.1)";
                     
-                    await wait(450); // Wait for mostly closed before fading text in
+                    await wait(450);
 
-                    // Fade the button text back in as it settles
                     returnTextWrapper.style.opacity = "1";
                     
                     await wait(200);
 
-                    // 5. Seamlessly swap morph box for the real original button
                     morphBox.remove();
                     originalBtn.style.visibility = "visible";
                     originalBtn.style.opacity = "1";
                     ghostAnchor.style.display = "none";
 
-                    // Cleanup states
                     overlay.classList.add('pointer-events-none');
-                    document.body.style.overflow = ""; // Unlock scroll
+                    document.body.style.overflow = ""; 
                     
                     isAnimating = false;
                     isOpen = false;
                 };
             });
-
-            // ✧----------------- NETFLIX PANEL FUNCTIONALITY -----------------✧
             
-            // Set up the Main Photo URL in the Netflix Panel on load
-            const bannerImg = document.getElementById('netflix-banner-img');
-            const bannerPlaceholder = document.getElementById('netflix-banner-placeholder');
-            if (bannerImg && firstMeetPhotoUrl) {
-                bannerImg.style.backgroundImage = `url('${firstMeetPhotoUrl}')`;
-                if (bannerPlaceholder) bannerPlaceholder.style.display = 'none';
-            }
-
+            // ✧----------------- NETFLIX PANEL FUNCTIONALITY -----------------✧
             const netflixPanel = document.getElementById('netflix-panel');
             const netflixBack = document.getElementById('netflix-back');
             const netflixFavorite = document.getElementById('netflix-favorite');
@@ -542,7 +497,6 @@
             const secretCard = document.getElementById('secret-details-card');
             const hearts = Array.from(document.querySelectorAll('#netflix-hearts-container span'));
 
-            // Exposed globally so the dynamic typewriter text can click it
             window.openNetflixPanel = function() {
                 if(netflixPanel) {
                     netflixPanel.style.transform = "translateX(0)";
@@ -559,7 +513,6 @@
                 netflixBack.addEventListener('click', closeNetflixPanel);
             }
 
-            // Favorite Button (Heart Outline/Fill Switch)
             let isFav = false;
             if (netflixFavorite) {
                 netflixFavorite.addEventListener('click', () => {
@@ -569,7 +522,6 @@
                         netflixFavorite.classList.add('text-pink-500');
                         heartSvg.classList.remove('fill-none');
                         heartSvg.classList.add('fill-current');
-                        // Mini heart pop animation
                         netflixFavorite.style.transform = "scale(1.2)";
                         setTimeout(() => netflixFavorite.style.transform = "none", 150);
                     } else {
@@ -581,7 +533,6 @@
                 });
             }
 
-            // My List Button Checkmark Swap
             let addedToList = false;
             if (netflixMylist) {
                 netflixMylist.addEventListener('click', () => {
@@ -596,7 +547,6 @@
                 });
             }
 
-            // Secret Info Card Collapse Toggle
             let infoOpen = false;
             if (netflixInfo) {
                 netflixInfo.addEventListener('click', () => {
@@ -609,16 +559,15 @@
                 });
             }
 
-            // Heart Rating Pulsing System
             hearts.forEach((heart, idx) => {
                 heart.addEventListener('click', () => {
                     hearts.forEach((h, hIdx) => {
                         if (hIdx <= idx) {
-                            h.style.color = '#ef4444'; // Crimson fill
+                            h.style.color = '#ef4444'; 
                             h.style.transform = 'scale(1.2)';
                             setTimeout(() => h.style.transform = 'none', 150);
                         } else {
-                            h.style.color = 'rgba(255,255,255,0.2)'; // Faded out
+                            h.style.color = 'rgba(255,255,255,0.2)'; 
                         }
                     });
                 });
