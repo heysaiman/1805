@@ -63,15 +63,14 @@
     </div>
 
     <!-- ✧ NETFLIX-STYLE MOMENT DETAILS PANEL ✧ -->
-    <!-- FIXED SCROLLING: Added h-[100dvh] and standard block overflow-y-auto -->
     <div id="netflix-panel" class="fixed top-0 right-0 w-full md:w-[440px] h-[100dvh] bg-[#0a0508] z-[10000] transform translate-x-full transition-transform duration-700 cubic-bezier(0.16, 1, 0.3, 1) overflow-y-auto overscroll-contain border-l border-white/10 shadow-2xl pb-24">
         
         <!-- Header Controls -->
         <div class="absolute top-4 left-4 right-4 z-20 flex justify-between items-center">
-            <button id="netflix-back" class="w-10 h-10 rounded-full bg-black/50 border border-white/15 flex items-center justify-center text-white/90 hover:text-white hover:bg-black/80 transition active:scale-95">
+            <button id="netflix-back" class="w-10 h-10 rounded-full bg-black/50 border border-white/15 flex items-center justify-center text-white/90 hover:text-white hover:bg-black/80 transition active:scale-95 cursor-pointer">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
-            <button id="netflix-favorite" class="w-10 h-10 rounded-full bg-black/50 border border-white/15 flex items-center justify-center text-white/50 hover:text-pink-500 transition active:scale-95">
+            <button id="netflix-favorite" class="w-10 h-10 rounded-full bg-black/50 border border-white/15 flex items-center justify-center text-white/50 hover:text-pink-500 transition active:scale-95 cursor-pointer">
                 <svg id="heart-icon-svg" class="w-5 h-5 fill-none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
             </button>
         </div>
@@ -80,12 +79,11 @@
         <div class="relative w-full aspect-[16/10] overflow-hidden flex-shrink-0">
             <div class="absolute inset-0 bg-gradient-to-tr from-[#05110c] to-[#0a0508] flex items-center justify-center">
                 
-                <!-- 📸 PASTE YOUR PHOTO URL HERE 📸 -->
-                <!-- Change the URL inside the parenthesis below. Keep the quotes! -->
+                <!-- 📸 THIS IS YOUR UPDATED IMAGE LINK 📸 -->
                 <div class="absolute inset-0 bg-cover bg-center opacity-85" 
                      style="background-image: url('20250425_184147(1).jpg');">
                 </div>
-                <!-- 📸 ---------------------------- 📸 -->
+                <!-- 📸 ------------------------------ 📸 -->
 
             </div>
             <!-- Bottom Deep Fade into Content -->
@@ -94,18 +92,15 @@
 
         <!-- Details Content Area -->
         <div class="px-6 relative z-10 -mt-8">
-            <!-- Series Branding -->
             <div class="flex items-center gap-1.5 mb-1.5 select-none">
                 <span class="text-red-600 font-bold tracking-tighter text-xl">N</span>
                 <span class="text-[10px] text-[#fcf3d7]/60 font-bold tracking-[0.3em] uppercase">1805 SPECIALS</span>
             </div>
 
-            <!-- Title -->
             <h2 class="text-3xl font-playfair font-black text-[#fcf3d7] tracking-wider uppercase mb-3">
                 Our First Meet
             </h2>
 
-            <!-- Metadata Row -->
             <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-gray-400 font-medium mb-4">
                 <span>2025</span>
                 <span class="h-3 w-[1px] bg-white/20"></span>
@@ -116,7 +111,6 @@
                 <span class="text-emerald-400 font-bold">THE BEGINNING</span>
             </div>
 
-            <!-- Hearts Rating System -->
             <div class="flex items-center gap-1.5 mb-6">
                 <div class="flex text-[#fcf3d7]/20 text-lg gap-1" id="netflix-hearts-container">
                     <span class="heart-pulse cursor-pointer select-none transition-transform active:scale-150 duration-150">♥</span>
@@ -128,27 +122,22 @@
                 <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-widest ml-2">Match Level: Infinite</span>
             </div>
 
-            <!-- Action Controls -->
             <div class="flex items-center gap-6 mb-8">
-                <!-- Play Story Action -->
                 <button class="w-14 h-14 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center shadow-lg shadow-red-600/30 transition transform active:scale-90 duration-300">
                     <span class="text-lg translate-x-[2px]">▶</span>
                 </button>
                 
-                <!-- My List Toggle -->
                 <button id="netflix-mylist-btn" class="flex flex-col items-center gap-1 text-white/75 hover:text-white transition group">
                     <span class="text-xl group-active:scale-125 transition-transform" id="mylist-icon">+</span>
                     <span class="text-[9px] font-bold tracking-widest uppercase">My List</span>
                 </button>
 
-                <!-- Secret Info Detail Toggle -->
                 <button id="netflix-info-btn" class="flex flex-col items-center gap-1 text-white/75 hover:text-white transition group ml-auto">
                     <span class="text-xl group-active:scale-125 transition-transform">ⓘ</span>
                     <span class="text-[9px] font-bold tracking-widest uppercase">Secret Details</span>
                 </button>
             </div>
 
-            <!-- Hidden Secret Coordinates Card -->
             <div id="secret-details-card" class="hidden luxury-glass p-4 rounded-2xl mb-6 border border-[#fcf3d7]/10 text-xs text-gray-300 space-y-1.5 animate-pulse">
                 <p class="font-bold text-[#fcf3d7]">GPS Location:</p>
                 <p class="font-mono text-[10px]">19.8049° N, 85.8178° E</p>
@@ -156,67 +145,109 @@
                 <p>SCS Junior College, Puri. Exchanging quiet glances across corridors during our golden 12th class days.</p>
             </div>
 
-            <!-- Expanded Narrative Synopsis -->
             <p class="text-gray-300 text-sm leading-relaxed mb-8 font-light tracking-wide">
                 Our story truly took its first realistic breath in the sweet atmosphere of Cafe Cookies right after college. Before that afternoon, she was a beautiful face I used to secretly admire during our 12th-grade classes at SCS College. Standing inside the cafe, battling a storm of nervous energy, we somehow managed to break the ice and exchange social media handles. That single, terrifying leap of faith unlocked a lifetime of walks, late-night laughs, and endless beach horizons together.
             </p>
 
-            <!-- Chapters Header -->
             <div class="border-t border-white/10 pt-6 mb-4">
                 <h3 class="text-[#fcf3d7] font-playfair font-bold text-lg tracking-wider mb-2">Chapters of That Year</h3>
                 <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Season 1: First Waves</p>
             </div>
 
-            <!-- Episodes List (The Chapters) -->
+            <!-- ✧ MESMERIZING EXPANDABLE CHAPTERS ✧ -->
             <div class="space-y-4">
+                
                 <!-- Chapter 1 -->
-                <div class="flex gap-4 items-center p-3 rounded-2xl hover:bg-white/5 transition duration-300 group">
-                    <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center">
-                        <span class="text-white text-xs font-bold bg-black/60 w-6 h-6 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 scale-75 group-hover:scale-100 absolute z-10">▶</span>
-                        <div class="absolute inset-0 bg-cover bg-center opacity-40 group-hover:scale-105 transition duration-500" style="background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=120');"></div>
+                <div class="chapter-card relative flex gap-4 items-start p-4 rounded-2xl transition-all duration-500 group border border-transparent cursor-pointer hover:bg-white/5">
+                    <!-- Glowing aura effect -->
+                    <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/0 to-[#d4af37]/0 transition-opacity duration-500 opacity-0 chapter-glow z-0"></div>
+                    
+                    <!-- Thumbnail -->
+                    <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center z-10 mt-1 shadow-lg">
+                        <div class="absolute inset-0 bg-cover bg-center opacity-50 group-hover:scale-110 transition-transform duration-700" style="background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=120');"></div>
                     </div>
-                    <div class="flex-grow min-w-0">
-                        <div class="flex justify-between items-baseline mb-1">
-                            <h4 class="text-white text-xs font-bold truncate group-hover:text-[#fcf3d7] transition">1. The Cookies Meet</h4>
+                    
+                    <!-- Text Content -->
+                    <div class="flex-grow min-w-0 z-10">
+                        <div class="flex justify-between items-baseline mb-1.5">
+                            <h4 class="text-white text-xs font-bold truncate group-hover:text-[#fcf3d7] transition-colors">1. The Cookies Meet</h4>
                             <span class="text-[9px] text-[#fcf3d7]/50 ml-2 font-mono whitespace-nowrap">12th Grade</span>
                         </div>
-                        <p class="text-[10px] text-gray-400 line-clamp-2 leading-relaxed">Transitioning from stealing glances in SCS College to exchanging social media at Cafe Cookies, hiding our absolute nervousness.</p>
+                        
+                        <!-- Expandable Container -->
+                        <div class="chapter-content-wrapper overflow-hidden transition-[max-height] duration-700 ease-in-out" style="max-height: 32px;">
+                            <p class="text-[10px] text-gray-400 leading-relaxed chapter-text transition-colors duration-500">
+                                Transitioning from stealing glances in the echoing corridors of SCS College to sitting across from each other at Cafe Cookies. The air was thick with absolute nervousness. Every sip of coffee felt like a ticking clock, but somehow, through the stuttered sentences and blushing smiles, we managed to exchange our social media handles. That tiny digital bridge changed everything.
+                            </p>
+                        </div>
+                        
+                        <!-- Toggle Button -->
+                        <div class="flex items-center gap-1 mt-2 text-emerald-400/70 group-hover:text-emerald-400 transition-colors">
+                            <span class="text-[8px] font-bold tracking-widest uppercase expand-label">Read Memory</span>
+                            <svg class="w-3 h-3 transform transition-transform duration-500 expand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Chapter 2 -->
-                <div class="flex gap-4 items-center p-3 rounded-2xl hover:bg-white/5 transition duration-300 group">
-                    <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center">
-                        <span class="text-white text-xs font-bold bg-black/60 w-6 h-6 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 scale-75 group-hover:scale-100 absolute z-10">▶</span>
-                        <div class="absolute inset-0 bg-cover bg-center opacity-40 group-hover:scale-105 transition duration-500" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=120');"></div>
+                <div class="chapter-card relative flex gap-4 items-start p-4 rounded-2xl transition-all duration-500 group border border-transparent cursor-pointer hover:bg-white/5">
+                    <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/0 to-[#d4af37]/0 transition-opacity duration-500 opacity-0 chapter-glow z-0"></div>
+                    
+                    <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center z-10 mt-1 shadow-lg">
+                        <div class="absolute inset-0 bg-cover bg-center opacity-50 group-hover:scale-110 transition-transform duration-700" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=120');"></div>
                     </div>
-                    <div class="flex-grow min-w-0">
-                        <div class="flex justify-between items-baseline mb-1">
-                            <h4 class="text-white text-xs font-bold truncate group-hover:text-[#fcf3d7] transition">2. The Sea Breeze & First Ride</h4>
+                    
+                    <div class="flex-grow min-w-0 z-10">
+                        <div class="flex justify-between items-baseline mb-1.5">
+                            <h4 class="text-white text-xs font-bold truncate group-hover:text-[#fcf3d7] transition-colors">2. The Unspoken Ride</h4>
                             <span class="text-[9px] text-[#fcf3d7]/50 ml-2 font-mono whitespace-nowrap">27 Mar 2025</span>
                         </div>
-                        <p class="text-[10px] text-gray-400 line-clamp-2 leading-relaxed">Feeling the rush of our very first ride together down to the sea beach. Feelings were rising deep inside, completely secret to her.</p>
+                        
+                        <div class="chapter-content-wrapper overflow-hidden transition-[max-height] duration-700 ease-in-out" style="max-height: 32px;">
+                            <p class="text-[10px] text-gray-400 leading-relaxed chapter-text transition-colors duration-500">
+                                The rush of the wind against us during our very first ride together down to the sea beach. The horizon stretched out endlessly in front of us, mirroring the boundless feelings rising deep inside me. I held onto every second of that ride, keeping my heart perfectly secret to her, terrified that speaking it out loud might break the magic.
+                            </p>
+                        </div>
+                        
+                        <div class="flex items-center gap-1 mt-2 text-emerald-400/70 group-hover:text-emerald-400 transition-colors">
+                            <span class="text-[8px] font-bold tracking-widest uppercase expand-label">Read Memory</span>
+                            <svg class="w-3 h-3 transform transition-transform duration-500 expand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Chapter 3 -->
-                <div class="flex gap-4 items-center p-3 rounded-2xl hover:bg-white/5 transition duration-300 group">
-                    <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center">
-                        <span class="text-white text-xs font-bold bg-black/60 w-6 h-6 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 scale-75 group-hover:scale-100 absolute z-10">▶</span>
-                        <div class="absolute inset-0 bg-cover bg-center opacity-40 group-hover:scale-105 transition duration-500" style="background-image: url('https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=120');"></div>
+                <div class="chapter-card relative flex gap-4 items-start p-4 rounded-2xl transition-all duration-500 group border border-transparent cursor-pointer hover:bg-white/5">
+                    <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/0 to-[#d4af37]/0 transition-opacity duration-500 opacity-0 chapter-glow z-0"></div>
+                    
+                    <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center z-10 mt-1 shadow-lg">
+                        <div class="absolute inset-0 bg-cover bg-center opacity-50 group-hover:scale-110 transition-transform duration-700" style="background-image: url('https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=120');"></div>
                     </div>
-                    <div class="flex-grow min-w-0">
-                        <div class="flex justify-between items-baseline mb-1">
-                            <h4 class="text-white text-xs font-bold truncate group-hover:text-[#fcf3d7] transition">3. Niladri Beach Tease</h4>
+                    
+                    <div class="flex-grow min-w-0 z-10">
+                        <div class="flex justify-between items-baseline mb-1.5">
+                            <h4 class="text-white text-xs font-bold truncate group-hover:text-[#fcf3d7] transition-colors">3. Niladri Beach Tease</h4>
                             <span class="text-[9px] text-[#fcf3d7]/50 ml-2 font-mono whitespace-nowrap">25 Apr 2025</span>
                         </div>
-                        <p class="text-[10px] text-gray-400 line-clamp-2 leading-relaxed">Meeting on Niladri beach by ourselves. Cracking silly jokes, teasing each other, and laughing nervously under the open sky.</p>
+                        
+                        <div class="chapter-content-wrapper overflow-hidden transition-[max-height] duration-700 ease-in-out" style="max-height: 32px;">
+                            <p class="text-[10px] text-gray-400 leading-relaxed chapter-text transition-colors duration-500">
+                                Meeting on Niladri beach, just the two of us. The ocean roared in the background, but all I could hear was the rhythm of our nervous laughter. We cracked silly jokes to hide the tension, endlessly teasing each other under the open sky. It was the moment I realized this wasn't just a crush; it was the prologue to our entire story.
+                            </p>
+                        </div>
+                        
+                        <div class="flex items-center gap-1 mt-2 text-emerald-400/70 group-hover:text-emerald-400 transition-colors">
+                            <span class="text-[8px] font-bold tracking-widest uppercase expand-label">Read Memory</span>
+                            <svg class="w-3 h-3 transform transition-transform duration-500 expand-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 
+    <!-- MAIN APP ENGINE SCRIPTS -->
     <script src="script.js"></script>
     <script src="audio.js"></script> 
 
@@ -230,264 +261,267 @@
         ];
 
         document.addEventListener('DOMContentLoaded', () => {
-            const originalBtn = document.getElementById('moments-magic-btn');
-            if (!originalBtn) return;
-
-            // Global State Variables
-            let isAnimating = false;
-            let isOpen = false;
             
-            // 1. Setup the Blur Overlay
-            const overlay = document.createElement('div');
-            overlay.className = "fixed inset-0 bg-black/80 backdrop-blur-md pointer-events-none";
-            overlay.style.zIndex = "9990";
-            overlay.style.opacity = "0";
-            overlay.style.transition = "opacity 0.6s ease";
-            overlay.style.willChange = "opacity";
-            document.body.appendChild(overlay);
-
-            // 2. Setup the "Ghost" Anchor
-            const ghostAnchor = document.createElement('div');
-            ghostAnchor.style.display = "none";
-            ghostAnchor.style.visibility = "hidden";
-            ghostAnchor.style.pointerEvents = "none";
-            originalBtn.parentNode.insertBefore(ghostAnchor, originalBtn);
-
-            const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-            originalBtn.addEventListener('click', async (e) => {
-                e.preventDefault();
-                if (isAnimating || isOpen) return;
-                isAnimating = true;
-
-                const startRect = originalBtn.getBoundingClientRect();
-                const startTop = Math.round(startRect.top);
-                const startLeft = Math.round(startRect.left);
-                const startWidth = Math.round(startRect.width);
-                const startHeight = Math.round(startRect.height);
-
-                ghostAnchor.style.width = startWidth + "px";
-                ghostAnchor.style.height = startHeight + "px";
-                ghostAnchor.style.margin = window.getComputedStyle(originalBtn).margin;
-                ghostAnchor.style.display = "block";
-
-                originalBtn.style.visibility = "hidden";
-                originalBtn.style.opacity = "0";
-
-                document.body.style.overflow = "hidden";
-
-                const morphBox = document.createElement('div');
-                morphBox.style.position = "fixed";
-                morphBox.style.zIndex = "9999";
+            // --- 1. MORPHING BUTTON LOGIC ---
+            const originalBtn = document.getElementById('moments-magic-btn');
+            if (originalBtn) {
+                let isAnimating = false;
+                let isOpen = false;
                 
-                morphBox.style.top = startTop + "px";
-                morphBox.style.left = startLeft + "px";
-                morphBox.style.width = startWidth + "px";
-                morphBox.style.height = startHeight + "px";
-                
-                morphBox.style.borderRadius = "9999px"; 
-                morphBox.style.background = "rgba(255, 255, 255, 0.05)";
-                morphBox.style.border = "1px solid rgba(255, 255, 255, 0.1)";
-                morphBox.style.backdropFilter = "blur(12px)";
-                
-                morphBox.style.willChange = "top, left, width, height, border-radius, background-color";
-                morphBox.style.transform = "translateZ(0)"; 
-                morphBox.style.boxSizing = "border-box";
-                morphBox.style.overflow = "hidden";
-                
-                const initialTextWrapper = document.createElement('div');
-                initialTextWrapper.style.position = "absolute";
-                initialTextWrapper.style.inset = "0";
-                initialTextWrapper.style.display = "flex";
-                initialTextWrapper.style.alignItems = "center";
-                initialTextWrapper.style.justifyContent = "center";
-                initialTextWrapper.style.gap = "1rem"; 
-                initialTextWrapper.style.opacity = "1";
-                initialTextWrapper.style.transition = "opacity 0.2s ease-out";
-                initialTextWrapper.innerHTML = originalBtn.innerHTML; 
-                morphBox.appendChild(initialTextWrapper);
+                const overlay = document.createElement('div');
+                overlay.className = "fixed inset-0 bg-black/80 backdrop-blur-md pointer-events-none";
+                overlay.style.zIndex = "9990";
+                overlay.style.opacity = "0";
+                overlay.style.transition = "opacity 0.6s ease";
+                document.body.appendChild(overlay);
 
-                document.body.appendChild(morphBox);
+                const ghostAnchor = document.createElement('div');
+                ghostAnchor.style.display = "none";
+                ghostAnchor.style.visibility = "hidden";
+                ghostAnchor.style.pointerEvents = "none";
+                originalBtn.parentNode.insertBefore(ghostAnchor, originalBtn);
 
-                overlay.classList.remove('pointer-events-none');
-                overlay.style.opacity = "1";
+                const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-                await new Promise(requestAnimationFrame);
-
-                initialTextWrapper.style.opacity = "0";
-                await wait(200); 
-
-                const targetWidth = Math.round(Math.min(window.innerWidth * 0.9, 380));
-                const targetHeight = 440;
-                const targetTop = Math.round((window.innerHeight - targetHeight) / 2);
-                const targetLeft = Math.round((window.innerWidth - targetWidth) / 2);
-
-                morphBox.style.transition = "top 0.6s cubic-bezier(0.32, 0.72, 0, 1), left 0.6s cubic-bezier(0.32, 0.72, 0, 1), width 0.6s cubic-bezier(0.32, 0.72, 0, 1), height 0.6s cubic-bezier(0.32, 0.72, 0, 1), border-radius 0.6s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.6s ease";
-                
-                morphBox.style.top = targetTop + "px";
-                morphBox.style.left = targetLeft + "px";
-                morphBox.style.width = targetWidth + "px";
-                morphBox.style.height = targetHeight + "px";
-                morphBox.style.borderRadius = "2rem"; 
-                morphBox.style.background = "rgba(10, 5, 8, 0.85)";
-                morphBox.style.border = "1px solid rgba(252, 243, 215, 0.15)";
-                
-                await wait(650);
-
-                initialTextWrapper.remove();
-
-                const contentContainer = document.createElement('div');
-                contentContainer.style.width = "100%";
-                contentContainer.style.height = "100%";
-                contentContainer.style.display = "flex";
-                contentContainer.style.flexDirection = "column";
-                contentContainer.style.alignItems = "center";
-                contentContainer.style.padding = "40px 30px";
-                contentContainer.style.opacity = "0";
-                contentContainer.style.transition = "opacity 0.4s ease-in";
-                
-                const title = document.createElement('h3');
-                title.style.color = "#fcf3d7";
-                title.style.fontFamily = "'Playfair Display', serif";
-                title.style.fontSize = "1.2rem";
-                title.style.letterSpacing = "0.3em";
-                title.style.marginBottom = "30px";
-                title.innerText = "✧ MOMENTS";
-                contentContainer.appendChild(title);
-                
-                const list = document.createElement('div');
-                list.style.width = "100%";
-                list.style.display = "flex";
-                list.style.flexDirection = "column";
-                list.style.gap = "20px";
-                contentContainer.appendChild(list);
-
-                const actions = document.createElement('div');
-                actions.style.display = "flex";
-                actions.style.justifyContent = "space-between";
-                actions.style.width = "100%";
-                actions.style.marginTop = "auto";
-                
-                const addBtn = document.createElement('span');
-                addBtn.innerHTML = "+ ADD";
-                addBtn.style.color = "#10b981"; 
-                addBtn.style.fontSize = "12px";
-                addBtn.style.letterSpacing = "0.2em";
-                addBtn.style.cursor = "pointer";
-
-                const closeBtn = document.createElement('span');
-                closeBtn.innerHTML = "CLOSE ✕";
-                closeBtn.style.color = "rgba(255,255,255,0.5)";
-                closeBtn.style.fontSize = "12px";
-                closeBtn.style.letterSpacing = "0.2em";
-                closeBtn.style.cursor = "pointer";
-                closeBtn.style.padding = "10px"; 
-                closeBtn.style.margin = "-10px";
-                
-                actions.appendChild(addBtn);
-                actions.appendChild(closeBtn);
-                contentContainer.appendChild(actions);
-                
-                morphBox.appendChild(contentContainer);
-                await new Promise(requestAnimationFrame);
-                contentContainer.style.opacity = "1";
-
-                await wait(200);
-
-                for (let item of myMoments) {
-                    let p = document.createElement('p');
-                    p.style.fontFamily = "'Montserrat', sans-serif";
-                    p.style.fontWeight = "300";
-                    p.style.color = "rgba(255,255,255,0.9)";
-                    p.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
-                    p.style.paddingBottom = "5px";
-                    p.style.fontSize = "14px";
-                    p.style.width = "100%";
-                    p.style.textAlign = "center";
-                    p.style.letterSpacing = "0.05em";
-                    
-                    p.style.cursor = "pointer";
-                    p.className = "hover:text-emerald-400 active:scale-[0.98] transition-all duration-200";
-
-                    if (item === "Our first meet") {
-                        p.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            if(typeof window.openNetflixPanel === 'function') {
-                                window.openNetflixPanel();
-                            }
-                        });
-                    }
-
-                    list.appendChild(p);
-
-                    for (let char of item) {
-                        p.innerHTML += char;
-                        await wait(20);
-                    }
-                    await wait(50);
-                }
-
-                isAnimating = false;
-                isOpen = true;
-
-                closeBtn.onclick = async (e) => {
-                    e.stopPropagation();
-                    if (isAnimating) return;
+                originalBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    if (isAnimating || isOpen) return;
                     isAnimating = true;
 
-                    contentContainer.style.opacity = "0";
-                    await wait(300);
-                    contentContainer.remove();
+                    const startRect = originalBtn.getBoundingClientRect();
+                    const startTop = Math.round(startRect.top);
+                    const startLeft = Math.round(startRect.left);
+                    const startWidth = Math.round(startRect.width);
+                    const startHeight = Math.round(startRect.height);
 
-                    const returnTextWrapper = document.createElement('div');
-                    returnTextWrapper.style.position = "absolute";
-                    returnTextWrapper.style.inset = "0";
-                    returnTextWrapper.style.display = "flex";
-                    returnTextWrapper.style.alignItems = "center";
-                    returnTextWrapper.style.justifyContent = "center";
-                    returnTextWrapper.style.gap = "1rem"; 
-                    returnTextWrapper.style.opacity = "0";
-                    returnTextWrapper.style.transition = "opacity 0.3s ease-in";
-                    returnTextWrapper.innerHTML = originalBtn.innerHTML; 
-                    morphBox.appendChild(returnTextWrapper);
+                    ghostAnchor.style.width = startWidth + "px";
+                    ghostAnchor.style.height = startHeight + "px";
+                    ghostAnchor.style.margin = window.getComputedStyle(originalBtn).margin;
+                    ghostAnchor.style.display = "block";
 
-                    const returnRect = ghostAnchor.getBoundingClientRect();
-                    const returnTop = Math.round(returnRect.top);
-                    const returnLeft = Math.round(returnRect.left);
-                    const returnWidth = Math.round(returnRect.width);
-                    const returnHeight = Math.round(returnRect.height);
+                    originalBtn.style.visibility = "hidden";
+                    originalBtn.style.opacity = "0";
 
-                    overlay.style.opacity = "0";
+                    document.body.style.overflow = "hidden";
 
-                    morphBox.style.top = returnTop + "px";
-                    morphBox.style.left = returnLeft + "px";
-                    morphBox.style.width = returnWidth + "px";
-                    morphBox.style.height = returnHeight + "px";
+                    const morphBox = document.createElement('div');
+                    morphBox.style.position = "fixed";
+                    morphBox.style.zIndex = "9999";
+                    
+                    morphBox.style.top = startTop + "px";
+                    morphBox.style.left = startLeft + "px";
+                    morphBox.style.width = startWidth + "px";
+                    morphBox.style.height = startHeight + "px";
+                    
                     morphBox.style.borderRadius = "9999px"; 
                     morphBox.style.background = "rgba(255, 255, 255, 0.05)";
                     morphBox.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+                    morphBox.style.backdropFilter = "blur(12px)";
                     
-                    await wait(450);
+                    morphBox.style.willChange = "top, left, width, height, border-radius, background-color";
+                    morphBox.style.transform = "translateZ(0)"; 
+                    morphBox.style.boxSizing = "border-box";
+                    morphBox.style.overflow = "hidden";
+                    
+                    const initialTextWrapper = document.createElement('div');
+                    initialTextWrapper.style.position = "absolute";
+                    initialTextWrapper.style.inset = "0";
+                    initialTextWrapper.style.display = "flex";
+                    initialTextWrapper.style.alignItems = "center";
+                    initialTextWrapper.style.justifyContent = "center";
+                    initialTextWrapper.style.gap = "1rem"; 
+                    initialTextWrapper.style.opacity = "1";
+                    initialTextWrapper.style.transition = "opacity 0.2s ease-out";
+                    initialTextWrapper.innerHTML = originalBtn.innerHTML; 
+                    morphBox.appendChild(initialTextWrapper);
 
-                    returnTextWrapper.style.opacity = "1";
+                    document.body.appendChild(morphBox);
+
+                    overlay.classList.remove('pointer-events-none');
+                    overlay.style.opacity = "1";
+
+                    await new Promise(requestAnimationFrame);
+
+                    initialTextWrapper.style.opacity = "0";
+                    await wait(200); 
+
+                    const targetWidth = Math.round(Math.min(window.innerWidth * 0.9, 380));
+                    const targetHeight = 440;
+                    const targetTop = Math.round((window.innerHeight - targetHeight) / 2);
+                    const targetLeft = Math.round((window.innerWidth - targetWidth) / 2);
+
+                    morphBox.style.transition = "top 0.6s ease-in-out, left 0.6s ease-in-out, width 0.6s ease-in-out, height 0.6s ease-in-out, border-radius 0.6s ease-in-out, background-color 0.6s ease";
                     
+                    morphBox.style.top = targetTop + "px";
+                    morphBox.style.left = targetLeft + "px";
+                    morphBox.style.width = targetWidth + "px";
+                    morphBox.style.height = targetHeight + "px";
+                    morphBox.style.borderRadius = "2rem"; 
+                    morphBox.style.background = "rgba(10, 5, 8, 0.85)";
+                    morphBox.style.border = "1px solid rgba(252, 243, 215, 0.15)";
+                    
+                    await wait(650);
+                    initialTextWrapper.remove();
+
+                    const contentContainer = document.createElement('div');
+                    contentContainer.style.width = "100%";
+                    contentContainer.style.height = "100%";
+                    contentContainer.style.display = "flex";
+                    contentContainer.style.flexDirection = "column";
+                    contentContainer.style.alignItems = "center";
+                    contentContainer.style.padding = "40px 30px";
+                    contentContainer.style.opacity = "0";
+                    contentContainer.style.transition = "opacity 0.4s ease-in";
+                    
+                    const title = document.createElement('h3');
+                    title.style.color = "#fcf3d7";
+                    title.style.fontFamily = "'Playfair Display', serif";
+                    title.style.fontSize = "1.2rem";
+                    title.style.letterSpacing = "0.3em";
+                    title.style.marginBottom = "30px";
+                    title.innerText = "✧ MOMENTS";
+                    contentContainer.appendChild(title);
+                    
+                    const list = document.createElement('div');
+                    list.style.width = "100%";
+                    list.style.display = "flex";
+                    list.style.flexDirection = "column";
+                    list.style.gap = "20px";
+                    contentContainer.appendChild(list);
+
+                    const actions = document.createElement('div');
+                    actions.style.display = "flex";
+                    actions.style.justifyContent = "space-between";
+                    actions.style.width = "100%";
+                    actions.style.marginTop = "auto";
+                    
+                    const addBtn = document.createElement('span');
+                    addBtn.innerHTML = "+ ADD";
+                    addBtn.style.color = "#10b981"; 
+                    addBtn.style.fontSize = "12px";
+                    addBtn.style.letterSpacing = "0.2em";
+                    addBtn.style.cursor = "pointer";
+
+                    const closeBtn = document.createElement('span');
+                    closeBtn.innerHTML = "CLOSE ✕";
+                    closeBtn.style.color = "rgba(255,255,255,0.5)";
+                    closeBtn.style.fontSize = "12px";
+                    closeBtn.style.letterSpacing = "0.2em";
+                    closeBtn.style.cursor = "pointer";
+                    closeBtn.style.padding = "10px"; 
+                    closeBtn.style.margin = "-10px";
+                    
+                    actions.appendChild(addBtn);
+                    actions.appendChild(closeBtn);
+                    contentContainer.appendChild(actions);
+                    
+                    morphBox.appendChild(contentContainer);
+                    await new Promise(requestAnimationFrame);
+                    contentContainer.style.opacity = "1";
+
                     await wait(200);
 
-                    morphBox.remove();
-                    originalBtn.style.visibility = "visible";
-                    originalBtn.style.opacity = "1";
-                    ghostAnchor.style.display = "none";
+                    for (let item of myMoments) {
+                        let p = document.createElement('p');
+                        p.style.fontFamily = "'Montserrat', sans-serif";
+                        p.style.fontWeight = "300";
+                        p.style.color = "rgba(255,255,255,0.9)";
+                        p.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
+                        p.style.paddingBottom = "5px";
+                        p.style.fontSize = "14px";
+                        p.style.width = "100%";
+                        p.style.textAlign = "center";
+                        p.style.letterSpacing = "0.05em";
+                        
+                        p.style.cursor = "pointer";
+                        p.className = "hover:text-emerald-400 active:scale-[0.98] transition-all duration-200";
 
-                    overlay.classList.add('pointer-events-none');
-                    document.body.style.overflow = ""; 
-                    
+                        // The Bulletproof Click Trigger!
+                        if (item === "Our first meet") {
+                            p.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                const panel = document.getElementById('netflix-panel');
+                                if(panel) {
+                                    panel.classList.remove('translate-x-full');
+                                    panel.classList.add('translate-x-0');
+                                }
+                            });
+                        }
+
+                        list.appendChild(p);
+
+                        for (let char of item) {
+                            p.innerHTML += char;
+                            await wait(20);
+                        }
+                        await wait(50);
+                    }
+
                     isAnimating = false;
-                    isOpen = false;
-                };
-            });
+                    isOpen = true;
+
+                    closeBtn.onclick = async (e) => {
+                        e.stopPropagation();
+                        if (isAnimating) return;
+                        isAnimating = true;
+
+                        const panel = document.getElementById('netflix-panel');
+                        if(panel) {
+                            panel.classList.remove('translate-x-0');
+                            panel.classList.add('translate-x-full');
+                        }
+
+                        contentContainer.style.opacity = "0";
+                        await wait(300);
+                        contentContainer.remove();
+
+                        const returnTextWrapper = document.createElement('div');
+                        returnTextWrapper.style.position = "absolute";
+                        returnTextWrapper.style.inset = "0";
+                        returnTextWrapper.style.display = "flex";
+                        returnTextWrapper.style.alignItems = "center";
+                        returnTextWrapper.style.justifyContent = "center";
+                        returnTextWrapper.style.gap = "1rem"; 
+                        returnTextWrapper.style.opacity = "0";
+                        returnTextWrapper.style.transition = "opacity 0.3s ease-in";
+                        returnTextWrapper.innerHTML = originalBtn.innerHTML; 
+                        morphBox.appendChild(returnTextWrapper);
+
+                        const returnRect = ghostAnchor.getBoundingClientRect();
+                        const returnTop = Math.round(returnRect.top);
+                        const returnLeft = Math.round(returnRect.left);
+                        const returnWidth = Math.round(returnRect.width);
+                        const returnHeight = Math.round(returnRect.height);
+
+                        overlay.style.opacity = "0";
+
+                        morphBox.style.top = returnTop + "px";
+                        morphBox.style.left = returnLeft + "px";
+                        morphBox.style.width = returnWidth + "px";
+                        morphBox.style.height = returnHeight + "px";
+                        morphBox.style.borderRadius = "9999px"; 
+                        morphBox.style.background = "rgba(255, 255, 255, 0.05)";
+                        morphBox.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+                        
+                        await wait(450);
+                        returnTextWrapper.style.opacity = "1";
+                        await wait(200);
+
+                        morphBox.remove();
+                        originalBtn.style.visibility = "visible";
+                        originalBtn.style.opacity = "1";
+                        ghostAnchor.style.display = "none";
+
+                        overlay.classList.add('pointer-events-none');
+                        document.body.style.overflow = ""; 
+                        
+                        isAnimating = false;
+                        isOpen = false;
+                    };
+                });
+            }
             
-            // ✧----------------- NETFLIX PANEL FUNCTIONALITY -----------------✧
-            const netflixPanel = document.getElementById('netflix-panel');
+            // --- 2. NETFLIX PANEL & CHAPTER EXPANSION LOGIC ---
             const netflixBack = document.getElementById('netflix-back');
             const netflixFavorite = document.getElementById('netflix-favorite');
             const heartSvg = document.getElementById('heart-icon-svg');
@@ -497,20 +531,15 @@
             const secretCard = document.getElementById('secret-details-card');
             const hearts = Array.from(document.querySelectorAll('#netflix-hearts-container span'));
 
-            window.openNetflixPanel = function() {
-                if(netflixPanel) {
-                    netflixPanel.style.transform = "translateX(0)";
-                }
-            }
-
-            function closeNetflixPanel() {
-                if(netflixPanel) {
-                    netflixPanel.style.transform = "translateX(100%)";
-                }
-            }
-
             if (netflixBack) {
-                netflixBack.addEventListener('click', closeNetflixPanel);
+                netflixBack.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const panel = document.getElementById('netflix-panel');
+                    if(panel) {
+                        panel.classList.remove('translate-x-0');
+                        panel.classList.add('translate-x-full');
+                    }
+                });
             }
 
             let isFav = false;
@@ -570,6 +599,50 @@
                             h.style.color = 'rgba(255,255,255,0.2)'; 
                         }
                     });
+                });
+            });
+
+            // ✧ MESMERIZING EXPANDABLE CHAPTER LOGIC ✧
+            const chapterCards = document.querySelectorAll('.chapter-card');
+            chapterCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const wrapper = card.querySelector('.chapter-content-wrapper');
+                    const text = card.querySelector('.chapter-text');
+                    const icon = card.querySelector('.expand-icon');
+                    const label = card.querySelector('.expand-label');
+                    const glow = card.querySelector('.chapter-glow');
+                    
+                    const isExpanded = card.classList.contains('is-expanded');
+
+                    if (!isExpanded) {
+                        // Open it gracefully
+                        card.classList.add('is-expanded');
+                        card.classList.add('border-white/15', 'bg-white/5');
+                        glow.classList.remove('opacity-0');
+                        glow.classList.add('opacity-10'); // Subtle emerald-gold glow
+                        
+                        wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                        
+                        icon.style.transform = "rotate(180deg)";
+                        label.innerText = "Close Memory";
+                        
+                        text.classList.remove('text-gray-400');
+                        text.classList.add('text-gray-100'); // Brighten text for reading
+                    } else {
+                        // Close it softly
+                        card.classList.remove('is-expanded');
+                        card.classList.remove('border-white/15', 'bg-white/5');
+                        glow.classList.remove('opacity-10');
+                        glow.classList.add('opacity-0');
+                        
+                        wrapper.style.maxHeight = "32px"; // Returns to clamped height
+                        
+                        icon.style.transform = "rotate(0deg)";
+                        label.innerText = "Read Memory";
+                        
+                        text.classList.add('text-gray-400');
+                        text.classList.remove('text-gray-100');
+                    }
                 });
             });
 
