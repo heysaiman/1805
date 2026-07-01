@@ -13,9 +13,10 @@
     <link rel="stylesheet" href="style.css">
     <script src="data.js"></script>
 
-    <!-- ✧ INSTAGRAM ENGINE CUSTOM PHYSICS & STYLES ✧ -->
+    <!-- ✧ MASSIVE CUSTOM PHYSICS & STYLES ENGINE ✧ -->
     <style>
-        /* Scrollbar Assassination */
+        /* Base Resets */
+        * { -webkit-tap-highlight-color: transparent; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
@@ -23,32 +24,36 @@
         .ig-gradient { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
         .ig-text-gradient { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        /* Glass Physics */
+        /* Extreme Glass Physics */
         .glass-heavy { background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border-top: 1px solid rgba(255, 255, 255, 0.08); }
         .glass-nav-top { background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-card { background: rgba(25, 25, 25, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); }
         .glass-button { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.15); transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
         .glass-button:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.2); }
 
-        /* Carousel Snapping */
+        /* Carousel Snapping & Dragging */
         .snap-x-mandatory { scroll-snap-type: x mandatory; overflow-x: scroll; scroll-behavior: smooth; }
         .snap-center { scroll-snap-align: center; }
 
         /* Feed Loading Animations */
-        @keyframes fadeUpIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fade-up { animation: fadeUpIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeUpIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fade-up { animation: fadeUpIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
 
-        /* Double-Tap Heart Burst Physics */
+        /* Cinematic Double-Tap Heart Burst */
         @keyframes heartBurst {
             0% { transform: translate(-50%, -50%) scale(0) rotate(-15deg); opacity: 0; filter: drop-shadow(0 0 0px rgba(220,38,38,0)); }
-            15% { transform: translate(-50%, -50%) scale(1.3) rotate(0deg); opacity: 0.95; filter: drop-shadow(0 0 50px rgba(220,38,38,1)); }
+            15% { transform: translate(-50%, -50%) scale(1.3) rotate(0deg); opacity: 0.95; filter: drop-shadow(0 0 60px rgba(220,38,38,1)); }
             30% { transform: translate(-50%, -50%) scale(0.9); opacity: 1; }
-            45% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+            45% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
             80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; filter: drop-shadow(0 0 0px rgba(220,38,38,0)); }
+            100% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; filter: drop-shadow(0 0 0px rgba(220,38,38,0)); }
         }
         .heart-burst-anim { animation: heartBurst 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
-        /* Icon Heartbeat EKG */
+        /* Mini UI Heart EKG Pulse */
         @keyframes heartbeatPulse {
             0% { transform: scale(1); }
             25% { transform: scale(1.4); filter: drop-shadow(0 0 15px rgba(220,38,38,0.8)); }
@@ -58,14 +63,14 @@
         }
         .ekg-active { animation: heartbeatPulse 0.6s ease-in-out forwards; color: #ef4444 !important; fill: currentColor; }
 
-        /* Story Progress UI */
+        /* Story Viewer Physics */
         .story-progress-fill { height: 100%; background: #fff; width: 0%; border-radius: 99px; }
         .story-progress-paused { animation-play-state: paused !important; }
         @keyframes storyProgress { from { width: 0%; } to { width: 100%; } }
         .story-progress-bar { animation: storyProgress 5s linear forwards; }
 
         /* Bottom Sheet Comment Drag Physics */
-        #comment-sheet { transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1); will-change: transform; touch-action: none; }
+        #ig-comment-sheet { transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1); will-change: transform; touch-action: none; }
         .sheet-open { transform: translateY(0%) !important; }
         .sheet-closed { transform: translateY(100%) !important; }
 
@@ -74,13 +79,16 @@
         .spin-record { animation: spinSlow 5s linear infinite; }
         .spin-paused { animation-play-state: paused !important; }
         
-        /* Premium Loading Shimmer */
+        /* Premium Loading Shimmer for Grid */
         @keyframes shimmer { 0% { background-position: -1000px 0; } 100% { background-position: 1000px 0; } }
-        .loading-shimmer { background: #111; background-image: linear-gradient(to right, #111 0%, #222 20%, #111 40%, #111 100%); background-repeat: no-repeat; background-size: 1000px 100%; animation: shimmer 2s infinite linear forwards; }
+        .loading-shimmer { background: #111; background-image: linear-gradient(to right, #111 0%, #222 20%, #111 40%, #111 100%); background-repeat: no-repeat; background-size: 1000px 100%; animation: shimmer 2.5s infinite linear forwards; }
     </style>
 </head>
 <body class="selection:bg-[#d4af37] selection:text-black cursor-crosshair overflow-x-hidden bg-[#050505]">
 
+    <!-- ========================================================================= -->
+    <!-- ✧ BACKGROUND & HERO LAYER ✧                                              -->
+    <!-- ========================================================================= -->
     <div class="fixed inset-0 z-0 overflow-hidden" id="environment-layer">
         <img id="bgImage" src="" alt="Background" class="w-full h-full object-cover object-[center_20%] opacity-90 animate-ken-burns" />
         <div class="cinematic-overlay"></div>
@@ -110,6 +118,7 @@
                     <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-30 transition-opacity duration-500 z-0"></div>
                 </button>
                 
+                <!-- THE TRIGGER BUTTON -->
                 <button id="moments-magic-btn" class="luxury-glass text-white px-10 py-5 rounded-full font-bold text-xs md:text-sm tracking-[0.2em] uppercase hover:bg-white/10 transition-all flex items-center gap-4 hover:-translate-y-1 duration-500 group">
                     <span class="text-[#fcf3d7] text-lg group-hover:rotate-180 transition-transform duration-700">✧</span> 
                     <span>Moments</span>
@@ -131,20 +140,20 @@
     <!-- ========================================================================= -->
     <!-- ✧ NETFLIX PANEL (OUR FIRST MEET) ✧                                        -->
     <!-- ========================================================================= -->
-    <div id="netflix-panel" class="fixed top-0 right-0 w-full md:w-[440px] h-[100dvh] bg-[#0a0508] z-[10000] transform translate-x-full transition-transform duration-700 cubic-bezier(0.16, 1, 0.3, 1) overflow-y-auto overscroll-contain border-l border-white/10 shadow-2xl pb-24">
+    <div id="netflix-panel" class="fixed top-0 right-0 w-full md:w-[440px] h-[100dvh] bg-[#0a0508] z-[10000] transform translate-x-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-y-auto overscroll-contain border-l border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.9)] pb-24">
         
         <div class="absolute top-4 left-4 right-4 z-20 flex justify-between items-center">
-            <button id="netflix-back" class="w-10 h-10 rounded-full bg-black/50 border border-white/15 flex items-center justify-center text-white/90 hover:text-white hover:bg-black/80 transition active:scale-95 cursor-pointer">
+            <button id="netflix-back" class="w-10 h-10 rounded-full bg-black/50 border border-white/15 flex items-center justify-center text-white/90 hover:text-white hover:bg-black/80 transition active:scale-95 cursor-pointer backdrop-blur-md">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
-            <button id="netflix-favorite" class="w-10 h-10 rounded-full bg-black/50 border border-white/15 flex items-center justify-center text-white/50 hover:text-pink-500 transition active:scale-95 cursor-pointer">
+            <button id="netflix-favorite" class="w-10 h-10 rounded-full bg-black/50 border border-white/15 flex items-center justify-center text-white/50 hover:text-pink-500 transition active:scale-95 cursor-pointer backdrop-blur-md">
                 <svg id="heart-icon-svg" class="w-5 h-5 fill-none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
             </button>
         </div>
 
         <div class="relative w-full aspect-[16/10] overflow-hidden flex-shrink-0">
             <div class="absolute inset-0 bg-gradient-to-tr from-[#05110c] to-[#0a0508] flex items-center justify-center">
-                <div class="absolute inset-0 bg-cover bg-center opacity-85 transition-all duration-700" style="background-image: url('1000115432.jpg');"></div>
+                <div class="absolute inset-0 bg-cover bg-center opacity-85 transition-all duration-700" style="background-image: url('1000115439.jpg');"></div>
             </div>
             <div class="absolute inset-0 bg-gradient-to-t from-[#0a0508] via-transparent to-black/30"></div>
         </div>
@@ -155,13 +164,13 @@
                 <span class="text-[10px] text-[#fcf3d7]/60 font-bold tracking-[0.3em] uppercase">1805 SPECIALS</span>
             </div>
 
-            <h2 class="text-3xl font-playfair font-black text-[#fcf3d7] tracking-wider uppercase mb-3">Our First Meet</h2>
+            <h2 class="text-3xl font-playfair font-black text-[#fcf3d7] tracking-wider uppercase mb-3 drop-shadow-lg">Our First Meet</h2>
 
             <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-gray-400 font-medium mb-4">
                 <span>2025</span><span class="h-3 w-[1px] bg-white/20"></span>
                 <span>Cafe Cookies</span><span class="h-3 w-[1px] bg-white/20"></span>
                 <span>SCS College</span><span class="h-3 w-[1px] bg-white/20"></span>
-                <span class="text-emerald-400 font-bold">THE BEGINNING</span>
+                <span class="text-emerald-400 font-bold tracking-widest">THE BEGINNING</span>
             </div>
 
             <div class="flex items-center gap-1.5 mb-6">
@@ -176,7 +185,7 @@
             </div>
 
             <div class="flex items-center gap-6 mb-8">
-                <button class="w-14 h-14 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center shadow-lg shadow-red-600/30 transition transform active:scale-90 duration-300">
+                <button class="w-14 h-14 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center shadow-[0_0_20px_rgba(220,38,38,0.4)] transition transform active:scale-90 duration-300">
                     <span class="text-lg translate-x-[2px]">▶</span>
                 </button>
                 <button id="netflix-mylist-btn" class="flex flex-col items-center gap-1 text-white/75 hover:text-white transition group">
@@ -189,7 +198,7 @@
                 </button>
             </div>
 
-            <div id="secret-details-card" class="hidden luxury-glass p-4 rounded-2xl mb-6 border border-[#fcf3d7]/10 text-xs text-gray-300 space-y-1.5 animate-pulse">
+            <div id="secret-details-card" class="hidden luxury-glass p-4 rounded-2xl mb-6 border border-[#fcf3d7]/10 text-xs text-gray-300 space-y-1.5 animate-pulse bg-white/5 backdrop-blur-md">
                 <p class="font-bold text-[#fcf3d7]">GPS Location:</p>
                 <p class="font-mono text-[10px]">19.8049° N, 85.8178° E</p>
                 <p class="font-bold text-[#fcf3d7] mt-3">Campus Roots:</p>
@@ -210,7 +219,9 @@
                 <div class="chapter-card relative flex gap-4 items-start p-4 rounded-2xl transition-all duration-500 group border border-transparent cursor-pointer hover:bg-white/5">
                     <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/0 to-[#d4af37]/0 transition-opacity duration-500 opacity-0 chapter-glow z-0"></div>
                     <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center z-10 mt-1 shadow-lg">
-                        <div class="absolute inset-0 bg-cover bg-center opacity-50 group-hover:scale-110 transition-transform duration-700" style="background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=120');"></div>
+                        <div class="absolute inset-0 bg-cover bg-center opacity-50 group-hover:scale-110 transition-transform duration-700" style="background-image: url('1000115439.jpg');"></div>
+                        <div class="absolute inset-0 bg-black/40"></div>
+                        <svg class="w-6 h-6 text-white opacity-80" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
                     </div>
                     <div class="flex-grow min-w-0 z-10">
                         <div class="flex justify-between items-baseline mb-1.5">
@@ -233,7 +244,9 @@
                 <div class="chapter-card relative flex gap-4 items-start p-4 rounded-2xl transition-all duration-500 group border border-transparent cursor-pointer hover:bg-white/5">
                     <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/0 to-[#d4af37]/0 transition-opacity duration-500 opacity-0 chapter-glow z-0"></div>
                     <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center z-10 mt-1 shadow-lg">
-                        <div class="absolute inset-0 bg-cover bg-center opacity-50 group-hover:scale-110 transition-transform duration-700" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=120');"></div>
+                        <div class="absolute inset-0 bg-cover bg-center opacity-50 group-hover:scale-110 transition-transform duration-700" style="background-image: url('1782918701094.jpeg');"></div>
+                        <div class="absolute inset-0 bg-black/40"></div>
+                        <svg class="w-6 h-6 text-white opacity-80" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
                     </div>
                     <div class="flex-grow min-w-0 z-10">
                         <div class="flex justify-between items-baseline mb-1.5">
@@ -256,7 +269,9 @@
                 <div class="chapter-card relative flex gap-4 items-start p-4 rounded-2xl transition-all duration-500 group border border-transparent cursor-pointer hover:bg-white/5">
                     <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/0 to-[#d4af37]/0 transition-opacity duration-500 opacity-0 chapter-glow z-0"></div>
                     <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center z-10 mt-1 shadow-lg">
-                        <div class="absolute inset-0 bg-cover bg-center opacity-50 group-hover:scale-110 transition-transform duration-700" style="background-image: url('https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=120');"></div>
+                        <div class="absolute inset-0 bg-cover bg-center opacity-50 group-hover:scale-110 transition-transform duration-700" style="background-image: url('1000115476.jpg');"></div>
+                        <div class="absolute inset-0 bg-black/40"></div>
+                        <svg class="w-6 h-6 text-white opacity-80" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
                     </div>
                     <div class="flex-grow min-w-0 z-10">
                         <div class="flex justify-between items-baseline mb-1.5">
@@ -280,12 +295,12 @@
 
 
     <!-- ========================================================================= -->
-    <!-- ✧ INSTAGRAM PANEL (OUR FIRST DATE) ✧                                      -->
+    <!-- ✧ THE MONOLITHIC INSTAGRAM PANEL (OUR FIRST DATE) ✧                       -->
     <!-- ========================================================================= -->
-    <div id="ig-app-panel" class="fixed top-0 right-0 w-full md:w-[440px] h-[100dvh] bg-[#000000] z-[10000] transform translate-x-full transition-transform duration-700 cubic-bezier(0.16, 1, 0.3, 1) overflow-hidden flex flex-col border-l border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.9)] text-white font-sans">
+    <div id="ig-app-panel" class="fixed top-0 right-0 w-full md:w-[440px] h-[100dvh] bg-[#000000] z-[10000] transform translate-x-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden flex flex-col border-l border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.9)] text-white font-sans">
         
         <!-- ✧ TOP NAVIGATION BAR ✧ -->
-        <div id="ig-top-nav" class="h-14 flex items-center justify-between px-4 absolute w-full top-0 z-30 glass-nav-top transition-transform duration-300">
+        <div class="h-14 flex items-center justify-between px-4 absolute w-full top-0 z-30 glass-nav-top transition-transform duration-300">
             <div class="flex items-center gap-3">
                 <button id="ig-close-btn" class="text-white/80 hover:text-white transition active:scale-90 cursor-pointer p-1">
                     <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
@@ -301,7 +316,7 @@
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                     <span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-red-500 border-2 border-black text-[8px] font-bold items-center justify-center text-white">2</span>
+                        <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-red-500 border-2 border-black text-[8px] font-bold items-center justify-center text-white">4</span>
                     </span>
                 </button>
             </div>
@@ -317,9 +332,8 @@
                 <div class="flex gap-4 overflow-x-auto no-scrollbar pt-3 pb-4 px-4 border-b border-white/10 relative">
                     <div class="flex flex-col items-center gap-1.5 cursor-pointer relative shrink-0">
                         <div class="w-[70px] h-[70px] rounded-full overflow-hidden border border-white/20 bg-zinc-900 relative">
-                            <!-- 📸 PROFILE IMAGE 📸 -->
                             <div class="w-full h-full bg-cover bg-center opacity-70" style="background-image: url('1000115439.jpg');"></div>
-                            <div class="absolute inset-0 bg-black/20"></div>
+                            <div class="absolute inset-0 bg-black/30"></div>
                         </div>
                         <div class="absolute bottom-[20px] right-0 w-6 h-6 bg-blue-500 rounded-full border-[3px] border-black flex items-center justify-center">
                             <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
@@ -330,8 +344,7 @@
                     <div class="flex flex-col items-center gap-1.5 cursor-pointer group ig-story-trigger shrink-0" data-idx="0">
                         <div class="p-[2px] ig-gradient rounded-full transition-transform group-active:scale-95">
                             <div class="w-[66px] h-[66px] rounded-full border-[3px] border-black overflow-hidden bg-zinc-900">
-                                <!-- 📸 STORY 1 IMAGE 📸 -->
-                                <div class="w-full h-full bg-cover bg-center loading-shimmer" style="background-image: url('story1.jpg');"></div>
+                                <div class="w-full h-full bg-cover bg-center loading-shimmer" style="background-image: url('1782918701094.jpeg');"></div>
                             </div>
                         </div>
                         <span class="text-[11px] text-white/90 font-medium tracking-wide mt-1">Arrival</span>
@@ -340,25 +353,32 @@
                     <div class="flex flex-col items-center gap-1.5 cursor-pointer group ig-story-trigger shrink-0" data-idx="1">
                         <div class="p-[2px] ig-gradient rounded-full transition-transform group-active:scale-95">
                             <div class="w-[66px] h-[66px] rounded-full border-[3px] border-black overflow-hidden bg-zinc-900">
-                                <!-- 📸 STORY 2 IMAGE 📸 -->
-                                <div class="w-full h-full bg-cover bg-center loading-shimmer" style="background-image: url('story2.jpg');"></div>
+                                <div class="w-full h-full bg-cover bg-center loading-shimmer" style="background-image: url('1000115476.jpg');"></div>
                             </div>
                         </div>
                         <span class="text-[11px] text-white/90 font-medium tracking-wide mt-1">Cinepolis</span>
                     </div>
 
                     <div class="flex flex-col items-center gap-1.5 cursor-pointer group ig-story-trigger shrink-0" data-idx="2">
-                        <div class="p-[2px] ig-gradient rounded-full transition-transform group-active:scale-95">
+                        <div class="p-[2px] border border-white/30 rounded-full transition-transform group-active:scale-95">
                             <div class="w-[66px] h-[66px] rounded-full border-[3px] border-black overflow-hidden bg-zinc-900">
-                                <!-- 📸 STORY 3 IMAGE 📸 -->
-                                <div class="w-full h-full bg-cover bg-center loading-shimmer" style="background-image: url('story3.jpg');"></div>
+                                <div class="w-full h-full bg-cover bg-center loading-shimmer" style="background-image: url('1000115475.jpg');"></div>
                             </div>
                         </div>
-                        <span class="text-[11px] text-white/90 font-medium tracking-wide mt-1">The Kiss</span>
+                        <span class="text-[11px] text-white/50 font-medium tracking-wide mt-1">The Kiss</span>
+                    </div>
+                    
+                    <div class="flex flex-col items-center gap-1.5 cursor-pointer group ig-story-trigger shrink-0" data-idx="3">
+                        <div class="p-[2px] border border-white/30 rounded-full transition-transform group-active:scale-95">
+                            <div class="w-[66px] h-[66px] rounded-full border-[3px] border-black overflow-hidden bg-zinc-900">
+                                <div class="w-full h-full bg-cover bg-center loading-shimmer" style="background-image: url('1000115474.jpg');"></div>
+                            </div>
+                        </div>
+                        <span class="text-[11px] text-white/50 font-medium tracking-wide mt-1">Departure</span>
                     </div>
                 </div>
 
-                <!-- Feed Post 1 -->
+                <!-- 🟢 FEED POST 1 (Carousel) -->
                 <article class="pt-4 pb-8 border-b border-white/10 animate-fade-up">
                     <div class="flex items-center justify-between px-4 mb-3">
                         <div class="flex items-center gap-3">
@@ -377,12 +397,9 @@
                     
                     <!-- Post Media: Scroll-Snap Carousel -->
                     <div class="relative w-full aspect-[4/5] bg-zinc-900 flex snap-x-mandatory shadow-inner" id="post-carousel-1">
-                        <!-- 📸 POST IMAGE 1 📸 -->
-                        <div class="w-full h-full flex-shrink-0 snap-center bg-cover bg-center relative post-image-block loading-shimmer" style="background-image: url('20250425_184147(1).jpg'), url('https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1000');"></div>
-                        <!-- 📸 POST IMAGE 2 📸 -->
-                        <div class="w-full h-full flex-shrink-0 snap-center bg-cover bg-center relative post-image-block loading-shimmer" style="background-image: url('banner2.jpg');"></div>
-                        <!-- 📸 POST IMAGE 3 📸 -->
-                        <div class="w-full h-full flex-shrink-0 snap-center bg-cover bg-center relative post-image-block loading-shimmer" style="background-image: url('banner3.jpg');"></div>
+                        <div class="w-full h-full flex-shrink-0 snap-center bg-cover bg-center relative post-image-block loading-shimmer" style="background-image: url('20250425_184147(1).jpg'), url('1782918701094.jpeg');"></div>
+                        <div class="w-full h-full flex-shrink-0 snap-center bg-cover bg-center relative post-image-block loading-shimmer" style="background-image: url('1000115476.jpg');"></div>
+                        <div class="w-full h-full flex-shrink-0 snap-center bg-cover bg-center relative post-image-block loading-shimmer" style="background-image: url('1000115475.jpg');"></div>
                         
                         <div class="absolute top-4 right-4 bg-black/70 backdrop-blur-md rounded-full px-3 py-1.5 text-[11px] font-bold tracking-widest text-white z-20 shadow-xl border border-white/20" id="carousel-indicator">1/3</div>
                         
@@ -395,10 +412,10 @@
                     <!-- Action Bar -->
                     <div class="px-4 py-3 flex justify-between items-center">
                         <div class="flex gap-5">
-                            <button class="action-btn-heart text-white transition transform active:scale-75 relative">
+                            <button class="ig-action-heart text-white transition transform active:scale-75 relative">
                                 <svg class="w-7 h-7 hover:opacity-70 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                             </button>
-                            <button class="action-btn-comment text-white hover:opacity-70 transition transform active:scale-75">
+                            <button class="ig-action-comment text-white hover:opacity-70 transition transform active:scale-75">
                                 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                             </button>
                             <button class="text-white hover:opacity-70 transition transform -rotate-12 active:scale-75">
@@ -412,7 +429,7 @@
                             <div class="w-1.5 h-1.5 rounded-full bg-white/30 transition-colors"></div>
                         </div>
                         
-                        <button class="action-btn-save text-white hover:opacity-70 transition transform active:scale-75">
+                        <button class="text-white hover:opacity-70 transition transform active:scale-75">
                             <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
                         </button>
                     </div>
@@ -426,12 +443,12 @@
                         
                         <div class="text-[13px] text-gray-100 leading-normal">
                             <span class="font-bold mr-1 cursor-pointer hover:underline">1805_Specials</span> 
-                            <span id="caption-short" class="inline">
+                            <span id="caption-short-1" class="inline">
                                 Our official first date didn't happen in a quiet space—it unfolded amidst the bright lights of Utkal Galleria. Hopping through outlets...
                             </span>
-                            <span id="caption-more-btn" class="text-gray-400 font-medium cursor-pointer hover:text-white">more</span>
+                            <span id="caption-more-1" class="text-gray-400 font-medium cursor-pointer hover:text-white" onclick="document.getElementById('caption-short-1').style.display='none'; document.getElementById('caption-full-1').classList.remove('hidden'); this.style.display='none';">more</span>
                             
-                            <div id="caption-full" class="hidden mt-2 text-gray-300 space-y-3 relative z-10 border-l-2 border-white/20 pl-3 ml-1 mt-2">
+                            <div id="caption-full-1" class="hidden mt-2 text-gray-300 space-y-3 relative z-10 border-l-2 border-white/20 pl-3 ml-1 mt-2">
                                 <p>...laughing, but internally I was dead nervous, continually asking if I could hug her, if I could hold her hand.</p>
                                 <p>Then we hopped to Cinepolis for a movie. It was our first movie together, and remarkably, it was her very first cinema experience in a theatre! Watching her take it all in was the real movie for me.</p>
                                 <p>Then came the departure. By the cab, we experienced our first kiss. It lasted only a second, but it was something deeply remarkable that stopped time itself.</p>
@@ -439,48 +456,119 @@
                             </div>
                         </div>
                         
-                        <p class="text-[13px] text-gray-400 mt-2 font-medium cursor-pointer hover:text-gray-300 action-btn-comment">View all 1,805 comments</p>
-                        <div class="flex items-center gap-2 mt-2 cursor-pointer action-btn-comment">
+                        <p class="text-[13px] text-gray-400 mt-2 font-medium cursor-pointer hover:text-gray-300 ig-action-comment">View all 1,805 comments</p>
+                        <div class="flex items-center gap-2 mt-2 cursor-pointer ig-action-comment">
                             <div class="w-6 h-6 rounded-full bg-zinc-800 bg-cover bg-center" style="background-image: url('1000115439.jpg');"></div>
                             <span class="text-[12px] text-gray-400 font-medium">Add a comment...</span>
                         </div>
                         <p class="text-[10px] text-gray-500 mt-3 uppercase tracking-wider font-semibold">March 27, 2025</p>
                     </div>
                 </article>
+
+                <!-- 🟢 FEED POST 2 (Single Image) -->
+                <article class="pt-4 pb-8 border-b border-white/10 animate-fade-up delay-100">
+                    <div class="flex items-center justify-between px-4 mb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="w-9 h-9 rounded-full ig-gradient p-[2px] cursor-pointer hover:scale-105 transition">
+                                <div class="w-full h-full rounded-full bg-black flex items-center justify-center overflow-hidden border border-black">
+                                    <div class="w-full h-full bg-cover bg-center" style="background-image: url('1000115439.jpg');"></div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col -gap-1">
+                                <span class="text-[13px] font-bold tracking-wide cursor-pointer hover:opacity-80">1805_Specials <svg class="w-[14px] h-[14px] inline text-blue-500 ml-0.5 mb-[2px]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></span>
+                                <span class="text-[11px] text-white/60 font-medium">The Cab Ride</span>
+                            </div>
+                        </div>
+                        <button class="text-white/80 hover:text-white p-1"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm-6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm12 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg></button>
+                    </div>
+                    
+                    <!-- Post Media -->
+                    <div class="relative w-full aspect-[4/5] bg-zinc-900 post-image-block cursor-pointer">
+                        <div class="absolute inset-0 bg-cover bg-center loading-shimmer" style="background-image: url('1000115474.jpg');"></div>
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white opacity-0 pointer-events-none z-30 drop-shadow-[0_0_50px_rgba(220,38,38,1)] giant-heart-anim-2">
+                            <svg class="w-32 h-32 fill-current text-red-600" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        </div>
+                    </div>
+
+                    <!-- Action Bar -->
+                    <div class="px-4 py-3 flex justify-between items-center">
+                        <div class="flex gap-5">
+                            <button class="ig-action-heart text-white transition transform active:scale-75 relative">
+                                <svg class="w-7 h-7 hover:opacity-70 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+                            </button>
+                            <button class="ig-action-comment text-white hover:opacity-70 transition transform active:scale-75">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                            </button>
+                            <button class="text-white hover:opacity-70 transition transform -rotate-12 active:scale-75">
+                                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                            </button>
+                        </div>
+                        <button class="text-white hover:opacity-70 transition transform active:scale-75">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- Metadata -->
+                    <div class="px-4">
+                        <p class="text-[13px] font-semibold mb-1.5 cursor-pointer">8,492 likes</p>
+                        <div class="text-[13px] text-gray-100 leading-normal">
+                            <span class="font-bold mr-1 cursor-pointer hover:underline">1805_Specials</span> 
+                            <span>That one second changed everything. ⏳🤍</span>
+                        </div>
+                        <p class="text-[13px] text-gray-400 mt-2 font-medium cursor-pointer hover:text-gray-300 ig-action-comment">View all 341 comments</p>
+                        <p class="text-[10px] text-gray-500 mt-2 uppercase tracking-wider font-semibold">March 27, 2025</p>
+                    </div>
+                </article>
                 
                 <div class="py-12 flex flex-col items-center justify-center text-white/30">
                     <svg class="w-14 h-14 mb-4 opacity-40 text-emerald-500" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    <p class="text-[15px] font-bold tracking-widest uppercase">You're all caught up</p>
+                    <p class="text-[15px] font-bold tracking-widest uppercase text-white/50">You're all caught up</p>
                     <p class="text-[13px] mt-1 font-medium">You've seen all memories from this date.</p>
                 </div>
             </div>
 
             <!-- 🔍 SCREEN 2: EXPLORE GRID -->
             <div id="screen-explore" class="absolute inset-0 pt-14 overflow-y-auto no-scrollbar opacity-0 pointer-events-none transition-opacity duration-300 z-10 pb-20 bg-black">
-                <div class="p-3 sticky top-[56px] bg-black/90 backdrop-blur-xl z-20 border-b border-white/5">
+                <div class="p-3 sticky top-0 bg-black/90 backdrop-blur-xl z-20 border-b border-white/5">
                     <div class="bg-zinc-800/80 border border-white/10 h-10 rounded-xl flex items-center px-4 text-white/50 shadow-inner">
                         <svg class="w-5 h-5 mr-3 text-white/70" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                         <span class="text-[15px] font-medium tracking-wide">Search memories...</span>
                     </div>
                 </div>
                 
-                <!-- 📸 EXPLORE PHOTOS (Replace exploreX.jpg with yours) 📸 -->
+                <!-- Massive 21-Block Grid Layout mimicking real explore page -->
                 <div class="grid grid-cols-3 gap-[2px]">
-                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore1.jpg');"></div>
-                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore2.jpg');"></div>
-                    <div class="aspect-square bg-zinc-900 bg-cover bg-center relative loading-shimmer" style="background-image: url('explore3.jpg');">
+                    <!-- Row 1 -->
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center cursor-pointer hover:brightness-75 transition-all loading-shimmer" style="background-image: url('1782918701094.jpeg');"></div>
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center cursor-pointer hover:brightness-75 transition-all loading-shimmer" style="background-image: url('1000115476.jpg');"></div>
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center relative loading-shimmer" style="background-image: url('1000115475.jpg');">
                         <div class="absolute top-2 right-2 text-white drop-shadow-md"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2 0h1V9h-1v2zm1-4V5h-1v2h1zM5 5h1v2H5V5zm0 4h1v2H5V9zm0 4h1v2H5v-2z"></path></svg></div>
                     </div>
                     
-                    <div class="col-span-2 row-span-2 aspect-square bg-zinc-900 bg-cover bg-center relative loading-shimmer group" style="background-image: url('explore4.jpg');">
+                    <!-- Row 2 & 3 (Tall element) -->
+                    <div class="col-span-2 row-span-2 aspect-square bg-zinc-900 bg-cover bg-center cursor-pointer hover:brightness-75 transition-all relative loading-shimmer group" style="background-image: url('1000115474.jpg');">
                         <div class="absolute top-2 right-2 text-white drop-shadow-md opacity-90"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg></div>
+                        <div class="absolute bottom-2 left-2 text-white text-xs font-bold drop-shadow-md flex items-center gap-1"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> 1.8M</div>
                     </div>
-                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore5.jpg');"></div>
-                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore6.jpg');"></div>
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('1000115473.jpg');"></div>
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('20250425_184147(1).jpg');"></div>
                     
+                    <!-- Row 4 -->
                     <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore7.jpg');"></div>
                     <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore8.jpg');"></div>
                     <div class="aspect-square bg-zinc-900 bg-cover bg-center relative loading-shimmer" style="background-image: url('explore9.jpg');"></div>
+                    
+                    <!-- Row 5 & 6 (Reverse Tall Element) -->
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore10.jpg');"></div>
+                    <div class="col-span-2 row-span-2 aspect-square bg-zinc-900 bg-cover bg-center cursor-pointer hover:brightness-75 transition-all relative loading-shimmer group" style="background-image: url('explore11.jpg');">
+                        <div class="absolute top-2 right-2 text-white drop-shadow-md opacity-90"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg></div>
+                    </div>
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore12.jpg');"></div>
+
+                    <!-- Row 7 -->
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore13.jpg');"></div>
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore14.jpg');"></div>
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center relative loading-shimmer" style="background-image: url('explore15.jpg');"></div>
                 </div>
             </div>
 
@@ -488,7 +576,9 @@
             <div id="screen-reels" class="absolute inset-0 pt-14 overflow-hidden opacity-0 pointer-events-none transition-opacity duration-300 z-10 bg-black">
                 <div class="relative w-full h-[calc(100%-14px)] bg-zinc-900" id="reel-container">
                     
-                    <!-- 📸 REELS VIDEO 📸 -->
+                    <!-- Fallback image -->
+                    <div class="absolute inset-0 bg-cover bg-center opacity-70" style="background-image: url('1000115474.jpg');"></div>
+                    
                     <video id="reels-video" class="absolute inset-0 w-full h-full object-cover z-10 hidden" loop playsinline>
                         <source src="first_date_reel.mp4" type="video/mp4">
                     </video>
@@ -520,11 +610,11 @@
                     </div>
 
                     <div class="absolute bottom-20 right-3 z-30 flex flex-col items-center gap-7">
-                        <div class="flex flex-col items-center gap-1.5 cursor-pointer action-btn-heart relative group">
+                        <div class="flex flex-col items-center gap-1.5 cursor-pointer ig-action-heart relative group">
                             <svg class="w-9 h-9 text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] transition-transform group-active:scale-75" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
                             <span class="text-[13px] font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">Infinite</span>
                         </div>
-                        <div class="flex flex-col items-center gap-1.5 cursor-pointer action-btn-comment group">
+                        <div class="flex flex-col items-center gap-1.5 cursor-pointer ig-action-comment group">
                             <svg class="w-9 h-9 text-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] transition-transform group-active:scale-75" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
                             <span class="text-[13px] font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">1,805</span>
                         </div>
@@ -532,6 +622,7 @@
                             <svg class="w-9 h-9 text-white transform -rotate-12 drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] transition-transform group-active:scale-75" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                             <span class="text-[13px] font-bold text-white drop-shadow-[0_2px_4px_rgba(0,0,0,1)]">Share</span>
                         </div>
+                        
                         <div class="w-10 h-10 rounded-[10px] border-2 border-white/60 bg-black mt-2 overflow-hidden spin-record shadow-[0_0_20px_rgba(0,0,0,0.8)] relative cursor-pointer" id="reel-record">
                             <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('1000115439.jpg');"></div>
                             <div class="absolute inset-0 rounded-lg border-4 border-black rounded-full scale-[0.3] opacity-80 z-10 bg-black"></div>
@@ -541,7 +632,7 @@
 
                 <!-- 👤 SCREEN 4: PROFILE -->
                 <div id="screen-profile" class="absolute inset-0 pt-14 overflow-y-auto no-scrollbar opacity-0 pointer-events-none transition-opacity duration-300 z-10 pb-20 bg-[#000000]">
-                    <div class="sticky top-[56px] bg-black/95 backdrop-blur-xl border-b border-white/5 p-3 flex justify-between items-center z-20">
+                    <div class="sticky top-0 bg-black/95 backdrop-blur-xl border-b border-white/5 p-3 flex justify-between items-center z-20">
                         <div class="flex items-center gap-2 cursor-pointer">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                             <span class="font-bold text-[20px] tracking-tight">1805_specials <svg class="w-4 h-4 inline text-blue-500 ml-0.5 mb-1.5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></span>
@@ -560,7 +651,7 @@
                             </div>
                         </div>
                         <div class="flex-1 flex justify-around px-2 ml-4">
-                            <div class="flex flex-col items-center cursor-pointer"><span class="font-bold text-[22px] tracking-tight">2</span><span class="text-[13px] text-white/80">posts</span></div>
+                            <div class="flex flex-col items-center cursor-pointer"><span class="font-bold text-[22px] tracking-tight">3</span><span class="text-[13px] text-white/80">posts</span></div>
                             <div class="flex flex-col items-center cursor-pointer"><span class="font-bold text-[22px] tracking-tight">∞</span><span class="text-[13px] text-white/80">followers</span></div>
                             <div class="flex flex-col items-center cursor-pointer"><span class="font-bold text-[22px] tracking-tight">1</span><span class="text-[13px] text-white/80">following</span></div>
                         </div>
@@ -571,6 +662,12 @@
                         <p class="text-[15px] text-white/90 leading-tight">Peace over chaos !</p>
                         <p class="text-[14px] text-blue-400 mt-1 cursor-pointer hover:underline font-medium">@saiman @shreya</p>
                         
+                        <div class="mt-4 bg-zinc-900/80 border border-white/10 rounded-xl p-3 flex items-center gap-3 cursor-pointer hover:bg-zinc-800 transition shadow-inner">
+                            <svg class="w-5 h-5 text-white/70" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                            <span class="text-[14px] font-medium">Vespa è Libertà (From "Luca...")</span>
+                            <span class="ml-auto text-xs font-bold bg-white/10 px-4 py-1.5 rounded-full hover:bg-white/20 transition">+ Add</span>
+                        </div>
+
                         <div class="flex gap-2.5 mt-5">
                             <button class="flex-1 glass-button py-2 rounded-xl text-[14px] font-bold text-white shadow-md">Edit profile</button>
                             <button class="flex-1 glass-button py-2 rounded-xl text-[14px] font-bold text-white shadow-md">Share profile</button>
@@ -580,6 +677,7 @@
                         </div>
                     </div>
 
+                    <!-- Highlights -->
                     <div class="px-2 pb-6 flex gap-5 overflow-x-auto no-scrollbar border-b border-white/10 mt-2">
                         <div class="flex flex-col items-center gap-1.5 ml-3">
                             <div class="w-[70px] h-[70px] rounded-full border-2 border-white/30 flex items-center justify-center cursor-pointer hover:bg-white/10 transition">
@@ -587,9 +685,22 @@
                             </div>
                             <span class="text-[12px] font-medium text-white/80">New</span>
                         </div>
+                        <div class="flex flex-col items-center gap-1.5">
+                            <div class="w-[70px] h-[70px] rounded-full border border-zinc-700 p-0.5 cursor-pointer hover:opacity-80 transition bg-zinc-900">
+                                <div class="w-full h-full rounded-full bg-cover bg-center border border-black" style="background-image: url('20250425_184147(1).jpg');"></div>
+                            </div>
+                            <span class="text-[12px] font-medium text-white/80">🥀</span>
+                        </div>
+                        <div class="flex flex-col items-center gap-1.5">
+                            <div class="w-[70px] h-[70px] rounded-full border border-zinc-700 p-0.5 cursor-pointer hover:opacity-80 transition bg-zinc-900">
+                                <div class="w-full h-full rounded-full bg-cover bg-center border border-black" style="background-image: url('1782918701094.jpeg');"></div>
+                            </div>
+                            <span class="text-[12px] font-medium text-white/80">👁</span>
+                        </div>
                     </div>
 
-                    <div class="flex w-full sticky top-[120px] bg-black z-10 border-b border-white/10">
+                    <!-- Profile Grid -->
+                    <div class="flex w-full sticky top-[62px] bg-black z-10 border-b border-white/10">
                         <div class="flex-1 border-b-[2px] border-white py-3.5 flex justify-center cursor-pointer"><svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg></div>
                         <div class="flex-1 py-3.5 flex justify-center text-white/40 cursor-pointer hover:text-white/70 transition"><svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
                         <div class="flex-1 py-3.5 flex justify-center text-white/40 cursor-pointer hover:text-white/70 transition"><svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg></div>
@@ -599,6 +710,8 @@
                          <div class="aspect-square bg-zinc-900 bg-cover bg-center cursor-pointer hover:brightness-75 transition relative group" style="background-image: url('20250425_184147(1).jpg');">
                              <div class="absolute top-2 right-2 opacity-90"><svg class="w-5 h-5 drop-shadow-md" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2 0h1V9h-1v2zm1-4V5h-1v2h1zM5 5h1v2H5V5zm0 4h1v2H5V9zm0 4h1v2H5v-2z" clip-rule="evenodd"></path></svg></div>
                          </div>
+                         <div class="aspect-square bg-zinc-900 bg-cover bg-center cursor-pointer hover:brightness-75 transition relative" style="background-image: url('1000115476.jpg');"></div>
+                         <div class="aspect-square bg-zinc-900 bg-cover bg-center cursor-pointer hover:brightness-75 transition relative" style="background-image: url('1782918701094.jpeg');"></div>
                     </div>
                 </div>
 
@@ -666,7 +779,7 @@
             </div>
 
             <!-- 💬 TOUCH-PHYSICS COMMENT BOTTOM SHEET -->
-            <div id="comment-sheet" class="fixed inset-x-0 bottom-0 h-[75dvh] bg-[#1a1a1a] rounded-t-3xl z-[30000] flex flex-col sheet-closed shadow-[0_-10px_50px_rgba(0,0,0,0.8)] md:w-[440px] md:right-0 md:left-auto">
+            <div id="ig-comment-sheet" class="fixed inset-x-0 bottom-0 h-[75dvh] bg-[#1a1a1a] rounded-t-3xl z-[30000] flex flex-col sheet-closed shadow-[0_-10px_50px_rgba(0,0,0,0.8)] md:w-[440px] md:right-0 md:left-auto">
                 <div class="w-full pt-4 pb-3 flex justify-center cursor-grab active:cursor-grabbing" id="sheet-drag-handle">
                     <div class="w-12 h-1.5 rounded-full bg-white/30"></div>
                 </div>
@@ -698,6 +811,45 @@
                         </div>
                         <button class="pt-1 text-red-500"><svg class="w-3.5 h-3.5 fill-current" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></button>
                     </div>
+
+                    <!-- Comment 3 -->
+                    <div class="flex gap-3 items-start">
+                        <div class="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center shrink-0 font-bold text-white text-xs border border-white/10">F</div>
+                        <div class="flex-1 text-[13px] leading-snug">
+                            <span class="font-bold text-white mr-1">friend_1</span>
+                            <span class="text-white/90">Finally!! You guys look so cute together 🔥</span>
+                            <div class="flex items-center gap-4 text-[11px] text-white/50 mt-1.5 font-medium">
+                                <span>4h</span> <span class="font-bold">12 likes</span> <span class="cursor-pointer hover:text-white">Reply</span>
+                            </div>
+                        </div>
+                        <button class="pt-1 text-white/40 hover:text-red-500 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></button>
+                    </div>
+
+                    <!-- Comment 4 -->
+                    <div class="flex gap-3 items-start">
+                        <div class="w-9 h-9 rounded-full bg-zinc-800 bg-cover bg-center shrink-0 border border-white/10" style="background-image: url('1000115439.jpg');"></div>
+                        <div class="flex-1 text-[13px] leading-snug">
+                            <span class="font-bold text-blue-400 mr-1">saiman</span>
+                            <span class="text-white/90">The cab ride back felt like a movie scene itself...</span>
+                            <div class="flex items-center gap-4 text-[11px] text-white/50 mt-1.5 font-medium">
+                                <span>6h</span> <span class="font-bold">30 likes</span> <span class="cursor-pointer hover:text-white">Reply</span> 
+                            </div>
+                        </div>
+                        <button class="pt-1 text-white/40 hover:text-red-500 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></button>
+                    </div>
+
+                    <!-- Comment 5 -->
+                    <div class="flex gap-3 items-start">
+                        <div class="w-9 h-9 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center shrink-0 font-bold text-white text-xs">S</div>
+                        <div class="flex-1 text-[13px] leading-snug">
+                            <span class="font-bold text-white mr-1">shreya</span>
+                            <span class="text-white/90">Still can't believe it was my first time in a theatre! Best day ever.</span>
+                            <div class="flex items-center gap-4 text-[11px] text-white/50 mt-1.5 font-medium">
+                                <span>10h</span> <span class="font-bold">150 likes</span> <span class="cursor-pointer hover:text-white">Reply</span>
+                            </div>
+                        </div>
+                        <button class="pt-1 text-red-500"><svg class="w-3.5 h-3.5 fill-current" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></button>
+                    </div>
                 </div>
 
                 <div class="p-4 border-t border-white/10 flex items-center gap-3 bg-[#1a1a1a]">
@@ -711,298 +863,673 @@
 
             <div id="sheet-backdrop" class="fixed inset-0 bg-black/70 backdrop-blur-md z-[25000] opacity-0 pointer-events-none transition-opacity duration-400"></div>
         </div>
-    `;
+    </div>
 
-    // ========================================================================
-    // 🧠 LOGIC & INTERACTION BINDING
-    // ========================================================================
-    const appPanel = document.getElementById('ig-app-panel');
-    const closeBtn = document.getElementById('ig-close-btn');
-    const navBtns = document.querySelectorAll('.ig-nav-btn');
-    const screens = {
-        'screen-home': document.getElementById('screen-home'),
-        'screen-explore': document.getElementById('screen-explore'),
-        'screen-reels': document.getElementById('screen-reels'),
-        'screen-profile': document.getElementById('screen-profile')
-    };
 
-    // Global Closer Hook
-    window.openInstagramPanel = function() {
-        if(appPanel) appPanel.classList.replace('translate-x-full', 'translate-x-0');
-    };
-    window.closeInstagramPanel = function() {
-        if(appPanel) appPanel.classList.replace('translate-x-0', 'translate-x-full');
-    };
-    if (closeBtn) closeBtn.addEventListener('click', window.closeInstagramPanel);
+    <!-- ========================================================================= -->
+    <!-- ✧ MEGA SCRIPT ENGINE ✧                                                    -->
+    <!-- ========================================================================= -->
+    <script src="script.js"></script>
+    <script src="audio.js"></script> 
 
-    // Bottom Navigation Logic
-    const reelsVideo = document.getElementById('reels-video');
-    const reelRecord = document.getElementById('reel-record');
+    <script>
+        // ---------------------------------------------------------
+        // 1. MOMENTS MORPHING ENGINE (FOOLPROOF ROUTING)
+        // ---------------------------------------------------------
+        const myMoments = [
+            "Our first meet",
+            "Our first date",
+            "Her birthday 2026",
+            "His birthday 2026"
+        ];
 
-    navBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            navBtns.forEach(b => {
-                b.classList.remove('text-white');
-                b.classList.add('text-white/60');
-            });
-            btn.classList.add('text-white');
-            btn.classList.remove('text-white/60');
-
-            const targetId = btn.getAttribute('data-target');
+        document.addEventListener('DOMContentLoaded', () => {
             
-            Object.values(screens).forEach(screen => {
-                if(screen) {
-                    screen.classList.remove('opacity-100');
-                    screen.classList.add('opacity-0', 'pointer-events-none');
-                }
-            });
-
-            if (screens[targetId]) {
-                screens[targetId].classList.remove('opacity-0', 'pointer-events-none');
-                screens[targetId].classList.add('opacity-100');
-            }
-
-            if (targetId === 'screen-reels' && reelsVideo) {
-                reelsVideo.classList.remove('hidden');
-                reelsVideo.play().catch(e => console.log("Video requires interaction first"));
-                if(reelRecord) reelRecord.classList.remove('spin-paused');
-            } else if (reelsVideo) {
-                reelsVideo.pause();
-                if(reelRecord) reelRecord.classList.add('spin-paused');
-            }
-        });
-    });
-
-    // Carousel Pagination Logic
-    const carousel = document.getElementById('post-carousel-1');
-    const dots = document.getElementById('carousel-dots');
-    const indicator = document.getElementById('carousel-indicator');
-    
-    if (carousel && dots && indicator) {
-        carousel.addEventListener('scroll', () => {
-            const scrollPercent = carousel.scrollLeft / (carousel.scrollWidth - carousel.clientWidth);
-            const activeIndex = Math.round(scrollPercent * 2); 
+            // Netflix and IG Panel Elements
+            const netflixPanel = document.getElementById('netflix-panel');
+            const igPanel = document.getElementById('ig-app-panel');
             
-            Array.from(dots.children).forEach((dot, idx) => {
-                if (idx === activeIndex) {
-                    dot.classList.replace('bg-white/30', 'bg-blue-500');
-                } else {
-                    dot.classList.replace('bg-blue-500', 'bg-white/30');
-                }
-            });
-            indicator.innerText = `${activeIndex + 1}/3`;
-        });
-    }
+            const originalBtn = document.getElementById('moments-magic-btn');
+            if (!originalBtn) return;
 
-    // Double Tap Physics
-    const postBlocks = document.querySelectorAll('.post-image-block');
-    const heartAnim = document.getElementById('giant-heart-anim');
-    const heartBtns = document.querySelectorAll('.action-btn-heart');
-    let lastTapTime = 0;
-    
-    const triggerLike = () => {
-        heartBtns.forEach(btn => {
-            const svg = btn.querySelector('svg');
-            if(svg) {
-                svg.classList.replace('fill-none', 'fill-current');
-                btn.classList.add('ekg-active');
-                setTimeout(() => btn.classList.remove('ekg-active'), 800);
-            }
-        });
-        
-        if (heartAnim) {
-            heartAnim.classList.remove('heart-burst-anim');
-            void heartAnim.offsetWidth; 
-            heartAnim.classList.add('heart-burst-anim');
-        }
-    };
+            let isAnimating = false;
+            let isOpen = false;
+            
+            const overlay = document.createElement('div');
+            overlay.className = "fixed inset-0 bg-black/80 backdrop-blur-md pointer-events-none";
+            overlay.style.zIndex = "9990";
+            overlay.style.opacity = "0";
+            overlay.style.transition = "opacity 0.6s ease";
+            document.body.appendChild(overlay);
 
-    postBlocks.forEach(block => {
-        block.addEventListener('click', (e) => {
-            const currentTime = new Date().getTime();
-            const tapLength = currentTime - lastTapTime;
-            if (tapLength < 300 && tapLength > 0) {
-                triggerLike();
+            const ghostAnchor = document.createElement('div');
+            ghostAnchor.style.display = "none";
+            ghostAnchor.style.visibility = "hidden";
+            ghostAnchor.style.pointerEvents = "none";
+            originalBtn.parentNode.insertBefore(ghostAnchor, originalBtn);
+
+            const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+            originalBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
+                if (isAnimating || isOpen) return;
+                isAnimating = true;
+
+                const startRect = originalBtn.getBoundingClientRect();
+                const startTop = Math.round(startRect.top);
+                const startLeft = Math.round(startRect.left);
+                const startWidth = Math.round(startRect.width);
+                const startHeight = Math.round(startRect.height);
+
+                ghostAnchor.style.width = startWidth + "px";
+                ghostAnchor.style.height = startHeight + "px";
+                ghostAnchor.style.margin = window.getComputedStyle(originalBtn).margin;
+                ghostAnchor.style.display = "block";
+
+                originalBtn.style.visibility = "hidden";
+                originalBtn.style.opacity = "0";
+
+                document.body.style.overflow = "hidden";
+
+                const morphBox = document.createElement('div');
+                morphBox.style.position = "fixed";
+                morphBox.style.zIndex = "9999";
+                morphBox.style.top = startTop + "px";
+                morphBox.style.left = startLeft + "px";
+                morphBox.style.width = startWidth + "px";
+                morphBox.style.height = startHeight + "px";
+                morphBox.style.borderRadius = "9999px"; 
+                morphBox.style.background = "rgba(255, 255, 255, 0.05)";
+                morphBox.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+                morphBox.style.backdropFilter = "blur(12px)";
+                morphBox.style.willChange = "top, left, width, height, border-radius, background-color";
+                morphBox.style.transform = "translateZ(0)"; 
+                morphBox.style.boxSizing = "border-box";
+                morphBox.style.overflow = "hidden";
+                
+                const initialTextWrapper = document.createElement('div');
+                initialTextWrapper.style.position = "absolute";
+                initialTextWrapper.style.inset = "0";
+                initialTextWrapper.style.display = "flex";
+                initialTextWrapper.style.alignItems = "center";
+                initialTextWrapper.style.justifyContent = "center";
+                initialTextWrapper.style.gap = "1rem"; 
+                initialTextWrapper.style.opacity = "1";
+                initialTextWrapper.style.transition = "opacity 0.2s ease-out";
+                initialTextWrapper.innerHTML = originalBtn.innerHTML; 
+                morphBox.appendChild(initialTextWrapper);
+
+                document.body.appendChild(morphBox);
+
+                overlay.classList.remove('pointer-events-none');
+                overlay.style.opacity = "1";
+
+                await new Promise(requestAnimationFrame);
+
+                initialTextWrapper.style.opacity = "0";
+                await wait(200); 
+
+                const targetWidth = Math.round(Math.min(window.innerWidth * 0.9, 380));
+                const targetHeight = 440;
+                const targetTop = Math.round((window.innerHeight - targetHeight) / 2);
+                const targetLeft = Math.round((window.innerWidth - targetWidth) / 2);
+
+                morphBox.style.transition = "top 0.6s cubic-bezier(0.32, 0.72, 0, 1), left 0.6s cubic-bezier(0.32, 0.72, 0, 1), width 0.6s cubic-bezier(0.32, 0.72, 0, 1), height 0.6s cubic-bezier(0.32, 0.72, 0, 1), border-radius 0.6s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.6s ease";
+                morphBox.style.top = targetTop + "px";
+                morphBox.style.left = targetLeft + "px";
+                morphBox.style.width = targetWidth + "px";
+                morphBox.style.height = targetHeight + "px";
+                morphBox.style.borderRadius = "2rem"; 
+                morphBox.style.background = "rgba(10, 5, 8, 0.85)";
+                morphBox.style.border = "1px solid rgba(252, 243, 215, 0.15)";
+                
+                await wait(650);
+
+                initialTextWrapper.remove();
+
+                const contentContainer = document.createElement('div');
+                contentContainer.style.width = "100%";
+                contentContainer.style.height = "100%";
+                contentContainer.style.display = "flex";
+                contentContainer.style.flexDirection = "column";
+                contentContainer.style.alignItems = "center";
+                contentContainer.style.padding = "40px 30px";
+                contentContainer.style.opacity = "0";
+                contentContainer.style.transition = "opacity 0.4s ease-in";
+                
+                const title = document.createElement('h3');
+                title.style.color = "#fcf3d7";
+                title.style.fontFamily = "'Playfair Display', serif";
+                title.style.fontSize = "1.2rem";
+                title.style.letterSpacing = "0.3em";
+                title.style.marginBottom = "30px";
+                title.innerText = "✧ MOMENTS";
+                contentContainer.appendChild(title);
+                
+                const list = document.createElement('div');
+                list.style.width = "100%";
+                list.style.display = "flex";
+                list.style.flexDirection = "column";
+                list.style.gap = "20px";
+                contentContainer.appendChild(list);
+
+                const actions = document.createElement('div');
+                actions.style.display = "flex";
+                actions.style.justifyContent = "space-between";
+                actions.style.width = "100%";
+                actions.style.marginTop = "auto";
+                
+                const addBtn = document.createElement('span');
+                addBtn.innerHTML = "+ ADD";
+                addBtn.style.color = "#10b981"; 
+                addBtn.style.fontSize = "12px";
+                addBtn.style.letterSpacing = "0.2em";
+                addBtn.style.cursor = "pointer";
+
+                const closeBtn = document.createElement('span');
+                closeBtn.innerHTML = "CLOSE ✕";
+                closeBtn.style.color = "rgba(255,255,255,0.5)";
+                closeBtn.style.fontSize = "12px";
+                closeBtn.style.letterSpacing = "0.2em";
+                closeBtn.style.cursor = "pointer";
+                closeBtn.style.padding = "10px"; 
+                closeBtn.style.margin = "-10px";
+                
+                actions.appendChild(addBtn);
+                actions.appendChild(closeBtn);
+                contentContainer.appendChild(actions);
+                
+                morphBox.appendChild(contentContainer);
+                await new Promise(requestAnimationFrame);
+                contentContainer.style.opacity = "1";
+
+                await wait(200);
+
+                // --- FOOLPROOF DIRECT EVENT LISTENERS ---
+                for (let item of myMoments) {
+                    let p = document.createElement('p');
+                    p.style.fontFamily = "'Montserrat', sans-serif";
+                    p.style.fontWeight = "300";
+                    p.style.color = "rgba(255,255,255,0.9)";
+                    p.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
+                    p.style.paddingBottom = "5px";
+                    p.style.fontSize = "14px";
+                    p.style.width = "100%";
+                    p.style.textAlign = "center";
+                    p.style.letterSpacing = "0.05em";
+                    p.style.cursor = "pointer";
+                    p.className = "hover:text-emerald-400 active:scale-[0.98] transition-all duration-200";
+
+                    // The actual click binding
+                    if (item === "Our first meet") {
+                        p.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            if(netflixPanel) {
+                                netflixPanel.classList.remove('translate-x-full');
+                                netflixPanel.classList.add('translate-x-0');
+                            }
+                        });
+                    } else if (item === "Our first date") {
+                        p.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            if(igPanel) {
+                                igPanel.classList.remove('translate-x-full');
+                                igPanel.classList.add('translate-x-0');
+                            }
+                        });
+                    }
+
+                    list.appendChild(p);
+
+                    for (let char of item) {
+                        p.innerHTML += char;
+                        await wait(20);
+                    }
+                    await wait(50);
+                }
+
+                isAnimating = false;
+                isOpen = true;
+
+                closeBtn.onclick = async (e) => {
+                    e.stopPropagation();
+                    if (isAnimating) return;
+                    isAnimating = true;
+
+                    // Close any panels that might be open
+                    if(netflixPanel) {
+                        netflixPanel.classList.remove('translate-x-0');
+                        netflixPanel.classList.add('translate-x-full');
+                    }
+                    if(igPanel) {
+                        igPanel.classList.remove('translate-x-0');
+                        igPanel.classList.add('translate-x-full');
+                    }
+
+                    contentContainer.style.opacity = "0";
+                    await wait(300);
+                    contentContainer.remove();
+
+                    const returnTextWrapper = document.createElement('div');
+                    returnTextWrapper.style.position = "absolute";
+                    returnTextWrapper.style.inset = "0";
+                    returnTextWrapper.style.display = "flex";
+                    returnTextWrapper.style.alignItems = "center";
+                    returnTextWrapper.style.justifyContent = "center";
+                    returnTextWrapper.style.gap = "1rem"; 
+                    returnTextWrapper.style.opacity = "0";
+                    returnTextWrapper.style.transition = "opacity 0.3s ease-in";
+                    returnTextWrapper.innerHTML = originalBtn.innerHTML; 
+                    morphBox.appendChild(returnTextWrapper);
+
+                    const returnRect = ghostAnchor.getBoundingClientRect();
+                    const returnTop = Math.round(returnRect.top);
+                    const returnLeft = Math.round(returnRect.left);
+                    const returnWidth = Math.round(returnRect.width);
+                    const returnHeight = Math.round(returnRect.height);
+
+                    overlay.style.opacity = "0";
+
+                    morphBox.style.top = returnTop + "px";
+                    morphBox.style.left = returnLeft + "px";
+                    morphBox.style.width = returnWidth + "px";
+                    morphBox.style.height = returnHeight + "px";
+                    morphBox.style.borderRadius = "9999px"; 
+                    morphBox.style.background = "rgba(255, 255, 255, 0.05)";
+                    morphBox.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+                    
+                    await wait(450);
+
+                    returnTextWrapper.style.opacity = "1";
+                    
+                    await wait(200);
+
+                    morphBox.remove();
+                    originalBtn.style.visibility = "visible";
+                    originalBtn.style.opacity = "1";
+                    ghostAnchor.style.display = "none";
+
+                    overlay.classList.add('pointer-events-none');
+                    document.body.style.overflow = ""; 
+                    
+                    isAnimating = false;
+                    isOpen = false;
+                };
+            });
+
+            // ---------------------------------------------------------
+            // 2. NETFLIX PANEL LOGIC
+            // ---------------------------------------------------------
+            const netflixBack = document.getElementById('netflix-back');
+            const netflixFavorite = document.getElementById('netflix-favorite');
+            const nHeartSvg = document.getElementById('heart-icon-svg');
+            const nHearts = Array.from(document.querySelectorAll('#netflix-hearts-container span'));
+
+            if (netflixBack) {
+                netflixBack.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if(netflixPanel) {
+                        netflixPanel.classList.remove('translate-x-0');
+                        netflixPanel.classList.add('translate-x-full');
+                    }
+                });
             }
-            lastTapTime = currentTime;
-        });
-    });
 
-    heartBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const svg = btn.querySelector('svg');
-            if (svg && svg.classList.contains('fill-none')) {
-                triggerLike();
-            } else if (svg) {
-                svg.classList.replace('fill-current', 'fill-none');
+            let isNFav = false;
+            if (netflixFavorite) {
+                netflixFavorite.addEventListener('click', () => {
+                    isNFav = !isNFav;
+                    if (isNFav) {
+                        netflixFavorite.classList.remove('text-white/50');
+                        netflixFavorite.classList.add('text-pink-500');
+                        if (nHeartSvg) nHeartSvg.classList.replace('fill-none', 'fill-current');
+                        netflixFavorite.style.transform = "scale(1.2)";
+                        setTimeout(() => netflixFavorite.style.transform = "none", 150);
+                    } else {
+                        netflixFavorite.classList.add('text-white/50');
+                        netflixFavorite.classList.remove('text-pink-500');
+                        if (nHeartSvg) nHeartSvg.classList.replace('fill-current', 'fill-none');
+                    }
+                });
             }
-        });
-    });
 
-    // Expandable Text
-    const moreBtn = document.getElementById('caption-more-btn');
-    const captionShort = document.getElementById('caption-short');
-    const captionFull = document.getElementById('caption-full');
-    
-    if (moreBtn && captionShort && captionFull) {
-        moreBtn.addEventListener('click', () => {
-            moreBtn.style.display = 'none';
-            captionFull.classList.remove('hidden');
-        });
-    }
+            nHearts.forEach((heart, idx) => {
+                heart.addEventListener('click', () => {
+                    nHearts.forEach((h, hIdx) => {
+                        if (hIdx <= idx) {
+                            h.style.color = '#ef4444'; 
+                            h.style.transform = 'scale(1.2)';
+                            setTimeout(() => h.style.transform = 'none', 150);
+                        } else {
+                            h.style.color = 'rgba(255,255,255,0.2)'; 
+                        }
+                    });
+                });
+            });
 
-    // Touch Physics: Bottom Sheet
-    const commentBtns = document.querySelectorAll('.action-btn-comment');
-    const sheet = document.getElementById('comment-sheet');
-    const backdrop = document.getElementById('sheet-backdrop');
-    const handle = document.getElementById('sheet-drag-handle');
-    
-    let startY = 0;
-    let currentY = 0;
-    let isDragging = false;
+            const chapterCards = document.querySelectorAll('.chapter-card');
+            chapterCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const wrapper = card.querySelector('.chapter-content-wrapper');
+                    const text = card.querySelector('.chapter-text');
+                    const icon = card.querySelector('.expand-icon');
+                    const label = card.querySelector('.expand-label');
+                    const glow = card.querySelector('.chapter-glow');
+                    const isExpanded = card.classList.contains('is-expanded');
 
-    const openSheet = () => {
-        sheet.classList.replace('sheet-closed', 'sheet-open');
-        sheet.style.transform = ''; 
-        backdrop.classList.replace('opacity-0', 'opacity-100');
-        backdrop.classList.remove('pointer-events-none');
-    };
+                    if (!isExpanded) {
+                        card.classList.add('is-expanded');
+                        card.classList.add('border-white/15', 'bg-white/5');
+                        if(glow) { glow.classList.remove('opacity-0'); glow.classList.add('opacity-10'); }
+                        if(wrapper) wrapper.style.maxHeight = wrapper.scrollHeight + "px";
+                        if(icon) icon.style.transform = "rotate(180deg)";
+                        if(label) label.innerText = "Close Memory";
+                        if(text) { text.classList.remove('text-gray-400'); text.classList.add('text-gray-100'); }
+                    } else {
+                        card.classList.remove('is-expanded');
+                        card.classList.remove('border-white/15', 'bg-white/5');
+                        if(glow) { glow.classList.remove('opacity-10'); glow.classList.add('opacity-0'); }
+                        if(wrapper) wrapper.style.maxHeight = "32px"; 
+                        if(icon) icon.style.transform = "rotate(0deg)";
+                        if(label) label.innerText = "Read Memory";
+                        if(text) { text.classList.remove('text-gray-100'); text.classList.add('text-gray-400'); }
+                    }
+                });
+            });
 
-    const closeSheet = () => {
-        sheet.classList.replace('sheet-open', 'sheet-closed');
-        sheet.style.transform = ''; 
-        backdrop.classList.replace('opacity-100', 'opacity-0');
-        backdrop.classList.add('pointer-events-none');
-    };
+            // ---------------------------------------------------------
+            // 3. INSTAGRAM PANEL LOGIC
+            // ---------------------------------------------------------
+            const igCloseBtn = document.getElementById('ig-close-btn');
+            const igNavBtns = document.querySelectorAll('.ig-nav-btn');
+            const igScreens = {
+                'screen-home': document.getElementById('screen-home'),
+                'screen-explore': document.getElementById('screen-explore'),
+                'screen-reels': document.getElementById('screen-reels'),
+                'screen-profile': document.getElementById('screen-profile')
+            };
 
-    commentBtns.forEach(btn => btn.addEventListener('click', openSheet));
-    if (backdrop) backdrop.addEventListener('click', closeSheet);
-
-    if (handle && sheet) {
-        handle.addEventListener('touchstart', (e) => {
-            startY = e.touches[0].clientY;
-            isDragging = true;
-            sheet.style.transition = 'none'; 
-        }, { passive: true });
-
-        handle.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            currentY = e.touches[0].clientY - startY;
-            if (currentY > 0) { 
-                sheet.style.transform = `translateY(${currentY}px)`;
+            if (igCloseBtn) {
+                igCloseBtn.addEventListener('click', () => {
+                    if(igPanel) {
+                        igPanel.classList.remove('translate-x-0');
+                        igPanel.classList.add('translate-x-full');
+                    }
+                });
             }
-        }, { passive: true });
 
-        handle.addEventListener('touchend', () => {
-            if (!isDragging) return;
-            isDragging = false;
-            sheet.style.transition = 'transform 0.5s cubic-bezier(0.32, 0.72, 0, 1)';
-            if (currentY > 150) { closeSheet(); } 
-            else { sheet.style.transform = 'translateY(0%)'; }
-            currentY = 0;
+            // Bottom Navigation Logic
+            const reelsVideo = document.getElementById('reels-video');
+            const reelRecord = document.getElementById('reel-record');
+
+            igNavBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    igNavBtns.forEach(b => {
+                        b.classList.remove('text-white');
+                        b.classList.add('text-white/60');
+                    });
+                    btn.classList.add('text-white');
+                    btn.classList.remove('text-white/60');
+
+                    const targetId = btn.getAttribute('data-target');
+                    
+                    Object.values(igScreens).forEach(screen => {
+                        if(screen) {
+                            screen.classList.remove('opacity-100');
+                            screen.classList.add('opacity-0', 'pointer-events-none');
+                        }
+                    });
+
+                    if (igScreens[targetId]) {
+                        igScreens[targetId].classList.remove('opacity-0', 'pointer-events-none');
+                        igScreens[targetId].classList.add('opacity-100');
+                    }
+
+                    if (targetId === 'screen-reels' && reelsVideo) {
+                        reelsVideo.classList.remove('hidden');
+                        reelsVideo.play().catch(e => console.log("Video requires interaction first"));
+                        if(reelRecord) reelRecord.classList.remove('spin-paused');
+                    } else if (reelsVideo) {
+                        reelsVideo.pause();
+                        if(reelRecord) reelRecord.classList.add('spin-paused');
+                    }
+                });
+            });
+
+            // Carousel Pagination Logic
+            const carousel1 = document.getElementById('post-carousel-1');
+            const dots = document.getElementById('carousel-dots');
+            const indicator = document.getElementById('carousel-indicator');
+            
+            if (carousel1 && dots && indicator) {
+                carousel1.addEventListener('scroll', () => {
+                    const scrollPercent = carousel1.scrollLeft / (carousel1.scrollWidth - carousel1.clientWidth);
+                    const activeIndex = Math.round(scrollPercent * 2); 
+                    
+                    Array.from(dots.children).forEach((dot, idx) => {
+                        if (idx === activeIndex) {
+                            dot.classList.remove('bg-white/30');
+                            dot.classList.add('bg-blue-500');
+                        } else {
+                            dot.classList.remove('bg-blue-500');
+                            dot.classList.add('bg-white/30');
+                        }
+                    });
+                    indicator.innerText = (activeIndex + 1) + "/3";
+                });
+            }
+
+            // Double Tap Physics
+            const postBlocks = document.querySelectorAll('.post-image-block');
+            const heartBtns = document.querySelectorAll('.ig-action-heart');
+            let lastTapTime = 0;
+            
+            const triggerLike = (block) => {
+                const animNode = block.parentElement.querySelector('#giant-heart-anim') || block.parentElement.querySelector('.giant-heart-anim-2');
+                
+                heartBtns.forEach(btn => {
+                    const svg = btn.querySelector('svg');
+                    if(svg) {
+                        svg.classList.remove('fill-none');
+                        svg.classList.add('fill-current');
+                        btn.classList.add('ekg-active');
+                        setTimeout(() => btn.classList.remove('ekg-active'), 800);
+                    }
+                });
+                
+                if (animNode) {
+                    animNode.classList.remove('heart-burst-anim');
+                    void animNode.offsetWidth; 
+                    animNode.classList.add('heart-burst-anim');
+                }
+            };
+
+            postBlocks.forEach(block => {
+                block.addEventListener('click', (e) => {
+                    const currentTime = new Date().getTime();
+                    const tapLength = currentTime - lastTapTime;
+                    if (tapLength < 300 && tapLength > 0) {
+                        triggerLike(block);
+                        e.preventDefault();
+                    }
+                    lastTapTime = currentTime;
+                });
+            });
+
+            heartBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const svg = btn.querySelector('svg');
+                    if (svg && svg.classList.contains('fill-none')) {
+                        svg.classList.remove('fill-none');
+                        svg.classList.add('fill-current');
+                        btn.classList.add('ekg-active');
+                        setTimeout(() => btn.classList.remove('ekg-active'), 800);
+                    } else if (svg) {
+                        svg.classList.remove('fill-current');
+                        svg.classList.add('fill-none');
+                    }
+                });
+            });
+
+            // Touch Physics: Bottom Sheet
+            const commentBtns = document.querySelectorAll('.ig-action-comment');
+            const sheet = document.getElementById('ig-comment-sheet');
+            const backdrop = document.getElementById('sheet-backdrop');
+            const handle = document.getElementById('sheet-drag-handle');
+            
+            let startY = 0;
+            let currentY = 0;
+            let isDragging = false;
+
+            const openSheet = () => {
+                if(!sheet || !backdrop) return;
+                sheet.classList.remove('sheet-closed');
+                sheet.classList.add('sheet-open');
+                sheet.style.transform = ''; 
+                backdrop.classList.remove('opacity-0', 'pointer-events-none');
+                backdrop.classList.add('opacity-100');
+            };
+
+            const closeSheet = () => {
+                if(!sheet || !backdrop) return;
+                sheet.classList.remove('sheet-open');
+                sheet.classList.add('sheet-closed');
+                sheet.style.transform = ''; 
+                backdrop.classList.remove('opacity-100');
+                backdrop.classList.add('opacity-0', 'pointer-events-none');
+            };
+
+            commentBtns.forEach(btn => btn.addEventListener('click', openSheet));
+            if (backdrop) backdrop.addEventListener('click', closeSheet);
+
+            if (handle && sheet) {
+                handle.addEventListener('touchstart', (e) => {
+                    startY = e.touches[0].clientY;
+                    isDragging = true;
+                    sheet.style.transition = 'none'; 
+                }, { passive: true });
+
+                handle.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    currentY = e.touches[0].clientY - startY;
+                    if (currentY > 0) { 
+                        sheet.style.transform = 'translateY(' + currentY + 'px)';
+                    }
+                }, { passive: true });
+
+                handle.addEventListener('touchend', () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    sheet.style.transition = 'transform 0.5s cubic-bezier(0.32, 0.72, 0, 1)';
+                    if (currentY > 150) { closeSheet(); } 
+                    else { sheet.style.transform = 'translateY(0%)'; }
+                    currentY = 0;
+                });
+            }
+
+            // Stateful Story Viewer
+            const storyData = [
+                { title: "Arrival", img: "1782918701094.jpeg" },
+                { title: "Cinepolis", img: "1000115476.jpg" },
+                { title: "The Kiss", img: "1000115475.jpg" },
+                { title: "Departure", img: "1000115474.jpg" }
+            ];
+            let currentStoryIdx = 0;
+            let storyTimer;
+            
+            const storyTriggers = document.querySelectorAll('.ig-story-trigger');
+            const viewer = document.getElementById('ig-story-viewer');
+            const viewerCloseBtn = document.getElementById('close-story-btn');
+            const displayImg = document.getElementById('story-media-display');
+            const displayTitle = document.getElementById('story-display-title');
+            const bgBlur = document.getElementById('story-bg-blur');
+            const progressFills = [
+                document.getElementById('prog-0'),
+                document.getElementById('prog-1'),
+                document.getElementById('prog-2'),
+                document.getElementById('prog-3')
+            ];
+
+            const loadStory = (idx) => {
+                if (idx >= storyData.length) { closeStory(); return; }
+                if (idx < 0) idx = 0;
+                currentStoryIdx = idx;
+
+                const data = storyData[idx];
+                if (displayImg) displayImg.style.backgroundImage = "url('" + data.img + "')";
+                if (bgBlur) bgBlur.style.backgroundImage = "url('" + data.img + "')";
+                if (displayTitle) displayTitle.innerText = data.title;
+
+                progressFills.forEach((fill, i) => {
+                    if (!fill) return;
+                    fill.classList.remove('story-progress-bar', 'story-progress-paused');
+                    void fill.offsetWidth; 
+                    if (i < idx) { fill.style.width = '100%'; } 
+                    else if (i === idx) {
+                        fill.style.width = '0%';
+                        fill.classList.add('story-progress-bar'); 
+                    } else { fill.style.width = '0%'; }
+                });
+
+                clearTimeout(storyTimer);
+                storyTimer = setTimeout(() => loadStory(currentStoryIdx + 1), 5000);
+            };
+
+            const openStory = (idx) => {
+                if(viewer) {
+                    viewer.classList.remove('opacity-0', 'pointer-events-none');
+                    viewer.classList.add('opacity-100');
+                    loadStory(idx);
+                }
+            };
+
+            const closeStory = () => {
+                if(viewer) {
+                    viewer.classList.add('opacity-0', 'pointer-events-none');
+                    viewer.classList.remove('opacity-100');
+                    clearTimeout(storyTimer);
+                    progressFills.forEach(fill => { if(fill) fill.classList.remove('story-progress-bar'); });
+                }
+            };
+
+            storyTriggers.forEach(trigger => {
+                trigger.addEventListener('click', () => {
+                    const idx = parseInt(trigger.getAttribute('data-idx'));
+                    openStory(idx);
+                });
+            });
+
+            if (viewerCloseBtn) viewerCloseBtn.addEventListener('click', closeStory);
+
+            const tapLeft = document.getElementById('story-tap-left');
+            const tapRight = document.getElementById('story-tap-right');
+
+            if (tapLeft) tapLeft.addEventListener('click', () => loadStory(currentStoryIdx - 1));
+            if (tapRight) tapRight.addEventListener('click', () => loadStory(currentStoryIdx + 1));
+            
+            const pauseStory = () => {
+                clearTimeout(storyTimer);
+                const activeProg = progressFills[currentStoryIdx];
+                if (activeProg) activeProg.classList.add('story-progress-paused');
+            };
+            const resumeStory = () => {
+                const activeProg = progressFills[currentStoryIdx];
+                if (activeProg) activeProg.classList.remove('story-progress-paused');
+                storyTimer = setTimeout(() => loadStory(currentStoryIdx + 1), 5000);
+            };
+
+            [tapLeft, tapRight].forEach(zone => {
+                if (!zone) return;
+                zone.addEventListener('touchstart', pauseStory, { passive: true });
+                zone.addEventListener('touchend', resumeStory);
+                zone.addEventListener('mousedown', pauseStory);
+                zone.addEventListener('mouseup', resumeStory);
+                zone.addEventListener('mouseleave', resumeStory);
+            });
         });
-    }
-
-    // Stateful Story Viewer
-    const storyData = [
-        { title: "Arrival", img: "story1.jpg" },
-        { title: "Cinepolis", img: "story2.jpg" },
-        { title: "The Kiss", img: "story3.jpg" }
-    ];
-    let currentStoryIdx = 0;
-    let storyTimer;
-    
-    const storyTriggers = document.querySelectorAll('.ig-story-trigger');
-    const viewer = document.getElementById('ig-story-viewer');
-    const viewerCloseBtn = document.getElementById('close-story-btn');
-    const displayImg = document.getElementById('story-media-display');
-    const displayTitle = document.getElementById('story-display-title');
-    const bgBlur = document.getElementById('story-bg-blur');
-    const progressFills = [
-        document.getElementById('prog-0'),
-        document.getElementById('prog-1'),
-        document.getElementById('prog-2')
-    ];
-
-    const loadStory = (idx) => {
-        if (idx >= storyData.length) { closeStory(); return; }
-        if (idx < 0) idx = 0;
-        currentStoryIdx = idx;
-
-        const data = storyData[idx];
-        if (displayImg) displayImg.style.backgroundImage = `url('${data.img}')`;
-        if (bgBlur) bgBlur.style.backgroundImage = `url('${data.img}')`;
-        if (displayTitle) displayTitle.innerText = data.title;
-
-        progressFills.forEach((fill, i) => {
-            if (!fill) return;
-            fill.classList.remove('story-progress-bar', 'story-progress-paused');
-            void fill.offsetWidth; 
-            if (i < idx) { fill.style.width = '100%'; } 
-            else if (i === idx) {
-                fill.style.width = '0%';
-                fill.classList.add('story-progress-bar'); 
-            } else { fill.style.width = '0%'; }
-        });
-
-        clearTimeout(storyTimer);
-        storyTimer = setTimeout(() => loadStory(currentStoryIdx + 1), 5000);
-    };
-
-    const openStory = (idx) => {
-        if(viewer) {
-            viewer.classList.remove('opacity-0', 'pointer-events-none');
-            viewer.classList.add('opacity-100');
-            loadStory(idx);
-        }
-    };
-
-    const closeStory = () => {
-        if(viewer) {
-            viewer.classList.add('opacity-0', 'pointer-events-none');
-            viewer.classList.remove('opacity-100');
-            clearTimeout(storyTimer);
-            progressFills.forEach(fill => { if(fill) fill.classList.remove('story-progress-bar'); });
-        }
-    };
-
-    storyTriggers.forEach(trigger => {
-        trigger.addEventListener('click', () => {
-            const idx = parseInt(trigger.getAttribute('data-idx'));
-            openStory(idx);
-        });
-    });
-
-    if (viewerCloseBtn) viewerCloseBtn.addEventListener('click', closeStory);
-
-    const tapLeft = document.getElementById('story-tap-left');
-    const tapRight = document.getElementById('story-tap-right');
-
-    if (tapLeft) tapLeft.addEventListener('click', () => loadStory(currentStoryIdx - 1));
-    if (tapRight) tapRight.addEventListener('click', () => loadStory(currentStoryIdx + 1));
-    
-    const pauseStory = () => {
-        clearTimeout(storyTimer);
-        const activeProg = progressFills[currentStoryIdx];
-        if (activeProg) activeProg.classList.add('story-progress-paused');
-    };
-    const resumeStory = () => {
-        const activeProg = progressFills[currentStoryIdx];
-        if (activeProg) activeProg.classList.remove('story-progress-paused');
-        storyTimer = setTimeout(() => loadStory(currentStoryIdx + 1), 5000);
-    };
-
-    [tapLeft, tapRight].forEach(zone => {
-        if (!zone) return;
-        zone.addEventListener('touchstart', pauseStory, { passive: true });
-        zone.addEventListener('touchend', resumeStory);
-        zone.addEventListener('mousedown', pauseStory);
-        zone.addEventListener('mouseup', resumeStory);
-        zone.addEventListener('mouseleave', resumeStory);
-    });
-
-});
+    </script>
+</body>
+</html>
 
 
 ```
