@@ -3,15 +3,19 @@
  * ============================================================================
  * ✧ 1805 | OUR FIRST DATE: THE GLASSMORPHIC INSTAGRAM ENGINE ✧
  * ============================================================================
+ * Architecture: Self-Injecting Autonomous Component
+ * Features: Touch-Physics Bottom Sheet, Double-Tap to Like, Auto-Reels, 
+ * Stateful Story Viewer, Dynamic Carousels, Liquid Glass UI.
+ * ============================================================================
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // ✧ 1. FIXED PORTAL ID: Now perfectly matches index.html
-    const portal = document.getElementById('instagram-portal');
-    if (!portal) {
-        console.error("Instagram Portal not found!");
-        return;
-    }
+
+    // ✧ 1. AUTONOMOUS INJECTION (FOOLPROOF)
+    // Create the container dynamically so it never relies on index.html missing an ID
+    const appContainer = document.createElement('div');
+    appContainer.id = "instagram-app-container";
+    document.body.appendChild(appContainer);
 
     // ========================================================================
     // 📸 ASSET MAP 
@@ -21,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
         story2: "story2.jpg",
         story3: "story3.jpg",
         story4: "story4.jpg",
-        post1_img1: "banner1.jpg", 
+        post1_img1: "20250425_184147(1).jpg", // The Main Image
         post1_img2: "banner2.jpg", 
         post1_img3: "banner3.jpg", 
         reelVideo: "first_date_reel.mp4",
@@ -30,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
             "explore4.jpg", "explore5.jpg", "explore6.jpg",
             "explore7.jpg", "explore8.jpg", "explore9.jpg"
         ],
-        profileAvatar: "1000115432.jpg"
+        profileAvatar: "1000115432.jpg" // The beautiful red dress profile photo
     };
 
     // ========================================================================
@@ -38,25 +42,32 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================================================
     const igStyles = document.createElement('style');
     igStyles.innerHTML = `
+        /* Scrollbar Assassination for Native Feel */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         
+        /* The Authentic Instagram Gradient */
         .ig-gradient { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
         .ig-text-gradient { background: linear-gradient(45deg, #f09433, #dc2743, #bc1888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         
-        .glass-heavy { background: rgba(5, 5, 5, 0.65); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        /* Glass Physics */
+        .glass-heavy { background: rgba(5, 5, 5, 0.75); backdrop-filter: blur(40px); -webkit-backdrop-filter: blur(40px); border-top: 1px solid rgba(255, 255, 255, 0.08); }
+        .glass-card { background: rgba(25, 25, 25, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); }
         .glass-button { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
         .glass-button:active { transform: scale(0.95); background: rgba(255, 255, 255, 0.2); }
 
+        /* Carousel Snapping */
         .snap-x-mandatory { scroll-snap-type: x mandatory; overflow-x: scroll; scroll-behavior: smooth; }
         .snap-center { scroll-snap-align: center; }
 
+        /* Animations */
         @keyframes fadeUpIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-up { animation: fadeUpIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
+        /* Big Double-Tap Heart Animation */
         @keyframes heartBurst {
             0% { transform: translate(-50%, -50%) scale(0); opacity: 0; filter: drop-shadow(0 0 0px rgba(220,38,38,0)); }
             15% { transform: translate(-50%, -50%) scale(1.2); opacity: 0.9; filter: drop-shadow(0 0 40px rgba(220,38,38,0.8)); }
@@ -67,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         .heart-burst-anim { animation: heartBurst 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
 
+        /* Mini UI Heart EKG Pulse */
         @keyframes heartbeatPulse {
             0% { transform: scale(1); }
             25% { transform: scale(1.3); filter: drop-shadow(0 0 10px rgba(220,38,38,0.6)); }
@@ -76,15 +88,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         .ekg-active { animation: heartbeatPulse 0.5s ease-in-out forwards; color: #dc2626 !important; fill: currentColor; }
 
+        /* Story Viewer Progress Bar */
         .story-progress-fill { height: 100%; background: #fff; width: 0%; border-radius: 99px; }
+        .story-progress-paused { animation-play-state: paused !important; }
         @keyframes storyProgress { from { width: 0%; } to { width: 100%; } }
         .story-progress-bar { animation: storyProgress 4.5s linear forwards; }
-        .story-progress-paused { animation-play-state: paused !important; }
 
+        /* Bottom Sheet Physics */
         #comment-sheet { transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1); will-change: transform; touch-action: none; }
         .sheet-open { transform: translateY(0%) !important; }
         .sheet-closed { transform: translateY(100%) !important; }
 
+        /* Spinning Record for Reels */
         @keyframes spinSlow { 100% { transform: rotate(360deg); } }
         .spin-record { animation: spinSlow 4s linear infinite; }
         .spin-paused { animation-play-state: paused; }
@@ -92,11 +107,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.head.appendChild(igStyles);
 
     // ========================================================================
-    // 🧱 DOM ARCHITECTURE
+    // 🧱 DOM ARCHITECTURE (INJECTING THE UI)
     // ========================================================================
-    portal.innerHTML = `
-        <div id="ig-app-panel" class="fixed top-0 right-0 w-full md:w-[440px] h-[100dvh] bg-[#000000] z-[10000] transform translate-x-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden flex flex-col border-l border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.9)] text-white font-sans">
+    appContainer.innerHTML = `
+        <!-- MAIN APP CONTAINER -->
+        <div id="ig-app-panel" class="fixed top-0 right-0 w-full md:w-[440px] h-[100dvh] bg-[#000000] z-[20000] transform translate-x-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden flex flex-col border-l border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.9)] text-white font-sans">
             
+            <!-- ✧ TOP NAVIGATION BAR ✧ -->
             <div id="ig-top-nav" class="h-14 flex items-center justify-between px-4 border-b border-white/10 relative z-30 bg-black/80 backdrop-blur-md transition-transform duration-300">
                 <div class="flex items-center gap-3">
                     <button id="ig-close-btn" class="text-white/80 hover:text-white transition active:scale-90 cursor-pointer p-1">
@@ -111,20 +128,29 @@ document.addEventListener('DOMContentLoaded', () => {
                     </button>
                     <button class="active:scale-90 transition transform relative">
                         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
-                        <span class="absolute -top-1 -right-1 flex h-3 w-3"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span class="relative inline-flex rounded-full h-3 w-3 bg-red-500 border border-black"></span></span>
+                        <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-red-500 border border-black"></span>
+                        </span>
                     </button>
                 </div>
             </div>
 
-            <!-- SCREENS VIEWPORT -->
+            <!-- ✧ SCREENS VIEWPORT ✧ -->
             <div id="ig-screens" class="flex-1 relative bg-[#000000]">
                 
-                <!-- SCREEN 1: HOME FEED -->
+                <!-- ========================================== -->
+                <!-- 📱 SCREEN 1: HOME FEED                     -->
+                <!-- ========================================== -->
                 <div id="screen-home" class="absolute inset-0 overflow-y-auto no-scrollbar pb-24 transition-opacity duration-300 opacity-100 z-10">
+                    
+                    <!-- 🟢 STORIES TRAY -->
                     <div class="flex gap-4 overflow-x-auto no-scrollbar pt-3 pb-4 px-4 border-b border-white/10 relative">
+                        <!-- Add Story -->
                         <div class="flex flex-col items-center gap-1.5 cursor-pointer relative shrink-0">
                             <div class="w-[68px] h-[68px] rounded-full overflow-hidden border border-white/20 bg-zinc-900 relative">
-                                <div class="w-full h-full bg-cover bg-center opacity-70" style="background-image: url('${AST.profileAvatar}'), url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150');"></div>
+                                <div class="w-full h-full bg-cover bg-center opacity-70" style="background-image: url('${AST.profileAvatar}');"></div>
+                                <div class="absolute inset-0 bg-black/20"></div>
                             </div>
                             <div class="absolute bottom-[18px] right-0 w-5 h-5 bg-blue-500 rounded-full border-2 border-black flex items-center justify-center">
                                 <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
@@ -132,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="text-[11px] text-white/60 font-medium">Your story</span>
                         </div>
 
+                        <!-- Dynamic Story Rings -->
                         <div class="flex flex-col items-center gap-1.5 cursor-pointer group ig-story-trigger shrink-0" data-idx="0">
                             <div class="p-[2px] ig-gradient rounded-full transition-transform group-active:scale-95">
                                 <div class="w-[64px] h-[64px] rounded-full border-[3px] border-black overflow-hidden bg-zinc-900">
@@ -160,12 +187,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                     </div>
 
+                    <!-- 🟢 FEED POST 1 -->
                     <article class="pt-3 pb-6 border-b border-white/10 animate-fade-up">
+                        <!-- Post Header -->
                         <div class="flex items-center justify-between px-4 mb-3">
                             <div class="flex items-center gap-3">
                                 <div class="w-9 h-9 rounded-full ig-gradient p-[2px] cursor-pointer">
-                                    <div class="w-full h-full rounded-full bg-black flex items-center justify-center overflow-hidden">
-                                        <div class="w-full h-full bg-cover bg-center" style="background-image: url('${AST.profileAvatar}'), url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100');"></div>
+                                    <div class="w-full h-full rounded-full bg-black flex items-center justify-center font-playfair font-black text-[10px] text-[#fcf3d7] border border-black overflow-hidden">
+                                        <div class="w-full h-full bg-cover bg-center" style="background-image: url('${AST.profileAvatar}');"></div>
                                     </div>
                                 </div>
                                 <div class="flex flex-col -gap-1">
@@ -176,17 +205,24 @@ document.addEventListener('DOMContentLoaded', () => {
                             <button class="text-white/80 hover:text-white p-1"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm-6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm12 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg></button>
                         </div>
                         
+                        <!-- Post Media: Image Carousel with Double Tap Physics -->
                         <div class="relative w-full aspect-[4/5] bg-zinc-900 flex snap-x-mandatory" id="post-carousel-1">
+                            
                             <div class="w-full h-full flex-shrink-0 snap-center bg-cover bg-center relative post-image-block" style="background-image: url('${AST.post1_img1}'), url('https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1000');"></div>
+                            
                             <div class="w-full h-full flex-shrink-0 snap-center bg-cover bg-center relative post-image-block" style="background-image: url('${AST.post1_img2}'), url('https://images.unsplash.com/photo-1478147424103-62c648833919?w=1000');"></div>
+                            
                             <div class="w-full h-full flex-shrink-0 snap-center bg-cover bg-center relative post-image-block" style="background-image: url('${AST.post1_img3}'), url('https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1000');"></div>
                             
                             <div class="absolute top-3 right-3 bg-black/60 backdrop-blur-md rounded-full px-2.5 py-1 text-[10px] font-bold tracking-widest text-white/90 z-20 shadow-lg border border-white/10" id="carousel-indicator">1/3</div>
+                            
+                            <!-- Giant Double Tap Heart Overlay -->
                             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white opacity-0 pointer-events-none z-30 drop-shadow-2xl" id="giant-heart-anim">
                                 <svg class="w-28 h-28 fill-current text-red-500" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                             </div>
                         </div>
 
+                        <!-- Action Bar -->
                         <div class="px-4 py-3 flex justify-between items-center">
                             <div class="flex gap-4">
                                 <button class="action-btn-heart text-white transition transform active:scale-75 relative">
@@ -211,6 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             </button>
                         </div>
 
+                        <!-- Metadata & Dynamic Expanding Caption -->
                         <div class="px-4">
                             <p class="text-[13px] font-semibold mb-1 cursor-pointer">Liked by <span class="font-bold">shreya</span> and <span class="font-bold">infinite others</span></p>
                             
@@ -238,9 +275,12 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p class="text-sm font-semibold tracking-wider uppercase">You're all caught up</p>
                         <p class="text-xs mt-1">You've seen all memories from this date.</p>
                     </div>
+
                 </div>
 
-                <!-- SCREEN 2: EXPLORE GRID -->
+                <!-- ========================================== -->
+                <!-- 🔍 SCREEN 2: EXPLORE GRID                  -->
+                <!-- ========================================== -->
                 <div id="screen-explore" class="absolute inset-0 overflow-y-auto no-scrollbar opacity-0 pointer-events-none transition-opacity duration-300 z-10 pb-20 bg-black">
                     <div class="p-3 sticky top-0 bg-black/80 backdrop-blur-xl z-20 border-b border-white/5">
                         <div class="bg-zinc-800/80 border border-white/10 h-10 rounded-xl flex items-center px-4 text-white/50 shadow-inner">
@@ -268,7 +308,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
 
-                <!-- SCREEN 3: REELS -->
+                <!-- ========================================== -->
+                <!-- 🎬 SCREEN 3: REELS                         -->
+                <!-- ========================================== -->
                 <div id="screen-reels" class="absolute inset-0 overflow-hidden opacity-0 pointer-events-none transition-opacity duration-300 z-10 bg-black">
                     <div class="relative w-full h-full bg-zinc-900" id="reel-container">
                         <div class="absolute inset-0 bg-cover bg-center opacity-70" style="background-image: url('https://images.unsplash.com/photo-1511895426328-dc8714191300?w=1000');"></div>
@@ -287,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="absolute bottom-20 left-4 right-16 z-30">
                             <div class="flex items-center gap-3 mb-3 cursor-pointer group">
                                 <div class="w-9 h-9 rounded-full border border-white/30 overflow-hidden shadow-lg p-[1px] bg-gradient-to-tr from-pink-500 to-yellow-500">
-                                    <div class="w-full h-full bg-black rounded-full bg-cover bg-center" style="background-image: url('${AST.profileAvatar}'), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=100');"></div>
+                                    <div class="w-full h-full bg-black rounded-full bg-cover bg-center" style="background-image: url('${AST.profileAvatar}');"></div>
                                 </div>
                                 <span class="font-bold text-[15px] text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">1805_Specials</span>
                                 <button class="px-4 py-1.5 rounded-xl border border-white/60 text-[11px] font-bold backdrop-blur-md bg-white/10 hover:bg-white/20 transition uppercase tracking-wider shadow-lg">Follow</button>
@@ -315,19 +357,21 @@ document.addEventListener('DOMContentLoaded', () => {
                                 <span class="text-[12px] font-bold text-white drop-shadow-md">Share</span>
                             </div>
                             <div class="w-[34px] h-[34px] rounded-lg border-2 border-white/60 bg-black mt-2 overflow-hidden spin-record shadow-[0_0_15px_rgba(0,0,0,0.5)] relative" id="reel-record">
-                                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('${AST.profileAvatar}'), url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=50');"></div>
+                                <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('${AST.profileAvatar}');"></div>
                                 <div class="absolute inset-0 rounded-lg border-2 border-black rounded-full scale-50 opacity-50"></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SCREEN 4: PROFILE -->
+                <!-- ========================================== -->
+                <!-- 👤 SCREEN 4: PROFILE                       -->
+                <!-- ========================================== -->
                 <div id="screen-profile" class="absolute inset-0 overflow-y-auto no-scrollbar opacity-0 pointer-events-none transition-opacity duration-300 z-10 pb-20 bg-[#000000]">
                     <div class="sticky top-0 bg-black/90 backdrop-blur-lg border-b border-white/10 p-3 flex justify-between items-center z-20">
                         <div class="flex items-center gap-2 cursor-pointer">
                             <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                            <span class="font-bold text-lg">theunseenlove <svg class="w-3.5 h-3.5 inline text-red-500 ml-0.5 mb-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg></span>
+                            <span class="font-bold text-lg">1805_specials <svg class="w-3.5 h-3.5 inline text-blue-500 ml-0.5 mb-1" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg></span>
                         </div>
                         <div class="flex gap-4">
                             <svg class="w-7 h-7 hover:opacity-70 transition cursor-pointer" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
@@ -337,15 +381,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     <div class="p-5 flex items-center justify-between">
                         <div class="w-[88px] h-[88px] rounded-full border border-white/20 p-[3px] relative bg-zinc-900 shadow-xl cursor-pointer hover:opacity-80 transition">
-                            <div class="w-full h-full rounded-full bg-cover bg-center" style="background-image: url('${AST.profileAvatar}'), url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=150');"></div>
+                            <div class="w-full h-full rounded-full bg-cover bg-center" style="background-image: url('${AST.profileAvatar}');"></div>
                             <div class="absolute bottom-0 right-0 w-7 h-7 bg-blue-500 rounded-full border-2 border-black flex items-center justify-center text-white shadow-lg">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
                             </div>
                         </div>
                         <div class="flex-1 flex justify-around px-2">
                             <div class="flex flex-col items-center cursor-pointer"><span class="font-bold text-xl tracking-tight">2</span><span class="text-[13px] text-white/80">posts</span></div>
-                            <div class="flex flex-col items-center cursor-pointer"><span class="font-bold text-xl tracking-tight">70</span><span class="text-[13px] text-white/80">followers</span></div>
-                            <div class="flex flex-col items-center cursor-pointer"><span class="font-bold text-xl tracking-tight">82</span><span class="text-[13px] text-white/80">following</span></div>
+                            <div class="flex flex-col items-center cursor-pointer"><span class="font-bold text-xl tracking-tight">∞</span><span class="text-[13px] text-white/80">followers</span></div>
+                            <div class="flex flex-col items-center cursor-pointer"><span class="font-bold text-xl tracking-tight">1</span><span class="text-[13px] text-white/80">following</span></div>
                         </div>
                     </div>
 
@@ -378,15 +422,9 @@ document.addEventListener('DOMContentLoaded', () => {
                         </div>
                         <div class="flex flex-col items-center gap-1.5">
                             <div class="w-[64px] h-[64px] rounded-full border border-zinc-700 p-0.5 cursor-pointer hover:opacity-80 transition bg-zinc-900">
-                                <div class="w-full h-full rounded-full bg-cover bg-center" style="background-image: url('${AST.grid[3]}'), url('https://images.unsplash.com/photo-1511895426328-dc8714191300?w=150');"></div>
+                                <div class="w-full h-full rounded-full bg-cover bg-center" style="background-image: url('${AST.post1_img1}'), url('https://images.unsplash.com/photo-1511895426328-dc8714191300?w=150');"></div>
                             </div>
                             <span class="text-[12px] font-medium text-white/80">🥀</span>
-                        </div>
-                        <div class="flex flex-col items-center gap-1.5">
-                            <div class="w-[64px] h-[64px] rounded-full border border-zinc-700 p-0.5 cursor-pointer hover:opacity-80 transition bg-zinc-900">
-                                <div class="w-full h-full rounded-full bg-cover bg-center" style="background-image: url('${AST.grid[4]}'), url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150');"></div>
-                            </div>
-                            <span class="text-[12px] font-medium text-white/80">👁</span>
                         </div>
                     </div>
 
@@ -406,7 +444,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             </div>
 
-            <!-- BOTTOM NAVIGATION (GLASS BLURRED) -->
+            <!-- ========================================== -->
+            <!-- 📱 BOTTOM NAVIGATION (GLASS BLUR)            -->
+            <!-- ========================================== -->
             <div class="absolute bottom-0 w-full h-14 glass-heavy flex justify-around items-center z-[100] pb-safe text-white/60">
                 <button class="ig-nav-btn active text-white p-2" data-target="screen-home">
                     <svg class="w-7 h-7 transition-transform active:scale-90 drop-shadow-lg" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/></svg>
@@ -419,12 +459,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 </button>
                 <button class="ig-nav-btn p-2" data-target="screen-profile">
                     <div class="w-7 h-7 rounded-full border-[1.5px] border-current p-[1px] transition-transform active:scale-90 drop-shadow-lg bg-black">
-                        <div class="w-full h-full rounded-full bg-cover bg-center" style="background-image: url('${AST.profileAvatar}'), url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=50');"></div>
+                        <div class="w-full h-full rounded-full bg-cover bg-center" style="background-image: url('${AST.profileAvatar}');"></div>
                     </div>
                 </button>
             </div>
 
-            <!-- STORY VIEWER OVERLAY -->
+            <!-- ========================================== -->
+            <!-- 🎬 FULLSCREEN STORY VIEWER OVERLAY         -->
+            <!-- ========================================== -->
             <div id="ig-story-viewer" class="absolute inset-0 bg-black z-[20000] flex flex-col opacity-0 pointer-events-none transition-opacity duration-300">
                 <div id="story-bg-blur" class="absolute inset-0 bg-cover bg-center filter blur-3xl opacity-40 scale-110 transition-all duration-300" style="background-image: url('${AST.story1}');"></div>
                 
@@ -468,7 +510,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             </div>
 
-            <!-- 💬 TOUCH-PHYSICS COMMENT BOTTOM SHEET -->
+            <!-- ========================================== -->
+            <!-- 💬 TOUCH-PHYSICS COMMENT BOTTOM SHEET      -->
+            <!-- ========================================== -->
             <div id="comment-sheet" class="fixed inset-x-0 bottom-0 h-[70dvh] bg-[#1a1a1a] rounded-t-3xl z-[30000] flex flex-col sheet-closed border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] md:w-[440px] md:right-0 md:left-auto">
                 <div class="w-full pt-3 pb-2 flex justify-center cursor-grab active:cursor-grabbing" id="sheet-drag-handle">
                     <div class="w-10 h-1 rounded-full bg-white/30"></div>
@@ -516,6 +560,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // ========================================================================
     // 🧠 LOGIC & INTERACTION BINDING
     // ========================================================================
+    
+    // Core Elements
     const appPanel = document.getElementById('ig-app-panel');
     const closeBtn = document.getElementById('ig-close-btn');
     const navBtns = document.querySelectorAll('.ig-nav-btn');
@@ -526,18 +572,25 @@ document.addEventListener('DOMContentLoaded', () => {
         'screen-profile': document.getElementById('screen-profile')
     };
 
-    // ✧ FIXED GLOBAL FUNCTIONS (Called from index.html)
+    // 1. ROUTER EXPOSURE
     window.openInstagramPanel = function() {
         if(appPanel) appPanel.classList.replace('translate-x-full', 'translate-x-0');
     };
-
     window.closeInstagramPanel = function() {
         if(appPanel) appPanel.classList.replace('translate-x-0', 'translate-x-full');
     };
-
     if (closeBtn) closeBtn.addEventListener('click', window.closeInstagramPanel);
 
-    // Bottom Navigation Logic
+    // 2. GLOBAL EVENT DELEGATION LISTENER
+    // This perfectly connects the click from the morphing box directly to this file
+    document.addEventListener('click', (e) => {
+        if (e.target && e.target.tagName === 'P' && e.target.textContent.trim() === 'Our first date') {
+            e.stopPropagation();
+            window.openInstagramPanel();
+        }
+    });
+
+    // 3. BOTTOM NAVIGATION SWITCHER
     const reelsVideo = document.getElementById('reels-video');
     const reelRecord = document.getElementById('reel-record');
 
@@ -566,7 +619,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (targetId === 'screen-reels' && reelsVideo) {
                 reelsVideo.classList.remove('hidden');
-                reelsVideo.play().catch(e => console.log("Video requires interaction first"));
+                reelsVideo.play().catch(e => console.log("Video requires interaction first:", e));
                 if(reelRecord) reelRecord.classList.remove('spin-paused');
             } else if (reelsVideo) {
                 reelsVideo.pause();
@@ -575,7 +628,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Carousel Pagination Logic
+    // 4. CAROUSEL PAGINATION LOGIC
     const carousel = document.getElementById('post-carousel-1');
     const dots = document.getElementById('carousel-dots');
     const indicator = document.getElementById('carousel-indicator');
@@ -583,7 +636,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (carousel && dots && indicator) {
         carousel.addEventListener('scroll', () => {
             const scrollPercent = carousel.scrollLeft / (carousel.scrollWidth - carousel.clientWidth);
-            const activeIndex = Math.round(scrollPercent * 2);
+            const activeIndex = Math.round(scrollPercent * 2); 
             
             Array.from(dots.children).forEach((dot, idx) => {
                 if (idx === activeIndex) {
@@ -593,12 +646,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
             
-            // Clean syntax injection here!
             indicator.innerText = `${activeIndex + 1}/3`;
         });
     }
 
-    // Double Tap Physics
+    // 5. DOUBLE-TAP TO LIKE PHYSICS
     const postBlocks = document.querySelectorAll('.post-image-block');
     const heartAnim = document.getElementById('giant-heart-anim');
     const heartBtn = document.querySelector('.action-btn-heart');
@@ -641,7 +693,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Expandable Text
+    // 6. EXPANDABLE TEXT ('...more')
     const moreBtn = document.getElementById('caption-more-btn');
     const captionShort = document.getElementById('caption-short');
     const captionFull = document.getElementById('caption-full');
@@ -653,7 +705,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Touch Physics: Bottom Sheet
+    // 7. TOUCH PHYSICS: COMMENT BOTTOM SHEET
     const commentBtns = document.querySelectorAll('.action-btn-comment');
     const sheet = document.getElementById('comment-sheet');
     const backdrop = document.getElementById('sheet-backdrop');
@@ -684,14 +736,13 @@ document.addEventListener('DOMContentLoaded', () => {
         handle.addEventListener('touchstart', (e) => {
             startY = e.touches[0].clientY;
             isDragging = true;
-            sheet.style.transition = 'none';
+            sheet.style.transition = 'none'; 
         }, { passive: true });
 
         handle.addEventListener('touchmove', (e) => {
             if (!isDragging) return;
             currentY = e.touches[0].clientY - startY;
-            if (currentY > 0) {
-                // Clean syntax injection here!
+            if (currentY > 0) { 
                 sheet.style.transform = `translateY(${currentY}px)`;
             }
         }, { passive: true });
@@ -704,13 +755,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentY > 150) {
                 closeSheet();
             } else {
-                sheet.style.transform = 'translateY(0%)';
+                sheet.style.transform = 'translateY(0%)'; 
             }
             currentY = 0;
         });
     }
 
-    // Stateful Story Viewer
+    // 8. STATEFUL STORY VIEWER
     const storyData = [
         { title: "Arrival", img: AST.story1 },
         { title: "Cinepolis", img: AST.story2 },
@@ -737,7 +788,6 @@ document.addEventListener('DOMContentLoaded', () => {
         currentStoryIdx = idx;
 
         const data = storyData[idx];
-        // Clean syntax injection here!
         if (displayImg) displayImg.style.backgroundImage = `url('${data.img}')`;
         if (bgBlur) bgBlur.style.backgroundImage = `url('${data.img}')`;
         if (displayTitle) displayTitle.innerText = data.title;
