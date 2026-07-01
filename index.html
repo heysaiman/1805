@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="data.js"></script>
 </head>
-<body class="selection:bg-[#d4af37] selection:text-black cursor-crosshair">
+<body class="selection:bg-[#d4af37] selection:text-black cursor-crosshair overflow-x-hidden">
 
     <div class="fixed inset-0 z-0 overflow-hidden" id="environment-layer">
         <img id="bgImage" src="" alt="Background" class="w-full h-full object-cover object-[center_20%] opacity-90 animate-ken-burns" />
@@ -64,129 +64,153 @@
     <script src="script.js"></script>
     <script src="audio.js"></script> 
 
+    <!-- ✧ PIXEL-PERFECT NATIVE-GRADE MOMENTS ENGINE ✧ -->
     <script>
-        // --- EDIT YOUR LIST HERE ---
         const myMoments = [
             "Our first meet",
             "Our first date",
             "Her birthday 2026",
             "His birthday 2026"
         ];
-        // ---------------------------
 
         document.addEventListener('DOMContentLoaded', () => {
             const originalBtn = document.getElementById('moments-magic-btn');
             if (!originalBtn) return;
 
-            let isExpanded = false;
+            // Global State Variables
+            let isAnimating = false;
+            let isOpen = false;
             
-            // Premium blur overlay with GPU flags
+            // 1. Setup the Blur Overlay
             const overlay = document.createElement('div');
-            overlay.className = "fixed inset-0 z-[9990] bg-black/75 backdrop-blur-md opacity-0 pointer-events-none";
-            overlay.style.transition = "opacity 0.8s cubic-bezier(0.32, 0.72, 0, 1)";
+            overlay.className = "fixed inset-0 bg-black/80 backdrop-blur-md pointer-events-none";
+            overlay.style.zIndex = "9990";
+            overlay.style.opacity = "0";
+            overlay.style.transition = "opacity 0.6s ease";
             overlay.style.willChange = "opacity";
-            overlay.style.transform = "translateZ(0)"; 
             document.body.appendChild(overlay);
 
-            const wait = (ms) => new Promise(r => setTimeout(r, ms));
+            // 2. Setup the "Ghost" Anchor (Maintains layout structure when button moves)
+            const ghostAnchor = document.createElement('div');
+            ghostAnchor.style.display = "none";
+            ghostAnchor.style.visibility = "hidden";
+            ghostAnchor.style.pointerEvents = "none";
+            originalBtn.parentNode.insertBefore(ghostAnchor, originalBtn);
+
+            const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
             originalBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
-                if (isExpanded) return;
-                isExpanded = true;
+                if (isAnimating || isOpen) return;
+                isAnimating = true;
 
-                // 1. Get exact start coordinates in pure pixels
+                // --- STEP 1: CAPTURE EXACT STARTING PIXELS ---
                 const startRect = originalBtn.getBoundingClientRect();
+                const startTop = Math.round(startRect.top);
+                const startLeft = Math.round(startRect.left);
+                const startWidth = Math.round(startRect.width);
+                const startHeight = Math.round(startRect.height);
 
-                // 2. Hide original button immediately
-                originalBtn.style.opacity = '0';
-                originalBtn.style.pointerEvents = 'none';
+                // Configure Ghost Anchor to hold the physical space
+                ghostAnchor.style.width = startWidth + "px";
+                ghostAnchor.style.height = startHeight + "px";
+                ghostAnchor.style.margin = window.getComputedStyle(originalBtn).margin;
+                ghostAnchor.style.display = "block";
 
-                // 3. Setup Hardware-Accelerated Clone
-                const clone = document.createElement('div');
-                clone.innerHTML = originalBtn.innerHTML; 
-                clone.className = originalBtn.className; 
-                clone.classList.remove('hover:-translate-y-1', 'hover:bg-white/10', 'group'); 
-                
-                // Snap clone to exact start pixels
-                clone.style.position = 'fixed';
-                clone.style.top = startRect.top + 'px';
-                clone.style.left = startRect.left + 'px';
-                clone.style.width = startRect.width + 'px';
-                clone.style.height = startRect.height + 'px';
-                clone.style.margin = '0';
-                clone.style.zIndex = '9999';
-                clone.style.display = 'flex';
-                clone.style.alignItems = 'center';
-                clone.style.justifyContent = 'center';
-                clone.style.boxSizing = 'border-box';
-                
-                // FORCE GPU RENDERING for absolute maximum fluidity
-                clone.style.willChange = 'top, left, width, height, border-radius, background-color';
-                clone.style.transform = 'translateZ(0)'; 
-                clone.style.overflow = 'hidden';
-                
-                document.body.appendChild(clone);
+                // Hide original button immediately
+                originalBtn.style.visibility = "hidden";
+                originalBtn.style.opacity = "0";
 
-                // Start overlay fade
+                // Lock Body Scroll to prevent viewport shifting
+                document.body.style.overflow = "hidden";
+
+                // --- STEP 2: CREATE THE GPU-ACCELERATED MORPH BOX ---
+                const morphBox = document.createElement('div');
+                morphBox.style.position = "fixed";
+                morphBox.style.zIndex = "9999";
+                
+                // Set initial pure pixel coordinates matching the button exactly
+                morphBox.style.top = startTop + "px";
+                morphBox.style.left = startLeft + "px";
+                morphBox.style.width = startWidth + "px";
+                morphBox.style.height = startHeight + "px";
+                
+                // Set initial visual styles matching the button
+                morphBox.style.borderRadius = "9999px"; 
+                morphBox.style.background = "rgba(255, 255, 255, 0.05)";
+                morphBox.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+                morphBox.style.backdropFilter = "blur(12px)";
+                
+                // Hardware Acceleration Flags
+                morphBox.style.willChange = "top, left, width, height, border-radius, background-color";
+                morphBox.style.transform = "translateZ(0)"; 
+                morphBox.style.boxSizing = "border-box";
+                morphBox.style.overflow = "hidden";
+                
+                // Setup an inner container for the initial button text (so we can fade it out smoothly)
+                const initialTextWrapper = document.createElement('div');
+                initialTextWrapper.style.position = "absolute";
+                initialTextWrapper.style.inset = "0";
+                initialTextWrapper.style.display = "flex";
+                initialTextWrapper.style.alignItems = "center";
+                initialTextWrapper.style.justifyContent = "center";
+                initialTextWrapper.style.gap = "1rem"; // Match gap-4
+                initialTextWrapper.style.opacity = "1";
+                initialTextWrapper.style.transition = "opacity 0.2s ease-out";
+                initialTextWrapper.innerHTML = originalBtn.innerHTML; 
+                morphBox.appendChild(initialTextWrapper);
+
+                document.body.appendChild(morphBox);
+
+                // --- STEP 3: INITIATE SEQUENCE ---
+                // Fade in overlay
                 overlay.classList.remove('pointer-events-none');
-                overlay.classList.add('opacity-100');
+                overlay.style.opacity = "1";
 
-                // 4. Backspace animation (optimized to run before moving to prevent DOM lag)
-                const spans = Array.from(clone.querySelectorAll('span'));
-                const textSpan = spans.find(s => s.innerText.toUpperCase().includes('MOMENTS'));
-                const iconSpan = spans.find(s => s.innerText.includes('✧'));
+                // Wait 1 frame to ensure the DOM registers the initial box placement
+                await new Promise(requestAnimationFrame);
+
+                // Fade out the initial button text inside the morph box
+                initialTextWrapper.style.opacity = "0";
+                await wait(200); 
+
+                // --- STEP 4: CALCULATE EXACT ENDING PIXELS ---
+                // We calculate this right before moving to ensure window size hasn't shifted
+                const targetWidth = Math.round(Math.min(window.innerWidth * 0.9, 380));
+                const targetHeight = 440;
+                const targetTop = Math.round((window.innerHeight - targetHeight) / 2);
+                const targetLeft = Math.round((window.innerWidth - targetWidth) / 2);
+
+                // Apply the butter-smooth Apple transition curve
+                morphBox.style.transition = "top 0.6s cubic-bezier(0.32, 0.72, 0, 1), left 0.6s cubic-bezier(0.32, 0.72, 0, 1), width 0.6s cubic-bezier(0.32, 0.72, 0, 1), height 0.6s cubic-bezier(0.32, 0.72, 0, 1), border-radius 0.6s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.6s ease";
                 
-                if (textSpan) {
-                    let text = textSpan.innerText;
-                    while(text.length > 0) {
-                        text = text.slice(0, -1);
-                        textSpan.innerText = text;
-                        await wait(15); 
-                    }
-                }
-                if (iconSpan) {
-                    iconSpan.style.transition = "opacity 0.2s ease";
-                    iconSpan.style.opacity = "0";
-                    await wait(100);
-                }
-                clone.innerHTML = ""; 
-
-                // 5. Calculate precise end coordinates in pixels (No % math for the browser!)
-                const targetWidth = Math.min(window.innerWidth * 0.9, 360);
-                const targetHeight = 420;
-                const targetTop = (window.innerHeight - targetHeight) / 2;
-                const targetLeft = (window.innerWidth - targetWidth) / 2;
-
-                // 6. Force browser to register start position before applying transitions
-                clone.getBoundingClientRect(); 
-
-                // 7. Apply iOS Spring Curve Transition and execute move
-                clone.style.transition = 'top 0.8s cubic-bezier(0.32, 0.72, 0, 1), left 0.8s cubic-bezier(0.32, 0.72, 0, 1), width 0.8s cubic-bezier(0.32, 0.72, 0, 1), height 0.8s cubic-bezier(0.32, 0.72, 0, 1), border-radius 0.8s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.8s ease';
+                // Execute physical morph (empty box resizing prevents layout stutter)
+                morphBox.style.top = targetTop + "px";
+                morphBox.style.left = targetLeft + "px";
+                morphBox.style.width = targetWidth + "px";
+                morphBox.style.height = targetHeight + "px";
+                morphBox.style.borderRadius = "2rem"; 
+                morphBox.style.background = "rgba(10, 5, 8, 0.85)";
+                morphBox.style.border = "1px solid rgba(252, 243, 215, 0.15)";
                 
-                clone.style.top = targetTop + 'px';
-                clone.style.left = targetLeft + 'px';
-                clone.style.width = targetWidth + 'px';
-                clone.style.height = targetHeight + 'px';
-                clone.style.borderRadius = '2rem';
-                clone.style.padding = '40px 30px';
-                clone.style.background = 'rgba(10, 5, 8, 0.85)';
-                clone.style.border = '1px solid rgba(252, 243, 215, 0.15)';
-                clone.style.flexDirection = 'column';
-                clone.style.justifyContent = 'flex-start';
+                // Wait for the physical resize animation to complete completely
+                await wait(650);
+
+                // Clean up the initial text wrapper now that the box is big
+                initialTextWrapper.remove();
+
+                // --- STEP 5: INJECT AND FADE IN FINAL CONTENT ---
+                const contentContainer = document.createElement('div');
+                contentContainer.style.width = "100%";
+                contentContainer.style.height = "100%";
+                contentContainer.style.display = "flex";
+                contentContainer.style.flexDirection = "column";
+                contentContainer.style.alignItems = "center";
+                contentContainer.style.padding = "40px 30px";
+                contentContainer.style.opacity = "0";
+                contentContainer.style.transition = "opacity 0.4s ease-in";
                 
-                await wait(800); // Wait for perfect morph completion
-
-                // 8. Setup internal content layer (Fades in smoothly)
-                const contentWrapper = document.createElement('div');
-                contentWrapper.style.width = "100%";
-                contentWrapper.style.display = "flex";
-                contentWrapper.style.flexDirection = "column";
-                contentWrapper.style.alignItems = "center";
-                contentWrapper.style.opacity = "0"; 
-                contentWrapper.style.transition = "opacity 0.5s ease";
-                clone.appendChild(contentWrapper);
-
+                // Build Header
                 const title = document.createElement('h3');
                 title.style.color = "#fcf3d7";
                 title.style.fontFamily = "'Playfair Display', serif";
@@ -194,21 +218,22 @@
                 title.style.letterSpacing = "0.3em";
                 title.style.marginBottom = "30px";
                 title.innerText = "✧ MOMENTS";
-                contentWrapper.appendChild(title);
+                contentContainer.appendChild(title);
                 
+                // Build List Container
                 const list = document.createElement('div');
                 list.style.width = "100%";
                 list.style.display = "flex";
                 list.style.flexDirection = "column";
                 list.style.gap = "20px";
-                contentWrapper.appendChild(list);
+                contentContainer.appendChild(list);
 
+                // Build Action Buttons
                 const actions = document.createElement('div');
                 actions.style.display = "flex";
                 actions.style.justifyContent = "space-between";
                 actions.style.width = "100%";
                 actions.style.marginTop = "auto";
-                actions.style.paddingTop = "30px";
                 
                 const addBtn = document.createElement('span');
                 addBtn.innerHTML = "+ ADD";
@@ -223,24 +248,21 @@
                 closeBtn.style.fontSize = "12px";
                 closeBtn.style.letterSpacing = "0.2em";
                 closeBtn.style.cursor = "pointer";
-                closeBtn.style.transition = "color 0.3s";
+                closeBtn.style.padding = "10px"; // Larger touch target
+                closeBtn.style.margin = "-10px";
                 
-                // Add tiny hover effect to close button
-                closeBtn.onmouseenter = () => closeBtn.style.color = "#fff";
-                closeBtn.onmouseleave = () => closeBtn.style.color = "rgba(255,255,255,0.5)";
-
                 actions.appendChild(addBtn);
                 actions.appendChild(closeBtn);
-                contentWrapper.appendChild(actions);
-
-                // Fade in wrapper
-                requestAnimationFrame(() => {
-                    contentWrapper.style.opacity = "1";
-                });
+                contentContainer.appendChild(actions);
                 
+                // Append content and fade it in
+                morphBox.appendChild(contentContainer);
+                await new Promise(requestAnimationFrame);
+                contentContainer.style.opacity = "1";
+
                 await wait(200);
 
-                // 9. Typewriter loop
+                // --- STEP 6: TYPEWRITER EFFECT ---
                 for (let item of myMoments) {
                     let p = document.createElement('p');
                     p.style.fontFamily = "'Montserrat', sans-serif";
@@ -256,46 +278,76 @@
 
                     for (let char of item) {
                         p.innerHTML += char;
-                        await wait(25);
+                        await wait(20);
                     }
-                    await wait(80);
+                    await wait(50);
                 }
 
-                // 10. REVERSE LOGIC (Hardware Accelerated Close)
+                isAnimating = false;
+                isOpen = true;
+
+                // --- REVERSE SEQUENCE (CLOSE) ---
                 closeBtn.onclick = async (e) => {
                     e.stopPropagation();
-                    
-                    // Fade out inner text quickly
-                    contentWrapper.style.opacity = "0";
+                    if (isAnimating) return;
+                    isAnimating = true;
+
+                    // 1. Fade out modal content
+                    contentContainer.style.opacity = "0";
                     await wait(300);
-                    clone.innerHTML = ""; 
+                    contentContainer.remove();
+
+                    // 2. Re-create the initial text wrapper (invisible for now)
+                    const returnTextWrapper = document.createElement('div');
+                    returnTextWrapper.style.position = "absolute";
+                    returnTextWrapper.style.inset = "0";
+                    returnTextWrapper.style.display = "flex";
+                    returnTextWrapper.style.alignItems = "center";
+                    returnTextWrapper.style.justifyContent = "center";
+                    returnTextWrapper.style.gap = "1rem"; 
+                    returnTextWrapper.style.opacity = "0";
+                    returnTextWrapper.style.transition = "opacity 0.3s ease-in";
+                    returnTextWrapper.innerHTML = originalBtn.innerHTML; 
+                    morphBox.appendChild(returnTextWrapper);
+
+                    // 3. Get exact current pixel location of the Ghost Anchor
+                    const returnRect = ghostAnchor.getBoundingClientRect();
+                    const returnTop = Math.round(returnRect.top);
+                    const returnLeft = Math.round(returnRect.left);
+                    const returnWidth = Math.round(returnRect.width);
+                    const returnHeight = Math.round(returnRect.height);
+
+                    // Fade out the dark background blur
+                    overlay.style.opacity = "0";
+
+                    // 4. Execute physical morph back to anchor pixels
+                    morphBox.style.top = returnTop + "px";
+                    morphBox.style.left = returnLeft + "px";
+                    morphBox.style.width = returnWidth + "px";
+                    morphBox.style.height = returnHeight + "px";
+                    morphBox.style.borderRadius = "9999px"; 
+                    morphBox.style.background = "rgba(255, 255, 255, 0.05)";
+                    morphBox.style.border = "1px solid rgba(255, 255, 255, 0.1)";
                     
-                    // Recalculate original button location in pure pixels (in case of scrolling)
-                    const endRect = originalBtn.getBoundingClientRect();
+                    await wait(450); // Wait for mostly closed before fading text in
 
-                    // Fade out background blur
-                    overlay.classList.remove('opacity-100');
-                    overlay.classList.add('opacity-0');
-
-                    // Morph clone back to start position pixels
-                    clone.style.top = endRect.top + 'px';
-                    clone.style.left = endRect.left + 'px';
-                    clone.style.width = endRect.width + 'px';
-                    clone.style.height = endRect.height + 'px';
-                    clone.style.borderRadius = '9999px'; 
-                    clone.style.padding = '0';
-                    clone.style.background = 'rgba(255, 255, 255, 0.05)'; 
-                    clone.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    // Fade the button text back in as it settles
+                    returnTextWrapper.style.opacity = "1";
                     
-                    await wait(800); 
+                    await wait(200);
 
-                    // Delete clone and pop real button back in
-                    clone.remove();
-                    originalBtn.style.opacity = '1';
-                    originalBtn.style.pointerEvents = 'auto';
+                    // 5. Seamlessly swap morph box for the real original button
+                    morphBox.remove();
+                    originalBtn.style.visibility = "visible";
+                    originalBtn.style.opacity = "1";
+                    ghostAnchor.style.display = "none";
 
+                    // Cleanup states
                     overlay.classList.add('pointer-events-none');
-                    isExpanded = false;
+                    document.body.style.overflow = ""; // Unlock scroll
+                    
+                    isAnimating = false;
+                    isOpen = false;
                 };
             });
         });
