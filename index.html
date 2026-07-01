@@ -60,7 +60,219 @@
         </div>
     </div>
 
-    <script src="script.js"></script>    <script src="script.js"></script>
+    <script src="script.js"></script>
     <script src="audio.js"></script> 
+
+    <script>
+        // --- EDIT YOUR LIST HERE ---
+        const myMoments = [
+            "Our first meet",
+            "Our first date",
+            "Her birthday 2026",
+            "His birthday 2026"
+        ];
+        // ---------------------------
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Find the button without changing HTML
+            const buttons = Array.from(document.querySelectorAll('button'));
+            const momentsBtn = buttons.find(btn => btn.innerText.includes('Moments'));
+            if (!momentsBtn) return;
+
+            let isExpanded = false;
+            let originalHTML = momentsBtn.innerHTML; 
+            
+            // Create cinematic blur backdrop
+            const overlay = document.createElement('div');
+            overlay.className = "fixed inset-0 z-[40] bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-700";
+            document.body.appendChild(overlay);
+
+            // Create a ghost placeholder to prevent layout glitches
+            const placeholder = document.createElement('div');
+            placeholder.style.display = "none";
+            momentsBtn.parentNode.insertBefore(placeholder, momentsBtn);
+
+            const wait = (ms) => new Promise(r => setTimeout(r, ms));
+
+            momentsBtn.addEventListener('click', async (e) => {
+                e.preventDefault();
+                if (isExpanded) return;
+                isExpanded = true;
+
+                const rect = momentsBtn.getBoundingClientRect();
+                
+                // Show placeholder to hold space
+                placeholder.style.width = rect.width + "px";
+                placeholder.style.height = rect.height + "px";
+                placeholder.style.display = "block";
+
+                // Prepare button to morph
+                momentsBtn.style.position = "fixed";
+                momentsBtn.style.top = rect.top + "px";
+                momentsBtn.style.left = rect.left + "px";
+                momentsBtn.style.width = rect.width + "px";
+                momentsBtn.style.height = rect.height + "px";
+                momentsBtn.style.margin = "0";
+                momentsBtn.style.zIndex = "50";
+                momentsBtn.style.transition = "all 0.8s cubic-bezier(0.25, 1, 0.5, 1)";
+                momentsBtn.style.overflow = "hidden";
+                momentsBtn.classList.remove('hover:-translate-y-1', 'hover:bg-white/10');
+
+                // Fade in background dimming
+                overlay.classList.remove('pointer-events-none');
+                overlay.classList.add('opacity-100');
+
+                // Erase text (Backspace animation)
+                const spans = Array.from(momentsBtn.querySelectorAll('span'));
+                const textSpan = spans.find(s => s.innerText.trim().toUpperCase() === 'MOMENTS');
+                const iconSpan = spans.find(s => s.innerText.includes('✧'));
+                
+                if (textSpan) {
+                    let text = textSpan.innerText;
+                    while(text.length > 0) {
+                        text = text.slice(0, -1);
+                        textSpan.innerText = text;
+                        await wait(25);
+                    }
+                }
+                if (iconSpan) {
+                    iconSpan.style.transition = "opacity 0.3s";
+                    iconSpan.style.opacity = "0";
+                    await wait(200);
+                }
+                momentsBtn.innerHTML = ""; 
+
+                // Morph shape to center screen
+                momentsBtn.style.top = "50%";
+                momentsBtn.style.left = "50%";
+                momentsBtn.style.transform = "translate(-50%, -50%)";
+                momentsBtn.style.width = "90%";
+                momentsBtn.style.maxWidth = "360px";
+                momentsBtn.style.height = "420px"; 
+                momentsBtn.style.borderRadius = "2rem";
+                momentsBtn.style.padding = "40px 30px";
+                momentsBtn.style.background = "rgba(10, 5, 8, 0.85)";
+                momentsBtn.style.border = "1px solid rgba(252, 243, 215, 0.15)";
+                momentsBtn.style.flexDirection = "column";
+                momentsBtn.style.alignItems = "center";
+                momentsBtn.style.justifyContent = "flex-start";
+                
+                await wait(800);
+
+                // Setup internal content
+                const contentWrapper = document.createElement('div');
+                contentWrapper.style.width = "100%";
+                contentWrapper.style.display = "flex";
+                contentWrapper.style.flexDirection = "column";
+                contentWrapper.style.alignItems = "center";
+                momentsBtn.appendChild(contentWrapper);
+
+                const title = document.createElement('h3');
+                title.style.color = "#fcf3d7";
+                title.style.fontFamily = "'Playfair Display', serif";
+                title.style.fontSize = "1.2rem";
+                title.style.letterSpacing = "0.3em";
+                title.style.marginBottom = "30px";
+                title.innerText = "✧ MOMENTS";
+                title.style.opacity = "0";
+                title.style.transition = "opacity 0.5s";
+                contentWrapper.appendChild(title);
+                
+                setTimeout(() => title.style.opacity = "1", 50);
+                await wait(400);
+
+                const list = document.createElement('div');
+                list.style.width = "100%";
+                list.style.display = "flex";
+                list.style.flexDirection = "column";
+                list.style.gap = "20px";
+                contentWrapper.appendChild(list);
+
+                // Typewriter loop for list
+                for (let item of myMoments) {
+                    let p = document.createElement('p');
+                    p.style.fontFamily = "'Montserrat', sans-serif";
+                    p.style.fontWeight = "300";
+                    p.style.color = "rgba(255,255,255,0.9)";
+                    p.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
+                    p.style.paddingBottom = "5px";
+                    p.style.fontSize = "14px";
+                    p.style.width = "100%";
+                    p.style.textAlign = "center";
+                    p.style.letterSpacing = "0.05em";
+                    list.appendChild(p);
+
+                    for (let char of item) {
+                        p.innerHTML += char;
+                        await wait(30);
+                    }
+                    await wait(100);
+                }
+
+                // Add Actions (+ ADD / CLOSE)
+                const actions = document.createElement('div');
+                actions.style.display = "flex";
+                actions.style.justifyContent = "space-between";
+                actions.style.width = "100%";
+                actions.style.marginTop = "auto";
+                actions.style.paddingTop = "30px";
+                
+                const addBtn = document.createElement('span');
+                addBtn.innerHTML = "+ ADD";
+                addBtn.style.color = "#10b981"; 
+                addBtn.style.fontSize = "12px";
+                addBtn.style.letterSpacing = "0.2em";
+                addBtn.style.cursor = "pointer";
+
+                const closeBtn = document.createElement('span');
+                closeBtn.innerHTML = "CLOSE ✕";
+                closeBtn.style.color = "rgba(255,255,255,0.5)";
+                closeBtn.style.fontSize = "12px";
+                closeBtn.style.letterSpacing = "0.2em";
+                closeBtn.style.cursor = "pointer";
+
+                actions.appendChild(addBtn);
+                actions.appendChild(closeBtn);
+                
+                actions.style.opacity = "0";
+                actions.style.transition = "opacity 0.5s";
+                contentWrapper.appendChild(actions);
+
+                setTimeout(() => actions.style.opacity = "1", 50);
+
+                // CLOSE LOGIC (Reverse Morph)
+                closeBtn.onclick = async (e) => {
+                    e.stopPropagation();
+                    
+                    contentWrapper.style.opacity = "0";
+                    await wait(400);
+                    momentsBtn.innerHTML = "";
+
+                    const currentRect = placeholder.getBoundingClientRect();
+                    momentsBtn.style.top = currentRect.top + "px";
+                    momentsBtn.style.left = currentRect.left + "px";
+                    momentsBtn.style.transform = "none";
+                    momentsBtn.style.width = currentRect.width + "px";
+                    momentsBtn.style.height = currentRect.height + "px";
+                    momentsBtn.style.borderRadius = "9999px"; 
+                    momentsBtn.style.padding = "0";
+                    momentsBtn.style.background = ""; 
+                    momentsBtn.style.border = "";
+                    
+                    overlay.classList.remove('opacity-100');
+                    overlay.classList.add('opacity-0');
+
+                    await wait(800);
+
+                    momentsBtn.removeAttribute('style');
+                    momentsBtn.classList.add('hover:-translate-y-1', 'hover:bg-white/10');
+                    momentsBtn.innerHTML = originalHTML;
+                    placeholder.style.display = "none";
+                    overlay.classList.add('pointer-events-none');
+                    isExpanded = false;
+                };
+            });
+        });
+    </script>
 </body>
 </html>
