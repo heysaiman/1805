@@ -1,4 +1,4 @@
-// audio.js - Instant-Trigger Engine
+// audio.js - Luxury Cinematic Gatekeeper
 const AudioEngine = {
     init() {
         const musicFile = 'bg-music.mp3';
@@ -6,66 +6,83 @@ const AudioEngine = {
         this.bgm.loop = false;
         this.isPlaying = false;
 
-        // 1. Create the UI Component
-        const container = document.createElement('div');
-        Object.assign(container.style, {
-            position: 'fixed', top: '20px', right: '20px', width: '70px', height: '34px',
-            background: '#1a1a2e', borderRadius: '50px', border: '2px solid #2d2d44',
-            display: 'flex', alignItems: 'center', padding: '3px', cursor: 'pointer',
-            zIndex: '9999', transition: 'background 0.3s ease'
+        // 1. Create the Full-Screen "Enter" Overlay
+        const overlay = document.createElement('div');
+        Object.assign(overlay.style, {
+            position: 'fixed', top: '0', left: '0', width: '100vw', height: '100vh',
+            background: 'radial-gradient(circle, #1a1a2e 0%, #000000 100%)',
+            display: 'flex', justifyContent: 'center', alignItems: 'center',
+            color: 'white', fontSize: '20px', letterSpacing: '8px',
+            zIndex: '10000', cursor: 'pointer', transition: 'opacity 1s ease'
+        });
+        overlay.innerHTML = "ENTER";
+        document.body.appendChild(overlay);
+
+        // 2. Create the Luxury 3D Toggle (Hidden initially)
+        const toggle = document.createElement('div');
+        Object.assign(toggle.style, {
+            position: 'fixed', top: '20px', right: '20px', width: '90px', height: '45px',
+            background: '#222', borderRadius: '50px', border: '1px solid #444',
+            display: 'flex', alignItems: 'center', padding: '4px', cursor: 'pointer',
+            zIndex: '9999', opacity: '0', transition: 'opacity 1s ease, background 0.3s',
+            boxShadow: 'inset 0 4px 6px rgba(0,0,0,0.5), 0 2px 4px rgba(255,255,255,0.1)'
         });
 
         const knob = document.createElement('div');
         Object.assign(knob.style, {
-            width: '28px', height: '28px', background: 'linear-gradient(145deg, #ffffff, #e6e6e6)',
+            width: '37px', height: '37px', background: 'linear-gradient(145deg, #eee, #ccc)',
             borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '12px', transition: 'transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+            fontSize: '18px', transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+            boxShadow: '0 4px 10px rgba(0,0,0,0.4), inset 0 -2px 4px rgba(0,0,0,0.2)'
         });
-        
-        container.appendChild(knob);
-        document.body.appendChild(container);
+        knob.innerHTML = '🔇';
+        toggle.appendChild(knob);
+        document.body.appendChild(toggle);
 
-        // 2. Playback Logic
-        const playMusic = () => {
-            if (this.isPlaying) return;
-            this.bgm.play().then(() => {
+        // 3. Playback Logic
+        const toggleMusic = () => {
+            if (this.isPlaying) {
+                this.bgm.pause();
+                this.isPlaying = false;
+                knob.style.transform = 'translateX(0px)';
+                knob.innerHTML = '🔇';
+                toggle.style.background = '#222';
+            } else {
+                this.bgm.play();
                 this.isPlaying = true;
-                knob.style.transform = 'translateX(36px)';
+                knob.style.transform = 'translateX(45px)';
                 knob.innerHTML = '🔊';
-                container.style.background = '#4e44ce';
-            }).catch(e => console.log("Waiting for user gesture..."));
+                toggle.style.background = '#4e44ce';
+            }
         };
 
-        const stopMusic = () => {
-            this.bgm.pause();
+        // 4. "Enter" Interaction
+        overlay.onclick = () => {
+            this.bgm.play();
+            this.isPlaying = true;
+            
+            // UI Switch to "Playing"
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.style.display = 'none', 1000);
+            toggle.style.opacity = '1';
+            
+            knob.style.transform = 'translateX(45px)';
+            knob.innerHTML = '🔊';
+            toggle.style.background = '#4e44ce';
+        };
+
+        // Auto-reset when music ends
+        this.bgm.addEventListener('ended', () => {
             this.isPlaying = false;
             knob.style.transform = 'translateX(0px)';
             knob.innerHTML = '🔇';
-            container.style.background = '#1a1a2e';
-        };
+            toggle.style.background = '#222';
+        });
 
-        // 3. Listen to ANY interaction on the page (Stardust, scroll, click)
-        const triggerHandler = () => {
-            playMusic();
-            // Remove listeners so it only triggers the first time
-            document.removeEventListener('click', triggerHandler);
-            document.removeEventListener('touchstart', triggerHandler);
-        };
-
-        document.addEventListener('click', triggerHandler);
-        document.addEventListener('touchstart', triggerHandler);
-
-        // 4. Manual Toggle Control
-        container.onclick = (e) => {
+        toggle.onclick = (e) => {
             e.stopPropagation();
-            this.isPlaying ? stopMusic() : playMusic();
+            toggleMusic();
         };
-
-        // Auto-reset
-        this.bgm.addEventListener('ended', stopMusic);
-        
-        // Initial state
-        knob.innerHTML = '🔇';
     }
 };
 
