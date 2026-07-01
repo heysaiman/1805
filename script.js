@@ -1,130 +1,73 @@
-const Engine = {
-    init() {
-        const data = window.websiteData || { mainHeroImage: '', togetherSinceText: 'Together Forever', startDate: '2025-11-30T00:00:00', synopsis: '' };
-        document.getElementById('bgImage').src = data.mainHeroImage;
-        document.getElementById('togetherText').innerText = data.togetherSinceText;
-        this.startDate = new Date(data.startDate);
-        this.startTime = this.startDate.getTime();
-        this.titleHasCounted = false;
-        
-        this.startClock();
-        InteractionManager.init();
-        ParticleSystem.init();
-    },
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>1805 | Our Story</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <script src="data.js"></script>
+</head>
+<body class="selection:bg-[#d4af37] selection:text-black cursor-crosshair">
 
-    startClock() {
-        const update = () => {
-            const nowObj = new Date(); const now = nowObj.getTime(); const diff = now - this.startTime;
-            const daysTotal = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const years = Math.floor(daysTotal / 365); const months = Math.floor((daysTotal % 365) / 30);
-            const weeks = Math.floor(((daysTotal % 365) % 30) / 7); const days = ((daysTotal % 365) % 30) % 7;
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)); const secs = Math.floor((diff % (1000 * 60)) / 1000);
+    <div class="fixed inset-0 z-0 overflow-hidden" id="environment-layer">
+        <img id="bgImage" src="" alt="Background" class="w-full h-full object-cover object-[center_20%] opacity-90 animate-ken-burns" />
+        <div class="cinematic-overlay"></div>
+    </div>
+    
+    <div class="relative z-10 flex flex-col min-h-screen p-6 md:p-12" id="main-ui-layer">
+        <header class="flex justify-between items-center mb-auto reveal-element delay-1">
+            <h1 class="text-3xl md:text-4xl font-playfair font-black tracking-widest drop-shadow-2xl">
+                <span class="text-emerald-500">18</span><span style="color: var(--color-champagne)">05</span>
+            </h1>
+        </header>
 
-            let totalMonths = (nowObj.getFullYear() - this.startDate.getFullYear()) * 12 + (nowObj.getMonth() - this.startDate.getMonth());
-            if (nowObj.getDate() < this.startDate.getDate()) totalMonths--;
+        <main class="max-w-4xl mt-12 mb-auto pointer-events-none relative z-20">
+            <div class="foil-text-container mb-4 reveal-element delay-2">
+                <h2 class="font-playfair font-bold tracking-tighter uppercase flex items-baseline gap-2 md:gap-4 drop-shadow-2xl">
+                    <span id="heroNumber" class="champagne-foil text-[6rem] md:text-[9rem] leading-none">00</span>
+                    <span id="heroLabel" class="champagne-foil text-3xl md:text-5xl tracking-[0.2em] mb-2 md:mb-4">MONTHS</span>
+                </h2>
+            </div>
+            <p id="togetherText" class="text-emerald-400 font-semibold text-xs md:text-lg tracking-[0.6em] uppercase mb-8 drop-shadow-md reveal-element delay-3"></p>
+            <p id="synopsisText" class="text-gray-300 text-base md:text-2xl leading-relaxed mb-12 max-w-2xl drop-shadow-lg font-light reveal-element delay-4"></p>
             
-            let isYears = totalMonths >= 12; let targetNum = isYears ? Math.floor(totalMonths / 12) : totalMonths;
-            let targetLabel = isYears ? `YEAR${Math.floor(totalMonths / 12) > 1 ? 'S' : ''}` : `MONTHS`;
-            let paddedTarget = String(targetNum).padStart(2, '0');
-            
-            const rawSynopsis = window.websiteData.synopsis || '';
-            document.getElementById('synopsisText').innerText = rawSynopsis.replace(/7 months|1 year/i, `${targetNum} ${targetLabel.toLowerCase()}`);
+            <div class="flex flex-wrap gap-5 mb-12 reveal-element delay-5 pointer-events-auto">
+                <button class="relative bg-[#fcf3d7] text-[#0a0508] px-10 py-5 rounded-full font-bold text-xs md:text-sm tracking-[0.2em] uppercase transition-all flex items-center gap-4 hover:-translate-y-1 duration-500 group overflow-hidden shadow-[0_0_25px_rgba(212,175,55,0.3)] hover:shadow-[0_0_50px_rgba(212,175,55,0.7)]">
+                    <span class="text-xl relative z-10 group-hover:scale-125 transition-transform duration-500 text-emerald-700">▶</span> 
+                    <span class="relative z-10">Play Our Story</span>
+                    <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-30 transition-opacity duration-500 z-0"></div>
+                </button>
+                
+                <button style="display: none;" class="luxury-glass text-white px-10 py-5 rounded-full font-bold text-xs md:text-sm tracking-[0.2em] uppercase hover:bg-white/10 transition-all flex items-center gap-4 hover:-translate-y-1 duration-500 group">
+                    <span class="text-[#fcf3d7] text-lg group-hover:rotate-180 transition-transform duration-700">✧</span> 
+                    <span>Moments</span>
+                </button>
 
-            if (!this.titleHasCounted) {
-                this.titleHasCounted = true;
-                document.getElementById('heroLabel').innerText = targetLabel;
-                setTimeout(() => {
-                    let current = 0; const numberEl = document.getElementById('heroNumber');
-                    const rapidCounter = setInterval(() => {
-                        current += 1; numberEl.innerText = String(current).padStart(2, '0');
-                        if (current >= targetNum) {
-                            clearInterval(rapidCounter); numberEl.innerText = paddedTarget; 
-                            numberEl.classList.add('number-pop');
-                            setTimeout(() => numberEl.classList.remove('number-pop'), 400);
-                        }
-                    }, 100); 
-                }, 3900); 
-            } else {
-                document.getElementById('heroNumber').innerText = paddedTarget;
-                document.getElementById('heroLabel').innerText = targetLabel;
-            }
+                <div id="moments-interactive-box">
+                    <div id="moments-text"><span>✧</span> MOMENTS</div>
+                    <ul id="moments-list"></ul>
+                </div>
+            </div>
+        </main>
 
-            const timeUnits = [
-                { label: 'Years', val: years }, { label: 'Months', val: valPad(months) }, { label: 'Weeks', val: valPad(weeks) }, 
-                { label: 'Days', val: valPad(days) }, { label: 'Hours', val: valPad(hours) }, { label: 'Mins', val: valPad(mins) }, { label: 'Secs', val: valPad(secs), isLive: true }
-            ];
+        <div class="luxury-glass rounded-[2.5rem] p-8 md:p-12 w-full max-w-5xl mx-auto mt-4 mb-4 reveal-element delay-5" id="tilt-card">
+            <div class="flex items-center justify-center gap-6 mb-12 transform translate-z-10">
+                <div class="h-[1px] w-12 md:w-32 bg-gradient-to-r from-transparent to-[#fcf3d7]/60"></div>
+                <p class="text-center text-[#fcf3d7] opacity-90 uppercase tracking-[0.6em] text-[10px] md:text-sm font-bold">Time Together</p>
+                <div class="h-[1px] w-12 md:w-32 bg-gradient-to-l from-transparent to-[#fcf3d7]/60"></div>
+            </div>
+            <div class="grid grid-cols-4 md:grid-cols-7 gap-y-10 gap-x-4 justify-center items-center transform translate-z-20" id="countdown-container">
+            </div>
+        </div>
+    </div>
 
-            let html = '';
-            timeUnits.forEach(u => {
-                const style = u.isLive ? 'text-emerald-300 font-medium drop-shadow-[0_0_15px_rgba(52,211,153,0.6)]' : 'text-[#fcf3d7] font-light drop-shadow-[0_5px_15px_rgba(212,175,55,0.25)]';
-                html += `<div class="flex flex-col items-center justify-center"><span class="font-playfair text-5xl md:text-7xl ${style} transition-all duration-300 tracking-wider">${u.val}</span><span class="text-[9px] md:text-xs text-gray-400 mt-4 uppercase tracking-[0.5em] font-semibold opacity-70">${u.label}</span></div>`;
-            });
-            document.getElementById('countdown-container').innerHTML = html;
-        };
-
-        const valPad = (val) => String(val).padStart(2, '0');
-        update(); setInterval(update, 1000);
-    }
-};
-
-const InteractionManager = {
-    init() {
-        this.card = document.getElementById('tilt-card'); this.container = document.getElementById('main-ui-layer');
-        this.container.addEventListener('mousemove', (e) => {
-            let x = (window.innerWidth / 2 - e.pageX) / 50; let y = (window.innerHeight / 2 - e.pageY) / 50;
-            this.card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
-        });
-        this.container.addEventListener('mouseleave', () => this.card.style.transform = `rotateY(0deg) rotateX(0deg)`);
-        window.addEventListener('deviceorientation', (e) => {
-            if (!e.gamma || !e.beta) return;
-            let tiltX = Math.max(-15, Math.min(15, e.gamma / 1.5)); let tiltY = Math.max(-15, Math.min(15, (e.beta - 45) / 1.5)); 
-            this.card.style.transform = `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
-        });
-    }
-};
-
-const ParticleSystem = {
-    lastSpawn: 0, throttle: 25, emojis: ['🤍', '✨', '🤎', '✨'], 
-    init() {
-        this.setupAmbientEnvironment();
-        document.addEventListener('mousemove', (e) => this.spawnMix(e.clientX, e.clientY));
-        document.addEventListener('touchmove', (e) => this.spawnMix(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
-        document.addEventListener('click', (e) => { for(let i=0; i<30; i++) this.spawnMix(e.clientX, e.clientY, true); });
-    },
-    spawnMix(x, y, isBurst = false) {
-        const now = Date.now();
-        if (!isBurst && now - this.lastSpawn < this.throttle) return; 
-        this.lastSpawn = now;
-        const isHeart = Math.random() > 0.65; 
-        this.createParticle(x, y, isHeart, isBurst);
-    },
-    createParticle(x, y, isHeart, isBurst) {
-        const el = document.createElement('div');
-        el.className = `particle ${isHeart ? 'particle-heart' : 'particle-stardust'}`;
-        if (isHeart) { el.innerText = this.emojis[Math.floor(Math.random() * this.emojis.length)]; el.style.setProperty('--size', `${Math.random() * 1.5 + 1}rem`); } 
-        else { el.style.setProperty('--size', `${Math.random() * 6 + 2}px`); }
-        
-        const spread = isBurst ? 150 : 60; const offsetX = (Math.random() - 0.5) * (isBurst ? 40 : 20); const offsetY = (Math.random() - 0.5) * (isBurst ? 40 : 20);
-        el.style.left = `${x + offsetX}px`; el.style.top = `${y + offsetY}px`;
-        
-        const dx = (Math.random() - 0.5) * spread; const dy = (Math.random() - 0.5) * spread - (Math.random() * 100 + 50); 
-        el.style.setProperty('--dx', `${dx}px`); el.style.setProperty('--dy', `${dy}px`);
-        el.style.setProperty('--rot-start', `${Math.random() * 360}deg`); el.style.setProperty('--rot-mid', `${Math.random() * 360 + 180}deg`); el.style.setProperty('--rot-end', `${Math.random() * 720}deg`);
-        
-        const duration = Math.random() * 1.5 + 1.2; el.style.setProperty('--duration', `${duration}s`);
-        document.body.appendChild(el); setTimeout(() => el.remove(), duration * 1000);
-    },
-    setupAmbientEnvironment() {
-        const container = document.getElementById('environment-layer');
-        for(let i=0; i<35; i++) {
-            const orb = document.createElement('div'); orb.className = 'ambient-orb'; orb.style.left = `${Math.random() * 100}vw`;
-            const size = Math.random() * 150 + 50; orb.style.width = `${size}px`; orb.style.height = `${size}px`;
-            orb.style.setProperty('--max-opacity', Math.random() * 0.15 + 0.05);
-            orb.style.animationDuration = `${Math.random() * 20 + 15}s`; orb.style.animationDelay = `${Math.random() * -30}s`;
-            container.appendChild(orb);
-        }
-    }
-};
-
-window.addEventListener('DOMContentLoaded', () => Engine.init());
+    <script src="script.js"></script>
+    <script src="audio.js"></script> 
+    <script src="moments.js?v=4"></script>
+</body>
+</html>
