@@ -1,29 +1,31 @@
-/// audio.js - Direct Play (Bypassing Mobile Volume Locks)
+// audio.js - Button-Triggered Engine
 const AudioEngine = {
     init() {
-        this.bgm = new Audio('bg-music.mp3');
+        const musicFile = 'bg-music.mp3';
+        this.bgm = new Audio(musicFile);
         this.bgm.loop = true;
-        this.isPlaying = false;
-
-        const startPlaying = () => {
-            if (this.isPlaying) return;
-            this.isPlaying = true;
-            
-            // Force play at default hardware volume
-            this.bgm.play().then(() => {
-                console.log("Music unlocked and playing!");
-            }).catch(err => {
-                console.log("Browser blocked play", err);
-                this.isPlaying = false;
-            });
-            
-            document.removeEventListener('click', startPlaying);
-            document.removeEventListener('touchstart', startPlaying);
+        
+        // Create the button dynamically
+        const btn = document.createElement('button');
+        btn.innerText = "Begin";
+        btn.style.position = 'fixed';
+        btn.style.top = '50%';
+        btn.style.left = '50%';
+        btn.style.transform = 'translate(-50%, -50%)';
+        btn.style.padding = '15px 30px';
+        btn.style.background = 'rgba(255, 255, 255, 0.2)';
+        btn.style.color = 'white';
+        btn.style.border = '1px solid white';
+        btn.style.borderRadius = '50px';
+        btn.style.zIndex = '9999';
+        btn.style.cursor = 'pointer';
+        
+        btn.onclick = () => {
+            this.bgm.play();
+            btn.style.display = 'none'; // Hide button after clicking
         };
-
-        // Listen for the absolute first interaction
-        document.addEventListener('click', startPlaying, { once: true });
-        document.addEventListener('touchstart', startPlaying, { once: true });
+        
+        document.body.appendChild(btn);
     }
 };
 
