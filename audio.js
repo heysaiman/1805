@@ -1,64 +1,68 @@
     (function() {
-    // 1. Force removal of ALL old elements
-    const old = document.getElementById('vinyl-player-root') || document.getElementById('vinyl-studio-box');
-    if (old) old.remove();
+    // 1. Remove anything currently on the page
+    const existing = document.getElementById('vinyl-player-ui');
+    if (existing) existing.remove();
 
-    // 2. Ultra-Compact, Anchored Styles
+    // 2. Define Styles (Unified container)
     const style = document.createElement('style');
     style.innerHTML = `
-        #vinyl-studio-box { 
+        #vinyl-player-ui { 
             position: fixed; top: 15px; right: 15px; z-index: 999999 !important;
-            background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
-            padding: 8px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2);
+            width: 60px; height: 60px;
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 12px;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            overflow: hidden; /* This keeps the pin inside the box */
         }
-        /* The Disc */
-        #vinyl-disc {
-            width: 45px; height: 45px; border-radius: 50%;
-            background: radial-gradient(circle, #222 20%, #000 50%, #222 100%);
-            border: 2px solid #111; cursor: pointer; position: relative;
-            display: flex; align-items: center; justify-content: center;
-        }
-        #vinyl-label { width: 15px; height: 15px; border-radius: 50%; background: #c62828; }
         
-        /* The Pin (Anchored to the box) */
-        #tonearm {
-            width: 40px; height: 4px; background: linear-gradient(to right, #ccc, #fff);
-            position: absolute; top: 10px; right: 10px;
-            transform-origin: 100% 0%; transform: rotate(45deg);
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 10; border-radius: 2px;
+        #vinyl-record {
+            width: 45px; height: 45px; border-radius: 50%;
+            background: radial-gradient(circle, #222 30%, #000 50%, #222 100%);
+            border: 2px solid #000; box-shadow: inset 0 0 5px #333;
+            transition: transform 0.5s ease;
         }
-        .is-playing { transform: rotate(15deg) !important; }
+
+        #vinyl-pin {
+            position: absolute; top: 5px; right: 5px;
+            width: 30px; height: 4px; background: linear-gradient(to right, #ccc, #fff);
+            transform-origin: 100% 50%; transform: rotate(45deg);
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-radius: 2px; z-index: 10;
+        }
+
+        .playing-pin { transform: rotate(15deg) !important; }
         .spin { animation: spin 3s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     `;
     document.head.appendChild(style);
 
-    // 3. Inject Structure
-    const root = document.createElement('div');
-    root.id = 'vinyl-studio-box';
-    root.innerHTML = `<div id="tonearm"></div><div id="vinyl-disc"><div id="vinyl-label"></div></div>`;
-    document.body.appendChild(root);
+    // 3. Create Structure
+    const player = document.createElement('div');
+    player.id = 'vinyl-player-ui';
+    player.innerHTML = `
+        <div id="vinyl-pin"></div>
+        <div id="vinyl-record"></div>
+    `;
+    document.body.appendChild(player);
 
-    // 4. Logic
+    // 4. Audio Logic
     const audio = new Audio('bg-music.mp3');
     audio.loop = true;
-    const disc = document.getElementById('vinyl-disc');
-    const arm = document.getElementById('tonearm');
+    const record = document.getElementById('vinyl-record');
+    const pin = document.getElementById('vinyl-pin');
     let playing = false;
 
-    root.onclick = () => {
+    player.onclick = () => {
         if (!playing) {
-            audio.play().catch(e => console.log("Tap required"));
-            disc.classList.add('spin');
-            arm.classList.add('is-playing');
+            audio.play().catch(e => console.log("Interaction required"));
+            record.classList.add('spin');
+            pin.classList.add('playing-pin');
             playing = true;
         } else {
             audio.pause();
-            disc.classList.remove('spin');
-            arm.classList.remove('is-playing');
+            record.classList.remove('spin');
+            pin.classList.remove('playing-pin');
             playing = false;
         }
     };
