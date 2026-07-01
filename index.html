@@ -247,9 +247,14 @@
         </div>
     </div>
 
+    <!-- ✧ INSTAGRAM PORTAL (HOOK) ✧ -->
+    <div id="instagram-portal"></div>
+
     <!-- MAIN APP ENGINE SCRIPTS -->
     <script src="script.js"></script>
     <script src="audio.js"></script> 
+    <!-- ✧ THIS RUNS THE INSTAGRAM APP ✧ -->
+    <script src="first-date.js"></script>
 
     <!-- ✧ PIXEL-PERFECT NATIVE-GRADE MOMENTS ENGINE ✧ -->
     <script>
@@ -361,6 +366,7 @@
                     morphBox.style.border = "1px solid rgba(252, 243, 215, 0.15)";
                     
                     await wait(650);
+
                     initialTextWrapper.remove();
 
                     const contentContainer = document.createElement('div');
@@ -436,7 +442,7 @@
                         p.style.cursor = "pointer";
                         p.className = "hover:text-emerald-400 active:scale-[0.98] transition-all duration-200";
 
-                        // The Bulletproof Click Trigger!
+                        // The Bulletproof Click Trigger for Netflix!
                         if (item === "Our first meet") {
                             p.addEventListener('click', (e) => {
                                 e.stopPropagation();
@@ -444,6 +450,16 @@
                                 if(panel) {
                                     panel.classList.remove('translate-x-full');
                                     panel.classList.add('translate-x-0');
+                                }
+                            });
+                        }
+                        
+                        // ✧ NEW TRIGGER: OUR FIRST DATE (INSTAGRAM) ✧
+                        if (item === "Our first date") {
+                            p.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                if(typeof window.openInstagramPanel === 'function') {
+                                    window.openInstagramPanel();
                                 }
                             });
                         }
@@ -465,10 +481,16 @@
                         if (isAnimating) return;
                         isAnimating = true;
 
+                        // Close Netflix Panel too if it's open
                         const panel = document.getElementById('netflix-panel');
                         if(panel) {
                             panel.classList.remove('translate-x-0');
                             panel.classList.add('translate-x-full');
+                        }
+                        
+                        // ✧ CLOSE INSTAGRAM SAFELY ✧
+                        if(typeof window.closeInstagramPanel === 'function') {
+                            window.closeInstagramPanel();
                         }
 
                         contentContainer.style.opacity = "0";
@@ -504,7 +526,9 @@
                         morphBox.style.border = "1px solid rgba(255, 255, 255, 0.1)";
                         
                         await wait(450);
+
                         returnTextWrapper.style.opacity = "1";
+                        
                         await wait(200);
 
                         morphBox.remove();
@@ -521,7 +545,7 @@
                 });
             }
             
-            // --- 2. NETFLIX PANEL & CHAPTER EXPANSION LOGIC ---
+            // --- 2. NETFLIX PANEL CONTROLS ---
             const netflixBack = document.getElementById('netflix-back');
             const netflixFavorite = document.getElementById('netflix-favorite');
             const heartSvg = document.getElementById('heart-icon-svg');
