@@ -38,9 +38,6 @@
         /* Feed Loading Animations */
         @keyframes fadeUpIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
         .animate-fade-up { animation: fadeUpIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
-        .delay-100 { animation-delay: 100ms; }
-        .delay-200 { animation-delay: 200ms; }
-        .delay-300 { animation-delay: 300ms; }
 
         /* Cinematic Double-Tap Heart Burst */
         @keyframes heartBurst {
@@ -118,7 +115,6 @@
                     <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-30 transition-opacity duration-500 z-0"></div>
                 </button>
                 
-                <!-- THE TRIGGER BUTTON -->
                 <button id="moments-magic-btn" class="luxury-glass text-white px-10 py-5 rounded-full font-bold text-xs md:text-sm tracking-[0.2em] uppercase hover:bg-white/10 transition-all flex items-center gap-4 hover:-translate-y-1 duration-500 group">
                     <span class="text-[#fcf3d7] text-lg group-hover:rotate-180 transition-transform duration-700">✧</span> 
                     <span>Moments</span>
@@ -215,11 +211,10 @@
             </div>
 
             <div class="space-y-4">
-                <!-- Netflix Chapter 1 -->
                 <div class="chapter-card relative flex gap-4 items-start p-4 rounded-2xl transition-all duration-500 group border border-transparent cursor-pointer hover:bg-white/5">
                     <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/0 to-[#d4af37]/0 transition-opacity duration-500 opacity-0 chapter-glow z-0"></div>
                     <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center z-10 mt-1 shadow-lg">
-                        <div class="absolute inset-0 bg-cover bg-center opacity-50 group-hover:scale-110 transition-transform duration-700" style="background-image: url('1000115439.jpg');"></div>
+                        <div class="absolute inset-0 bg-cover bg-center opacity-50 group-hover:scale-110 transition-transform duration-700" style="background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=120');"></div>
                         <div class="absolute inset-0 bg-black/40"></div>
                         <svg class="w-6 h-6 text-white opacity-80" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
                     </div>
@@ -240,7 +235,6 @@
                     </div>
                 </div>
 
-                <!-- Netflix Chapter 2 -->
                 <div class="chapter-card relative flex gap-4 items-start p-4 rounded-2xl transition-all duration-500 group border border-transparent cursor-pointer hover:bg-white/5">
                     <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/0 to-[#d4af37]/0 transition-opacity duration-500 opacity-0 chapter-glow z-0"></div>
                     <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center z-10 mt-1 shadow-lg">
@@ -265,7 +259,6 @@
                     </div>
                 </div>
 
-                <!-- Netflix Chapter 3 -->
                 <div class="chapter-card relative flex gap-4 items-start p-4 rounded-2xl transition-all duration-500 group border border-transparent cursor-pointer hover:bg-white/5">
                     <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-emerald-500/0 to-[#d4af37]/0 transition-opacity duration-500 opacity-0 chapter-glow z-0"></div>
                     <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center z-10 mt-1 shadow-lg">
@@ -295,11 +288,11 @@
 
 
     <!-- ========================================================================= -->
-    <!-- ✧ THE MONOLITHIC INSTAGRAM PANEL (OUR FIRST DATE) ✧                       -->
+    <!-- ✧ INSTAGRAM PANEL (OUR FIRST DATE) ✧                                      -->
     <!-- ========================================================================= -->
     <div id="ig-app-panel" class="fixed top-0 right-0 w-full md:w-[440px] h-[100dvh] bg-[#000000] z-[10000] transform translate-x-full transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden flex flex-col border-l border-white/10 shadow-[0_0_80px_rgba(0,0,0,0.9)] text-white font-sans">
         
-        <!-- ✧ TOP NAVIGATION BAR ✧ -->
+        <!-- TOP NAVIGATION BAR -->
         <div class="h-14 flex items-center justify-between px-4 absolute w-full top-0 z-30 glass-nav-top transition-transform duration-300">
             <div class="flex items-center gap-3">
                 <button id="ig-close-btn" class="text-white/80 hover:text-white transition active:scale-90 cursor-pointer p-1">
@@ -322,13 +315,11 @@
             </div>
         </div>
 
-        <!-- ✧ SCREENS VIEWPORT ✧ -->
         <div id="ig-screens" class="flex-1 relative bg-[#000000] pt-14">
             
             <!-- 📱 SCREEN 1: HOME FEED -->
             <div id="screen-home" class="absolute inset-0 pt-14 overflow-y-auto no-scrollbar pb-24 transition-opacity duration-300 opacity-100 z-10">
                 
-                <!-- Stories Tray -->
                 <div class="flex gap-4 overflow-x-auto no-scrollbar pt-3 pb-4 px-4 border-b border-white/10 relative">
                     <div class="flex flex-col items-center gap-1.5 cursor-pointer relative shrink-0">
                         <div class="w-[70px] h-[70px] rounded-full overflow-hidden border border-white/20 bg-zinc-900 relative">
@@ -378,7 +369,7 @@
                     </div>
                 </div>
 
-                <!-- 🟢 FEED POST 1 (Carousel) -->
+                <!-- Feed Post 1 -->
                 <article class="pt-4 pb-8 border-b border-white/10 animate-fade-up">
                     <div class="flex items-center justify-between px-4 mb-3">
                         <div class="flex items-center gap-3">
@@ -395,7 +386,6 @@
                         <button class="text-white/80 hover:text-white p-1"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm-6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm12 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg></button>
                     </div>
                     
-                    <!-- Post Media: Scroll-Snap Carousel -->
                     <div class="relative w-full aspect-[4/5] bg-zinc-900 flex snap-x-mandatory shadow-inner" id="post-carousel-1">
                         <div class="w-full h-full flex-shrink-0 snap-center bg-cover bg-center relative post-image-block loading-shimmer" style="background-image: url('20250425_184147(1).jpg'), url('1782918701094.jpeg');"></div>
                         <div class="w-full h-full flex-shrink-0 snap-center bg-cover bg-center relative post-image-block loading-shimmer" style="background-image: url('1000115476.jpg');"></div>
@@ -403,13 +393,11 @@
                         
                         <div class="absolute top-4 right-4 bg-black/70 backdrop-blur-md rounded-full px-3 py-1.5 text-[11px] font-bold tracking-widest text-white z-20 shadow-xl border border-white/20" id="carousel-indicator">1/3</div>
                         
-                        <!-- Giant Double Tap Heart Overlay -->
                         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white opacity-0 pointer-events-none z-30 drop-shadow-[0_0_50px_rgba(220,38,38,1)]" id="giant-heart-anim">
                             <svg class="w-32 h-32 fill-current text-red-600" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
                         </div>
                     </div>
 
-                    <!-- Action Bar -->
                     <div class="px-4 py-3 flex justify-between items-center">
                         <div class="flex gap-5">
                             <button class="ig-action-heart text-white transition transform active:scale-75 relative">
@@ -434,7 +422,6 @@
                         </button>
                     </div>
 
-                    <!-- Metadata & Caption -->
                     <div class="px-4">
                         <p class="text-[13px] font-semibold mb-1.5 cursor-pointer flex items-center gap-1.5">
                             <span class="w-4 h-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 block border border-black"></span>
@@ -466,7 +453,7 @@
                 </article>
 
                 <!-- 🟢 FEED POST 2 (Single Image) -->
-                <article class="pt-4 pb-8 border-b border-white/10 animate-fade-up delay-100">
+                <article class="pt-4 pb-8 border-b border-white/10 animate-fade-up">
                     <div class="flex items-center justify-between px-4 mb-3">
                         <div class="flex items-center gap-3">
                             <div class="w-9 h-9 rounded-full ig-gradient p-[2px] cursor-pointer hover:scale-105 transition">
@@ -482,7 +469,6 @@
                         <button class="text-white/80 hover:text-white p-1"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm-6 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm12 0a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg></button>
                     </div>
                     
-                    <!-- Post Media -->
                     <div class="relative w-full aspect-[4/5] bg-zinc-900 post-image-block cursor-pointer">
                         <div class="absolute inset-0 bg-cover bg-center loading-shimmer" style="background-image: url('1000115474.jpg');"></div>
                         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white opacity-0 pointer-events-none z-30 drop-shadow-[0_0_50px_rgba(220,38,38,1)] giant-heart-anim-2">
@@ -490,7 +476,6 @@
                         </div>
                     </div>
 
-                    <!-- Action Bar -->
                     <div class="px-4 py-3 flex justify-between items-center">
                         <div class="flex gap-5">
                             <button class="ig-action-heart text-white transition transform active:scale-75 relative">
@@ -508,7 +493,6 @@
                         </button>
                     </div>
 
-                    <!-- Metadata -->
                     <div class="px-4">
                         <p class="text-[13px] font-semibold mb-1.5 cursor-pointer">8,492 likes</p>
                         <div class="text-[13px] text-gray-100 leading-normal">
@@ -536,16 +520,13 @@
                     </div>
                 </div>
                 
-                <!-- Massive 21-Block Grid Layout mimicking real explore page -->
                 <div class="grid grid-cols-3 gap-[2px]">
-                    <!-- Row 1 -->
                     <div class="aspect-square bg-zinc-900 bg-cover bg-center cursor-pointer hover:brightness-75 transition-all loading-shimmer" style="background-image: url('1782918701094.jpeg');"></div>
                     <div class="aspect-square bg-zinc-900 bg-cover bg-center cursor-pointer hover:brightness-75 transition-all loading-shimmer" style="background-image: url('1000115476.jpg');"></div>
                     <div class="aspect-square bg-zinc-900 bg-cover bg-center relative loading-shimmer" style="background-image: url('1000115475.jpg');">
                         <div class="absolute top-2 right-2 text-white drop-shadow-md"><svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4H7V5zm8 8v2h1v-2h-1zm-2-2H7v4h6v-4zm2 0h1V9h-1v2zm1-4V5h-1v2h1zM5 5h1v2H5V5zm0 4h1v2H5V9zm0 4h1v2H5v-2z"></path></svg></div>
                     </div>
                     
-                    <!-- Row 2 & 3 (Tall element) -->
                     <div class="col-span-2 row-span-2 aspect-square bg-zinc-900 bg-cover bg-center cursor-pointer hover:brightness-75 transition-all relative loading-shimmer group" style="background-image: url('1000115474.jpg');">
                         <div class="absolute top-2 right-2 text-white drop-shadow-md opacity-90"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg></div>
                         <div class="absolute bottom-2 left-2 text-white text-xs font-bold drop-shadow-md flex items-center gap-1"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg> 1.8M</div>
@@ -553,22 +534,19 @@
                     <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('1000115473.jpg');"></div>
                     <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('20250425_184147(1).jpg');"></div>
                     
-                    <!-- Row 4 -->
-                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore7.jpg');"></div>
-                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore8.jpg');"></div>
-                    <div class="aspect-square bg-zinc-900 bg-cover bg-center relative loading-shimmer" style="background-image: url('explore9.jpg');"></div>
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('1782903397451.jpeg');"></div>
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('1782903858514.jpeg');"></div>
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center relative loading-shimmer" style="background-image: url('1000115439.jpg');"></div>
                     
-                    <!-- Row 5 & 6 (Reverse Tall Element) -->
-                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore10.jpg');"></div>
-                    <div class="col-span-2 row-span-2 aspect-square bg-zinc-900 bg-cover bg-center cursor-pointer hover:brightness-75 transition-all relative loading-shimmer group" style="background-image: url('explore11.jpg');">
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('1000115488.jpg');"></div>
+                    <div class="col-span-2 row-span-2 aspect-square bg-zinc-900 bg-cover bg-center cursor-pointer hover:brightness-75 transition-all relative loading-shimmer group" style="background-image: url('1782918701094.jpeg');">
                         <div class="absolute top-2 right-2 text-white drop-shadow-md opacity-90"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg></div>
                     </div>
-                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore12.jpg');"></div>
-
-                    <!-- Row 7 -->
-                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore13.jpg');"></div>
-                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('explore14.jpg');"></div>
-                    <div class="aspect-square bg-zinc-900 bg-cover bg-center relative loading-shimmer" style="background-image: url('explore15.jpg');"></div>
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('1000115475.jpg');"></div>
+                    
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('1000115476.jpg');"></div>
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center loading-shimmer" style="background-image: url('1000115474.jpg');"></div>
+                    <div class="aspect-square bg-zinc-900 bg-cover bg-center relative loading-shimmer" style="background-image: url('1000115473.jpg');"></div>
                 </div>
             </div>
 
@@ -576,7 +554,6 @@
             <div id="screen-reels" class="absolute inset-0 pt-14 overflow-hidden opacity-0 pointer-events-none transition-opacity duration-300 z-10 bg-black">
                 <div class="relative w-full h-[calc(100%-14px)] bg-zinc-900" id="reel-container">
                     
-                    <!-- Fallback image -->
                     <div class="absolute inset-0 bg-cover bg-center opacity-70" style="background-image: url('1000115474.jpg');"></div>
                     
                     <video id="reels-video" class="absolute inset-0 w-full h-full object-cover z-10 hidden" loop playsinline>
@@ -677,7 +654,6 @@
                         </div>
                     </div>
 
-                    <!-- Highlights -->
                     <div class="px-2 pb-6 flex gap-5 overflow-x-auto no-scrollbar border-b border-white/10 mt-2">
                         <div class="flex flex-col items-center gap-1.5 ml-3">
                             <div class="w-[70px] h-[70px] rounded-full border-2 border-white/30 flex items-center justify-center cursor-pointer hover:bg-white/10 transition">
@@ -699,7 +675,6 @@
                         </div>
                     </div>
 
-                    <!-- Profile Grid -->
                     <div class="flex w-full sticky top-[62px] bg-black z-10 border-b border-white/10">
                         <div class="flex-1 border-b-[2px] border-white py-3.5 flex justify-center cursor-pointer"><svg class="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg></div>
                         <div class="flex-1 py-3.5 flex justify-center text-white/40 cursor-pointer hover:text-white/70 transition"><svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
@@ -837,19 +812,6 @@
                         </div>
                         <button class="pt-1 text-white/40 hover:text-red-500 transition"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg></button>
                     </div>
-
-                    <!-- Comment 5 -->
-                    <div class="flex gap-3 items-start">
-                        <div class="w-9 h-9 rounded-full bg-gradient-to-r from-pink-500 to-purple-500 flex items-center justify-center shrink-0 font-bold text-white text-xs">S</div>
-                        <div class="flex-1 text-[13px] leading-snug">
-                            <span class="font-bold text-white mr-1">shreya</span>
-                            <span class="text-white/90">Still can't believe it was my first time in a theatre! Best day ever.</span>
-                            <div class="flex items-center gap-4 text-[11px] text-white/50 mt-1.5 font-medium">
-                                <span>10h</span> <span class="font-bold">150 likes</span> <span class="cursor-pointer hover:text-white">Reply</span>
-                            </div>
-                        </div>
-                        <button class="pt-1 text-red-500"><svg class="w-3.5 h-3.5 fill-current" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></button>
-                    </div>
                 </div>
 
                 <div class="p-4 border-t border-white/10 flex items-center gap-3 bg-[#1a1a1a]">
@@ -867,311 +829,293 @@
 
 
     <!-- ========================================================================= -->
-    <!-- ✧ MEGA SCRIPT ENGINE ✧                                                    -->
+    <!-- ✧ THE MASTER JAVASCRIPT ENGINE ✧                                          -->
     <!-- ========================================================================= -->
     <script src="script.js"></script>
     <script src="audio.js"></script> 
 
     <script>
-        // ---------------------------------------------------------
-        // 1. MOMENTS MORPHING ENGINE (FOOLPROOF ROUTING)
-        // ---------------------------------------------------------
-        const myMoments = [
-            "Our first meet",
-            "Our first date",
-            "Her birthday 2026",
-            "His birthday 2026"
-        ];
-
         document.addEventListener('DOMContentLoaded', () => {
             
-            // Netflix and IG Panel Elements
+            // ==========================================
+            // 1. MORPHING BUTTON ENGINE & FOOLPROOF ROUTER
+            // ==========================================
+            const originalBtn = document.getElementById('moments-magic-btn');
             const netflixPanel = document.getElementById('netflix-panel');
             const igPanel = document.getElementById('ig-app-panel');
-            
-            const originalBtn = document.getElementById('moments-magic-btn');
-            if (!originalBtn) return;
 
-            let isAnimating = false;
-            let isOpen = false;
-            
-            const overlay = document.createElement('div');
-            overlay.className = "fixed inset-0 bg-black/80 backdrop-blur-md pointer-events-none";
-            overlay.style.zIndex = "9990";
-            overlay.style.opacity = "0";
-            overlay.style.transition = "opacity 0.6s ease";
-            document.body.appendChild(overlay);
-
-            const ghostAnchor = document.createElement('div');
-            ghostAnchor.style.display = "none";
-            ghostAnchor.style.visibility = "hidden";
-            ghostAnchor.style.pointerEvents = "none";
-            originalBtn.parentNode.insertBefore(ghostAnchor, originalBtn);
-
-            const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-            originalBtn.addEventListener('click', async (e) => {
-                e.preventDefault();
-                if (isAnimating || isOpen) return;
-                isAnimating = true;
-
-                const startRect = originalBtn.getBoundingClientRect();
-                const startTop = Math.round(startRect.top);
-                const startLeft = Math.round(startRect.left);
-                const startWidth = Math.round(startRect.width);
-                const startHeight = Math.round(startRect.height);
-
-                ghostAnchor.style.width = startWidth + "px";
-                ghostAnchor.style.height = startHeight + "px";
-                ghostAnchor.style.margin = window.getComputedStyle(originalBtn).margin;
-                ghostAnchor.style.display = "block";
-
-                originalBtn.style.visibility = "hidden";
-                originalBtn.style.opacity = "0";
-
-                document.body.style.overflow = "hidden";
-
-                const morphBox = document.createElement('div');
-                morphBox.style.position = "fixed";
-                morphBox.style.zIndex = "9999";
-                morphBox.style.top = startTop + "px";
-                morphBox.style.left = startLeft + "px";
-                morphBox.style.width = startWidth + "px";
-                morphBox.style.height = startHeight + "px";
-                morphBox.style.borderRadius = "9999px"; 
-                morphBox.style.background = "rgba(255, 255, 255, 0.05)";
-                morphBox.style.border = "1px solid rgba(255, 255, 255, 0.1)";
-                morphBox.style.backdropFilter = "blur(12px)";
-                morphBox.style.willChange = "top, left, width, height, border-radius, background-color";
-                morphBox.style.transform = "translateZ(0)"; 
-                morphBox.style.boxSizing = "border-box";
-                morphBox.style.overflow = "hidden";
+            if (originalBtn) {
+                let isAnimating = false;
+                let isOpen = false;
                 
-                const initialTextWrapper = document.createElement('div');
-                initialTextWrapper.style.position = "absolute";
-                initialTextWrapper.style.inset = "0";
-                initialTextWrapper.style.display = "flex";
-                initialTextWrapper.style.alignItems = "center";
-                initialTextWrapper.style.justifyContent = "center";
-                initialTextWrapper.style.gap = "1rem"; 
-                initialTextWrapper.style.opacity = "1";
-                initialTextWrapper.style.transition = "opacity 0.2s ease-out";
-                initialTextWrapper.innerHTML = originalBtn.innerHTML; 
-                morphBox.appendChild(initialTextWrapper);
+                const overlay = document.createElement('div');
+                overlay.className = "fixed inset-0 bg-black/80 backdrop-blur-md pointer-events-none";
+                overlay.style.zIndex = "9990";
+                overlay.style.opacity = "0";
+                overlay.style.transition = "opacity 0.6s ease";
+                document.body.appendChild(overlay);
 
-                document.body.appendChild(morphBox);
+                const ghostAnchor = document.createElement('div');
+                ghostAnchor.style.display = "none";
+                ghostAnchor.style.visibility = "hidden";
+                ghostAnchor.style.pointerEvents = "none";
+                originalBtn.parentNode.insertBefore(ghostAnchor, originalBtn);
 
-                overlay.classList.remove('pointer-events-none');
-                overlay.style.opacity = "1";
+                const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-                await new Promise(requestAnimationFrame);
-
-                initialTextWrapper.style.opacity = "0";
-                await wait(200); 
-
-                const targetWidth = Math.round(Math.min(window.innerWidth * 0.9, 380));
-                const targetHeight = 440;
-                const targetTop = Math.round((window.innerHeight - targetHeight) / 2);
-                const targetLeft = Math.round((window.innerWidth - targetWidth) / 2);
-
-                morphBox.style.transition = "top 0.6s cubic-bezier(0.32, 0.72, 0, 1), left 0.6s cubic-bezier(0.32, 0.72, 0, 1), width 0.6s cubic-bezier(0.32, 0.72, 0, 1), height 0.6s cubic-bezier(0.32, 0.72, 0, 1), border-radius 0.6s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.6s ease";
-                morphBox.style.top = targetTop + "px";
-                morphBox.style.left = targetLeft + "px";
-                morphBox.style.width = targetWidth + "px";
-                morphBox.style.height = targetHeight + "px";
-                morphBox.style.borderRadius = "2rem"; 
-                morphBox.style.background = "rgba(10, 5, 8, 0.85)";
-                morphBox.style.border = "1px solid rgba(252, 243, 215, 0.15)";
-                
-                await wait(650);
-
-                initialTextWrapper.remove();
-
-                const contentContainer = document.createElement('div');
-                contentContainer.style.width = "100%";
-                contentContainer.style.height = "100%";
-                contentContainer.style.display = "flex";
-                contentContainer.style.flexDirection = "column";
-                contentContainer.style.alignItems = "center";
-                contentContainer.style.padding = "40px 30px";
-                contentContainer.style.opacity = "0";
-                contentContainer.style.transition = "opacity 0.4s ease-in";
-                
-                const title = document.createElement('h3');
-                title.style.color = "#fcf3d7";
-                title.style.fontFamily = "'Playfair Display', serif";
-                title.style.fontSize = "1.2rem";
-                title.style.letterSpacing = "0.3em";
-                title.style.marginBottom = "30px";
-                title.innerText = "✧ MOMENTS";
-                contentContainer.appendChild(title);
-                
-                const list = document.createElement('div');
-                list.style.width = "100%";
-                list.style.display = "flex";
-                list.style.flexDirection = "column";
-                list.style.gap = "20px";
-                contentContainer.appendChild(list);
-
-                const actions = document.createElement('div');
-                actions.style.display = "flex";
-                actions.style.justifyContent = "space-between";
-                actions.style.width = "100%";
-                actions.style.marginTop = "auto";
-                
-                const addBtn = document.createElement('span');
-                addBtn.innerHTML = "+ ADD";
-                addBtn.style.color = "#10b981"; 
-                addBtn.style.fontSize = "12px";
-                addBtn.style.letterSpacing = "0.2em";
-                addBtn.style.cursor = "pointer";
-
-                const closeBtn = document.createElement('span');
-                closeBtn.innerHTML = "CLOSE ✕";
-                closeBtn.style.color = "rgba(255,255,255,0.5)";
-                closeBtn.style.fontSize = "12px";
-                closeBtn.style.letterSpacing = "0.2em";
-                closeBtn.style.cursor = "pointer";
-                closeBtn.style.padding = "10px"; 
-                closeBtn.style.margin = "-10px";
-                
-                actions.appendChild(addBtn);
-                actions.appendChild(closeBtn);
-                contentContainer.appendChild(actions);
-                
-                morphBox.appendChild(contentContainer);
-                await new Promise(requestAnimationFrame);
-                contentContainer.style.opacity = "1";
-
-                await wait(200);
-
-                // --- FOOLPROOF DIRECT EVENT LISTENERS ---
-                for (let item of myMoments) {
-                    let p = document.createElement('p');
-                    p.style.fontFamily = "'Montserrat', sans-serif";
-                    p.style.fontWeight = "300";
-                    p.style.color = "rgba(255,255,255,0.9)";
-                    p.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
-                    p.style.paddingBottom = "5px";
-                    p.style.fontSize = "14px";
-                    p.style.width = "100%";
-                    p.style.textAlign = "center";
-                    p.style.letterSpacing = "0.05em";
-                    p.style.cursor = "pointer";
-                    p.className = "hover:text-emerald-400 active:scale-[0.98] transition-all duration-200";
-
-                    // The actual click binding
-                    if (item === "Our first meet") {
-                        p.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            if(netflixPanel) {
-                                netflixPanel.classList.remove('translate-x-full');
-                                netflixPanel.classList.add('translate-x-0');
-                            }
-                        });
-                    } else if (item === "Our first date") {
-                        p.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            if(igPanel) {
-                                igPanel.classList.remove('translate-x-full');
-                                igPanel.classList.add('translate-x-0');
-                            }
-                        });
-                    }
-
-                    list.appendChild(p);
-
-                    for (let char of item) {
-                        p.innerHTML += char;
-                        await wait(20);
-                    }
-                    await wait(50);
-                }
-
-                isAnimating = false;
-                isOpen = true;
-
-                closeBtn.onclick = async (e) => {
-                    e.stopPropagation();
-                    if (isAnimating) return;
+                originalBtn.addEventListener('click', async (e) => {
+                    e.preventDefault();
+                    if (isAnimating || isOpen) return;
                     isAnimating = true;
 
-                    // Close any panels that might be open
-                    if(netflixPanel) {
-                        netflixPanel.classList.remove('translate-x-0');
-                        netflixPanel.classList.add('translate-x-full');
-                    }
-                    if(igPanel) {
-                        igPanel.classList.remove('translate-x-0');
-                        igPanel.classList.add('translate-x-full');
-                    }
+                    const startRect = originalBtn.getBoundingClientRect();
+                    const startTop = Math.round(startRect.top);
+                    const startLeft = Math.round(startRect.left);
+                    const startWidth = Math.round(startRect.width);
+                    const startHeight = Math.round(startRect.height);
 
-                    contentContainer.style.opacity = "0";
-                    await wait(300);
-                    contentContainer.remove();
+                    ghostAnchor.style.width = startWidth + "px";
+                    ghostAnchor.style.height = startHeight + "px";
+                    ghostAnchor.style.margin = window.getComputedStyle(originalBtn).margin;
+                    ghostAnchor.style.display = "block";
 
-                    const returnTextWrapper = document.createElement('div');
-                    returnTextWrapper.style.position = "absolute";
-                    returnTextWrapper.style.inset = "0";
-                    returnTextWrapper.style.display = "flex";
-                    returnTextWrapper.style.alignItems = "center";
-                    returnTextWrapper.style.justifyContent = "center";
-                    returnTextWrapper.style.gap = "1rem"; 
-                    returnTextWrapper.style.opacity = "0";
-                    returnTextWrapper.style.transition = "opacity 0.3s ease-in";
-                    returnTextWrapper.innerHTML = originalBtn.innerHTML; 
-                    morphBox.appendChild(returnTextWrapper);
+                    originalBtn.style.visibility = "hidden";
+                    originalBtn.style.opacity = "0";
+                    document.body.style.overflow = "hidden";
 
-                    const returnRect = ghostAnchor.getBoundingClientRect();
-                    const returnTop = Math.round(returnRect.top);
-                    const returnLeft = Math.round(returnRect.left);
-                    const returnWidth = Math.round(returnRect.width);
-                    const returnHeight = Math.round(returnRect.height);
-
-                    overlay.style.opacity = "0";
-
-                    morphBox.style.top = returnTop + "px";
-                    morphBox.style.left = returnLeft + "px";
-                    morphBox.style.width = returnWidth + "px";
-                    morphBox.style.height = returnHeight + "px";
+                    const morphBox = document.createElement('div');
+                    morphBox.style.position = "fixed";
+                    morphBox.style.zIndex = "9999";
+                    morphBox.style.top = startTop + "px";
+                    morphBox.style.left = startLeft + "px";
+                    morphBox.style.width = startWidth + "px";
+                    morphBox.style.height = startHeight + "px";
                     morphBox.style.borderRadius = "9999px"; 
                     morphBox.style.background = "rgba(255, 255, 255, 0.05)";
                     morphBox.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+                    morphBox.style.backdropFilter = "blur(12px)";
+                    morphBox.style.willChange = "top, left, width, height, border-radius, background-color";
+                    morphBox.style.transform = "translateZ(0)"; 
+                    morphBox.style.boxSizing = "border-box";
+                    morphBox.style.overflow = "hidden";
                     
-                    await wait(450);
+                    const initialTextWrapper = document.createElement('div');
+                    initialTextWrapper.style.position = "absolute";
+                    initialTextWrapper.style.inset = "0";
+                    initialTextWrapper.style.display = "flex";
+                    initialTextWrapper.style.alignItems = "center";
+                    initialTextWrapper.style.justifyContent = "center";
+                    initialTextWrapper.style.gap = "1rem"; 
+                    initialTextWrapper.style.opacity = "1";
+                    initialTextWrapper.style.transition = "opacity 0.2s ease-out";
+                    initialTextWrapper.innerHTML = originalBtn.innerHTML; 
+                    morphBox.appendChild(initialTextWrapper);
 
-                    returnTextWrapper.style.opacity = "1";
+                    document.body.appendChild(morphBox);
+                    overlay.classList.remove('pointer-events-none');
+                    overlay.style.opacity = "1";
+
+                    await new Promise(requestAnimationFrame);
+                    initialTextWrapper.style.opacity = "0";
+                    await wait(200); 
+
+                    const targetWidth = Math.round(Math.min(window.innerWidth * 0.9, 380));
+                    const targetHeight = 440;
+                    const targetTop = Math.round((window.innerHeight - targetHeight) / 2);
+                    const targetLeft = Math.round((window.innerWidth - targetWidth) / 2);
+
+                    morphBox.style.transition = "top 0.6s cubic-bezier(0.32, 0.72, 0, 1), left 0.6s cubic-bezier(0.32, 0.72, 0, 1), width 0.6s cubic-bezier(0.32, 0.72, 0, 1), height 0.6s cubic-bezier(0.32, 0.72, 0, 1), border-radius 0.6s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.6s ease";
+                    morphBox.style.top = targetTop + "px";
+                    morphBox.style.left = targetLeft + "px";
+                    morphBox.style.width = targetWidth + "px";
+                    morphBox.style.height = targetHeight + "px";
+                    morphBox.style.borderRadius = "2rem"; 
+                    morphBox.style.background = "rgba(10, 5, 8, 0.85)";
+                    morphBox.style.border = "1px solid rgba(252, 243, 215, 0.15)";
                     
+                    await wait(650);
+                    initialTextWrapper.remove();
+
+                    const contentContainer = document.createElement('div');
+                    contentContainer.style.width = "100%";
+                    contentContainer.style.height = "100%";
+                    contentContainer.style.display = "flex";
+                    contentContainer.style.flexDirection = "column";
+                    contentContainer.style.alignItems = "center";
+                    contentContainer.style.padding = "40px 30px";
+                    contentContainer.style.opacity = "0";
+                    contentContainer.style.transition = "opacity 0.4s ease-in";
+                    
+                    const title = document.createElement('h3');
+                    title.style.color = "#fcf3d7";
+                    title.style.fontFamily = "'Playfair Display', serif";
+                    title.style.fontSize = "1.2rem";
+                    title.style.letterSpacing = "0.3em";
+                    title.style.marginBottom = "30px";
+                    title.innerText = "✧ MOMENTS";
+                    contentContainer.appendChild(title);
+                    
+                    const list = document.createElement('div');
+                    list.style.width = "100%";
+                    list.style.display = "flex";
+                    list.style.flexDirection = "column";
+                    list.style.gap = "20px";
+                    contentContainer.appendChild(list);
+
+                    const actions = document.createElement('div');
+                    actions.style.display = "flex";
+                    actions.style.justifyContent = "space-between";
+                    actions.style.width = "100%";
+                    actions.style.marginTop = "auto";
+                    
+                    const addBtn = document.createElement('span');
+                    addBtn.innerHTML = "+ ADD";
+                    addBtn.style.color = "#10b981"; 
+                    addBtn.style.fontSize = "12px";
+                    addBtn.style.letterSpacing = "0.2em";
+                    addBtn.style.cursor = "pointer";
+
+                    const closeBtn = document.createElement('span');
+                    closeBtn.innerHTML = "CLOSE ✕";
+                    closeBtn.style.color = "rgba(255,255,255,0.5)";
+                    closeBtn.style.fontSize = "12px";
+                    closeBtn.style.letterSpacing = "0.2em";
+                    closeBtn.style.cursor = "pointer";
+                    closeBtn.style.padding = "10px"; 
+                    closeBtn.style.margin = "-10px";
+                    
+                    actions.appendChild(addBtn);
+                    actions.appendChild(closeBtn);
+                    contentContainer.appendChild(actions);
+                    morphBox.appendChild(contentContainer);
+                    
+                    await new Promise(requestAnimationFrame);
+                    contentContainer.style.opacity = "1";
                     await wait(200);
 
-                    morphBox.remove();
-                    originalBtn.style.visibility = "visible";
-                    originalBtn.style.opacity = "1";
-                    ghostAnchor.style.display = "none";
+                    const myMoments = ["Our first meet", "Our first date", "Her birthday 2026", "His birthday 2026"];
 
-                    overlay.classList.add('pointer-events-none');
-                    document.body.style.overflow = ""; 
-                    
+                    for (let item of myMoments) {
+                        let p = document.createElement('p');
+                        p.style.fontFamily = "'Montserrat', sans-serif";
+                        p.style.fontWeight = "300";
+                        p.style.color = "rgba(255,255,255,0.9)";
+                        p.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
+                        p.style.paddingBottom = "5px";
+                        p.style.fontSize = "14px";
+                        p.style.width = "100%";
+                        p.style.textAlign = "center";
+                        p.style.letterSpacing = "0.05em";
+                        p.style.cursor = "pointer";
+                        p.className = "hover:text-emerald-400 active:scale-[0.98] transition-all duration-200";
+
+                        // THE UNBREAKABLE DIRECT ROUTER
+                        if (item === "Our first meet") {
+                            p.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                if(netflixPanel) {
+                                    netflixPanel.classList.remove('translate-x-full');
+                                    netflixPanel.classList.add('translate-x-0');
+                                }
+                            });
+                        } else if (item === "Our first date") {
+                            p.addEventListener('click', (e) => {
+                                e.stopPropagation();
+                                if(igPanel) {
+                                    igPanel.classList.remove('translate-x-full');
+                                    igPanel.classList.add('translate-x-0');
+                                }
+                            });
+                        }
+
+                        list.appendChild(p);
+                        for (let char of item) {
+                            p.innerHTML += char;
+                            await wait(20);
+                        }
+                        await wait(50);
+                    }
+
                     isAnimating = false;
-                    isOpen = false;
-                };
-            });
+                    isOpen = true;
 
-            // ---------------------------------------------------------
+                    closeBtn.onclick = async (e) => {
+                        e.stopPropagation();
+                        if (isAnimating) return;
+                        isAnimating = true;
+
+                        // Ensure panels close when you close the morph box
+                        if(netflixPanel) {
+                            netflixPanel.classList.remove('translate-x-0');
+                            netflixPanel.classList.add('translate-x-full');
+                        }
+                        if(igPanel) {
+                            igPanel.classList.remove('translate-x-0');
+                            igPanel.classList.add('translate-x-full');
+                        }
+
+                        contentContainer.style.opacity = "0";
+                        await wait(300);
+                        contentContainer.remove();
+
+                        const returnTextWrapper = document.createElement('div');
+                        returnTextWrapper.style.position = "absolute";
+                        returnTextWrapper.style.inset = "0";
+                        returnTextWrapper.style.display = "flex";
+                        returnTextWrapper.style.alignItems = "center";
+                        returnTextWrapper.style.justifyContent = "center";
+                        returnTextWrapper.style.gap = "1rem"; 
+                        returnTextWrapper.style.opacity = "0";
+                        returnTextWrapper.style.transition = "opacity 0.3s ease-in";
+                        returnTextWrapper.innerHTML = originalBtn.innerHTML; 
+                        morphBox.appendChild(returnTextWrapper);
+
+                        const returnRect = ghostAnchor.getBoundingClientRect();
+                        const returnTop = Math.round(returnRect.top);
+                        const returnLeft = Math.round(returnRect.left);
+                        const returnWidth = Math.round(returnRect.width);
+                        const returnHeight = Math.round(returnRect.height);
+
+                        overlay.style.opacity = "0";
+
+                        morphBox.style.top = returnTop + "px";
+                        morphBox.style.left = returnLeft + "px";
+                        morphBox.style.width = returnWidth + "px";
+                        morphBox.style.height = returnHeight + "px";
+                        morphBox.style.borderRadius = "9999px"; 
+                        morphBox.style.background = "rgba(255, 255, 255, 0.05)";
+                        morphBox.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+                        
+                        await wait(450);
+                        returnTextWrapper.style.opacity = "1";
+                        await wait(200);
+
+                        morphBox.remove();
+                        originalBtn.style.visibility = "visible";
+                        originalBtn.style.opacity = "1";
+                        ghostAnchor.style.display = "none";
+                        overlay.classList.add('pointer-events-none');
+                        document.body.style.overflow = ""; 
+                        
+                        isAnimating = false;
+                        isOpen = false;
+                    };
+                });
+            }
+
+            // ==========================================
             // 2. NETFLIX PANEL LOGIC
-            // ---------------------------------------------------------
+            // ==========================================
             const netflixBack = document.getElementById('netflix-back');
             const netflixFavorite = document.getElementById('netflix-favorite');
             const nHeartSvg = document.getElementById('heart-icon-svg');
             const nHearts = Array.from(document.querySelectorAll('#netflix-hearts-container span'));
 
-            if (netflixBack) {
+            if (netflixBack && netflixPanel) {
                 netflixBack.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    if(netflixPanel) {
-                        netflixPanel.classList.remove('translate-x-0');
-                        netflixPanel.classList.add('translate-x-full');
-                    }
+                    netflixPanel.classList.remove('translate-x-0');
+                    netflixPanel.classList.add('translate-x-full');
                 });
             }
 
@@ -1182,13 +1126,13 @@
                     if (isNFav) {
                         netflixFavorite.classList.remove('text-white/50');
                         netflixFavorite.classList.add('text-pink-500');
-                        if (nHeartSvg) nHeartSvg.classList.replace('fill-none', 'fill-current');
+                        if (nHeartSvg) { nHeartSvg.classList.remove('fill-none'); nHeartSvg.classList.add('fill-current'); }
                         netflixFavorite.style.transform = "scale(1.2)";
                         setTimeout(() => netflixFavorite.style.transform = "none", 150);
                     } else {
                         netflixFavorite.classList.add('text-white/50');
                         netflixFavorite.classList.remove('text-pink-500');
-                        if (nHeartSvg) nHeartSvg.classList.replace('fill-current', 'fill-none');
+                        if (nHeartSvg) { nHeartSvg.classList.remove('fill-current'); nHeartSvg.classList.add('fill-none'); }
                     }
                 });
             }
@@ -1237,9 +1181,9 @@
                 });
             });
 
-            // ---------------------------------------------------------
-            // 3. INSTAGRAM PANEL LOGIC
-            // ---------------------------------------------------------
+            // ==========================================
+            // 3. INSTAGRAM APP LOGIC
+            // ==========================================
             const igCloseBtn = document.getElementById('ig-close-btn');
             const igNavBtns = document.querySelectorAll('.ig-nav-btn');
             const igScreens = {
@@ -1249,16 +1193,13 @@
                 'screen-profile': document.getElementById('screen-profile')
             };
 
-            if (igCloseBtn) {
+            if (igCloseBtn && igPanel) {
                 igCloseBtn.addEventListener('click', () => {
-                    if(igPanel) {
-                        igPanel.classList.remove('translate-x-0');
-                        igPanel.classList.add('translate-x-full');
-                    }
+                    igPanel.classList.remove('translate-x-0');
+                    igPanel.classList.add('translate-x-full');
                 });
             }
 
-            // Bottom Navigation Logic
             const reelsVideo = document.getElementById('reels-video');
             const reelRecord = document.getElementById('reel-record');
 
@@ -1296,7 +1237,6 @@
                 });
             });
 
-            // Carousel Pagination Logic
             const carousel1 = document.getElementById('post-carousel-1');
             const dots = document.getElementById('carousel-dots');
             const indicator = document.getElementById('carousel-indicator');
@@ -1319,7 +1259,6 @@
                 });
             }
 
-            // Double Tap Physics
             const postBlocks = document.querySelectorAll('.post-image-block');
             const heartBtns = document.querySelectorAll('.ig-action-heart');
             let lastTapTime = 0;
@@ -1371,7 +1310,6 @@
                 });
             });
 
-            // Touch Physics: Bottom Sheet
             const commentBtns = document.querySelectorAll('.ig-action-comment');
             const sheet = document.getElementById('ig-comment-sheet');
             const backdrop = document.getElementById('sheet-backdrop');
@@ -1427,7 +1365,6 @@
                 });
             }
 
-            // Stateful Story Viewer
             const storyData = [
                 { title: "Arrival", img: "1782918701094.jpeg" },
                 { title: "Cinepolis", img: "1000115476.jpg" },
