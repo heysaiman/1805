@@ -12,7 +12,7 @@
 
 body { 
     font-family: 'Montserrat', sans-serif; 
-    background-color: #0a0a0a; 
+    background-color: #030102; 
     color: #ffffff;
     perspective: 1200px; 
     overflow-x: hidden;
@@ -33,6 +33,15 @@ body {
     animation: ken-burns 40s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite alternate; 
     will-change: transform;
 }
+
+.cinematic-overlay {
+    position: absolute; inset: 0; 
+    background: linear-gradient(to bottom, rgba(10, 5, 8, 0.3) 0%, rgba(5, 2, 4, 0.98) 100%);
+    backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+    opacity: 0; animation: fade-in-overlay 2.5s ease-in-out 3s forwards; z-index: 5; pointer-events: none;
+}
+
+@keyframes fade-in-overlay { 0% { opacity: 0; backdrop-filter: blur(0px); } 100% { opacity: 1; backdrop-filter: blur(20px); } }
 
 /* ==========================================================================
    ULTRA-SMOOTH CINEMATIC REVEALS
@@ -94,32 +103,3 @@ body {
 
 @keyframes ambient-float { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 20% { opacity: var(--max-opacity); } 80% { opacity: var(--max-opacity); } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
 .ambient-orb { position: absolute; border-radius: 50%; background: radial-gradient(circle, var(--color-champagne) 0%, transparent 80%); animation: ambient-float linear infinite; z-index: 2; pointer-events: none; }
-
-/* =====================================================
-   LUXURIOUS LEVITATING SLIDING PANEL (Netflix Style)
-   ===================================================== */
-#sliding-panel {
-    box-shadow: 0 -25px 70px rgba(0, 0, 0, 0.65);
-    transition: transform 0.75s cubic-bezier(0.23, 1.0, 0.32, 1);
-    will-change: transform;
-    border-top: 1px solid rgba(255,255,255,0.08);
-}
-
-#sliding-panel.show {
-    transform: translateY(0) !important;
-}
-
-@keyframes levitate-in {
-    from {
-        transform: translateY(100%) scale(0.985);
-        opacity: 0.6;
-    }
-    to {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-    }
-}
-
-#sliding-panel::-webkit-scrollbar {
-    display: none;
-}
