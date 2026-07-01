@@ -1,81 +1,48 @@
-// audio.js - Premium Vinyl Record Engine
-const AudioEngine = {
-    init() {
-        const musicFile = 'bg-music.mp3';
-        this.bgm = new Audio(musicFile);
-        this.bgm.loop = true;
-        this.isPlaying = false;
+(function() {
+    console.log("Vinyl Player Engine: Initializing...");
 
-        // 1. Create the Container
-        const container = document.createElement('div');
-        Object.assign(container.style, {
-            position: 'fixed', top: '20px', right: '20px', width: '80px', height: '80px',
-            zIndex: '9999', cursor: 'pointer', transition: 'transform 0.3s ease'
-        });
+    // 1. Remove old instances to prevent stacking
+    const existing = document.getElementById('vinyl-player-box');
+    if (existing) existing.remove();
 
-        // 2. The Vinyl Record (CSS Generated)
-        const vinyl = document.createElement('div');
-        Object.assign(vinyl.style, {
-            width: '100%', height: '100%', borderRadius: '50%',
-            background: 'radial-gradient(circle, #333 20%, #000 20%, #000 25%, #333 25%, #333 30%, #000 30%, #000 35%, #333 35%, #333 40%, #000 40%, #000 100%)',
-            boxShadow: '0 10px 20px rgba(0,0,0,0.5)',
-            border: '2px solid #111', display: 'flex', alignItems: 'center', justifyContent: 'center'
-        });
+    // 2. Inject Styles (High-end CSS)
+    const style = document.createElement('style');
+    style.innerHTML = `
+        #vinyl-player-box { position: fixed; top: 20px; right: 20px; z-index: 99999; cursor: pointer; transition: transform 0.3s; }
+        #vinyl-player-box:active { transform: scale(0.95); }
+        .vinyl-disc { width: 70px; height: 70px; border-radius: 50%; border: 4px solid #1a1a1a;
+            background: radial-gradient(circle, #333 20%, #000 20%, #000 25%, #333 25%, #333 30%, #000 30%, #000 35%, #333 35%, #333 40%, #000 40%, #000 100%);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; }
+        .vinyl-label { width: 30%; height: 30%; border-radius: 50%; background: #c62828; box-shadow: inset 0 0 5px rgba(0,0,0,0.5); }
+        .is-spinning { animation: spin 3s linear infinite; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    `;
+    document.head.appendChild(style);
 
-        // The Center Label
-        const label = document.createElement('div');
-        Object.assign(label.style, {
-            width: '30%', height: '30%', borderRadius: '50%', background: '#ff4d4d',
-            boxShadow: 'inset 0 0 5px rgba(0,0,0,0.3)'
-        });
-        vinyl.appendChild(label);
+    // 3. Create Elements
+    const container = document.createElement('div');
+    container.id = 'vinyl-player-box';
+    container.innerHTML = '<div class="vinyl-disc"><div class="vinyl-label"></div></div>';
+    document.body.appendChild(container);
 
-        // 3. The Tonearm
-        const tonearm = document.createElement('div');
-        Object.assign(tonearm.style, {
-            position: 'absolute', top: '-10px', right: '-10px', width: '40px', height: '5px',
-            background: '#ccc', borderRadius: '2px', transform: 'rotate(-25deg)',
-            transformOrigin: 'bottom right', transition: 'transform 0.3s ease'
-        });
+    // 4. Audio Engine
+    const audio = new Audio('bg-music.mp3');
+    audio.loop = true;
+    let isPlaying = false;
 
-        container.appendChild(tonearm);
-        container.appendChild(vinyl);
-        document.body.appendChild(container);
+    // 5. Interaction
+    const toggle = () => {
+        const disc = container.querySelector('.vinyl-disc');
+        if (isPlaying) {
+            audio.pause();
+            disc.classList.remove('is-spinning');
+        } else {
+            audio.play().catch(e => console.error("Audio block:", e));
+            disc.classList.add('is-spinning');
+        }
+        isPlaying = !isPlaying;
+    };
 
-        // 4. Animation Keyframes (Spinning)
-        const style = document.createElement('style');
-        style.innerHTML = `@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`;
-        document.head.appendChild(style);
-
-        // 5. Playback Logic
-        const toggleMusic = () => {
-            if (this.isPlaying) {
-                this.bgm.pause();
-                vinyl.style.animation = 'none';
-                tonearm.style.transform = 'rotate(-25deg)';
-            } else {
-                this.bgm.play();
-                vinyl.style.animation = 'spin 3s linear infinite';
-                tonearm.style.transform = 'rotate(-10deg)';
-            }
-            this.isPlaying = !this.isPlaying;
-        };
-
-        // Click to toggle
-        container.onclick = (e) => {
-            e.stopPropagation();
-            toggleMusic();
-        };
-
-        // First interaction trigger
-        document.addEventListener('click', () => {
-            if (!this.isPlaying) toggleMusic();
-        }, { once: true });
-        
-        document.addEventListener('touchstart', () => {
-            if (!this.isPlaying) toggleMusic();
-        }, { once: true });
-    }
-};
-
-window.addEventListener('DOMContentLoaded', () => AudioEngine.init());
+    container.onclick = toggle;
+    console.log("Vinyl Player Engine: Ready.");
+})();
