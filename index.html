@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,11 +62,166 @@
         </div>
     </div>
 
+    <!-- ✧ NETFLIX-STYLE MOMENT DETAILS PANEL (HIDDEN BY DEFAULT) ✧ -->
+    <div id="netflix-panel" class="fixed inset-y-0 right-0 w-full md:w-[440px] bg-[#0a0508] z-[10000] transform translate-x-full transition-transform duration-700 cubic-bezier(0.16, 1, 0.3, 1) flex flex-col overflow-y-auto border-l border-white/10 shadow-2xl">
+        
+        <!-- Header Controls -->
+        <div class="absolute top-4 left-4 right-4 z-20 flex justify-between items-center">
+            <button id="netflix-back" class="w-10 h-10 rounded-full bg-black/50 border border-white/15 flex items-center justify-center text-white/90 hover:text-white hover:bg-black/80 transition active:scale-95">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <button id="netflix-favorite" class="w-10 h-10 rounded-full bg-black/50 border border-white/15 flex items-center justify-center text-white/50 hover:text-pink-500 transition active:scale-95">
+                <svg id="heart-icon-svg" class="w-5 h-5 fill-none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </button>
+        </div>
+
+        <!-- Banner Visual -->
+        <div class="relative w-full aspect-[16/10] overflow-hidden flex-shrink-0">
+            <div class="absolute inset-0 bg-gradient-to-tr from-[#05110c] to-[#0a0508] flex items-center justify-center">
+                <div class="absolute inset-0 bg-cover bg-center opacity-85 transition-all duration-700" id="netflix-banner-img"></div>
+                <div id="netflix-banner-placeholder" class="absolute inset-0 flex flex-col items-center justify-center p-6 text-center border-b border-white/5 bg-gradient-to-b from-white/5 to-transparent">
+                    <span class="text-4xl mb-2 filter drop-shadow-lg">✨</span>
+                    <p class="text-[10px] text-[#fcf3d7]/60 font-mono tracking-widest uppercase">Upload First Meet Photo</p>
+                </div>
+            </div>
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0a0508] via-transparent to-black/30"></div>
+        </div>
+
+        <!-- Details Content Area -->
+        <div class="px-6 pb-12 flex-grow flex flex-col -mt-8 relative z-10">
+            <!-- Series Branding -->
+            <div class="flex items-center gap-1.5 mb-1.5 select-none">
+                <span class="text-red-600 font-bold tracking-tighter text-xl">N</span>
+                <span class="text-[10px] text-[#fcf3d7]/60 font-bold tracking-[0.3em] uppercase">1805 SPECIALS</span>
+            </div>
+
+            <!-- Title -->
+            <h2 class="text-3xl font-playfair font-black text-[#fcf3d7] tracking-wider uppercase mb-3">
+                Our First Meet
+            </h2>
+
+            <!-- Metadata Row -->
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-gray-400 font-medium mb-4">
+                <span>2025</span>
+                <span class="h-3 w-[1px] bg-white/20"></span>
+                <span>Cafe Cookies</span>
+                <span class="h-3 w-[1px] bg-white/20"></span>
+                <span>SCS College</span>
+                <span class="h-3 w-[1px] bg-white/20"></span>
+                <span class="text-emerald-400 font-bold">THE BEGINNING</span>
+            </div>
+
+            <!-- Hearts Rating System -->
+            <div class="flex items-center gap-1.5 mb-6">
+                <div class="flex text-[#fcf3d7]/20 text-lg gap-1" id="netflix-hearts-container">
+                    <span class="heart-pulse cursor-pointer select-none transition-transform active:scale-150 duration-150">♥</span>
+                    <span class="heart-pulse cursor-pointer select-none transition-transform active:scale-150 duration-150">♥</span>
+                    <span class="heart-pulse cursor-pointer select-none transition-transform active:scale-150 duration-150">♥</span>
+                    <span class="heart-pulse cursor-pointer select-none transition-transform active:scale-150 duration-150">♥</span>
+                    <span class="heart-pulse cursor-pointer select-none transition-transform active:scale-150 duration-150">♥</span>
+                </div>
+                <span class="text-[10px] text-gray-400 font-semibold uppercase tracking-widest ml-2">Match Level: Infinite</span>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="flex items-center gap-6 mb-8">
+                <!-- Play Story Action -->
+                <button id="netflix-play-btn" class="w-14 h-14 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center shadow-lg shadow-red-600/30 transition transform active:scale-90 duration-300">
+                    <span class="text-lg translate-x-[2px]">▶</span>
+                </button>
+                
+                <!-- My List Toggle -->
+                <button id="netflix-mylist-btn" class="flex flex-col items-center gap-1 text-white/75 hover:text-white transition group">
+                    <span class="text-xl group-active:scale-125 transition-transform" id="mylist-icon">+</span>
+                    <span class="text-[9px] font-bold tracking-widest uppercase">My List</span>
+                </button>
+
+                <!-- Secret Info Detail Toggle -->
+                <button id="netflix-info-btn" class="flex flex-col items-center gap-1 text-white/75 hover:text-white transition group ml-auto">
+                    <span class="text-xl group-active:scale-125 transition-transform">ⓘ</span>
+                    <span class="text-[9px] font-bold tracking-widest uppercase">Secret Details</span>
+                </button>
+            </div>
+
+            <!-- Hidden Secret Coordinates Card -->
+            <div id="secret-details-card" class="hidden luxury-glass p-4 rounded-2xl mb-6 border border-[#fcf3d7]/10 text-xs text-gray-300 space-y-1.5 animate-pulse">
+                <p class="font-bold text-[#fcf3d7]">GPS Location:</p>
+                <p class="font-mono text-[10px]">19.8049° N, 85.8178° E</p>
+                <p class="font-bold text-[#fcf3d7] mt-3">Campus Roots:</p>
+                <p>SCS Junior College, Puri. Exchanging quiet glances across corridors during our golden 12th class days.</p>
+            </div>
+
+            <!-- Expanded Narrative Synopsis -->
+            <p class="text-gray-300 text-sm leading-relaxed mb-8 font-light tracking-wide">
+                Our story truly took its first realistic breath in the sweet atmosphere of Cafe Cookies right after college. Before that afternoon, she was a beautiful face I used to secretly admire during our 12th-grade classes at SCS College. Standing inside the cafe, battling a storm of nervous energy, we somehow managed to break the ice and exchange social media handles. That single, terrifying leap of faith unlocked a lifetime of walks, late-night laughs, and endless beach horizons together.
+            </p>
+
+            <!-- Chapters Header -->
+            <div class="border-t border-white/10 pt-6 mb-4">
+                <h3 class="text-[#fcf3d7] font-playfair font-bold text-lg tracking-wider mb-2">Chapters of That Year</h3>
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Season 1: First Waves</p>
+            </div>
+
+            <!-- Episodes List (The Chapters) -->
+            <div class="space-y-4">
+                <!-- Chapter 1 -->
+                <div class="flex gap-4 items-center p-3 rounded-2xl hover:bg-white/5 transition duration-300 group">
+                    <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center">
+                        <span class="text-white text-xs font-bold bg-black/60 w-6 h-6 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 scale-75 group-hover:scale-100 absolute z-10">▶</span>
+                        <div class="absolute inset-0 bg-cover bg-center opacity-40 group-hover:scale-105 transition duration-500" style="background-image: url('https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=120');"></div>
+                    </div>
+                    <div class="flex-grow min-w-0">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <h4 class="text-white text-xs font-bold truncate group-hover:text-[#fcf3d7] transition">1. The Cookies Meet</h4>
+                            <span class="text-[9px] text-[#fcf3d7]/50 ml-2 font-mono whitespace-nowrap">12th Grade</span>
+                        </div>
+                        <p class="text-[10px] text-gray-400 line-clamp-2 leading-relaxed">Transitioning from stealing glances in SCS College to exchanging social media at Cafe Cookies, hiding our absolute nervousness.</p>
+                    </div>
+                </div>
+
+                <!-- Chapter 2 -->
+                <div class="flex gap-4 items-center p-3 rounded-2xl hover:bg-white/5 transition duration-300 group">
+                    <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center">
+                        <span class="text-white text-xs font-bold bg-black/60 w-6 h-6 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 scale-75 group-hover:scale-100 absolute z-10">▶</span>
+                        <div class="absolute inset-0 bg-cover bg-center opacity-40 group-hover:scale-105 transition duration-500" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&q=80&w=120');"></div>
+                    </div>
+                    <div class="flex-grow min-w-0">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <h4 class="text-white text-xs font-bold truncate group-hover:text-[#fcf3d7] transition">2. The Sea Breeze & First Ride</h4>
+                            <span class="text-[9px] text-[#fcf3d7]/50 ml-2 font-mono whitespace-nowrap">27 Mar 2025</span>
+                        </div>
+                        <p class="text-[10px] text-gray-400 line-clamp-2 leading-relaxed">Feeling the rush of our very first ride together down to the sea beach. Feelings were rising deep inside, completely secret to her.</p>
+                    </div>
+                </div>
+
+                <!-- Chapter 3 -->
+                <div class="flex gap-4 items-center p-3 rounded-2xl hover:bg-white/5 transition duration-300 group">
+                    <div class="relative w-24 aspect-[16/10] bg-white/5 rounded-lg flex-shrink-0 overflow-hidden border border-white/10 flex items-center justify-center">
+                        <span class="text-white text-xs font-bold bg-black/60 w-6 h-6 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 scale-75 group-hover:scale-100 absolute z-10">▶</span>
+                        <div class="absolute inset-0 bg-cover bg-center opacity-40 group-hover:scale-105 transition duration-500" style="background-image: url('https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&q=80&w=120');"></div>
+                    </div>
+                    <div class="flex-grow min-w-0">
+                        <div class="flex justify-between items-baseline mb-1">
+                            <h4 class="text-white text-xs font-bold truncate group-hover:text-[#fcf3d7] transition">3. Niladri Beach Tease</h4>
+                            <span class="text-[9px] text-[#fcf3d7]/50 ml-2 font-mono whitespace-nowrap">25 Apr 2025</span>
+                        </div>
+                        <p class="text-[10px] text-gray-400 line-clamp-2 leading-relaxed">Meeting on Niladri beach by ourselves. Cracking silly jokes, teasing each other, and laughing nervously under the open sky.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
     <script src="audio.js"></script> 
 
     <!-- ✧ PIXEL-PERFECT NATIVE-GRADE MOMENTS ENGINE ✧ -->
     <script>
+        // ✧----------------- PHOTO CONFIGURATION -----------------✧
+        // Paste your first-meet photo URL here! (Supports links from Unsplash, Imgur, etc.)
+        const firstMeetPhotoUrl = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800"; 
+        // ✧-------------------------------------------------------✧
+
         const myMoments = [
             "Our first meet",
             "Our first date",
@@ -262,7 +418,7 @@
 
                 await wait(200);
 
-                // --- STEP 6: TYPEWRITER EFFECT ---
+                // --- STEP 6: TYPEWRITER EFFECT WITH ADDED HOVER/CLICK INTERACTIONS ---
                 for (let item of myMoments) {
                     let p = document.createElement('p');
                     p.style.fontFamily = "'Montserrat', sans-serif";
@@ -274,6 +430,21 @@
                     p.style.width = "100%";
                     p.style.textAlign = "center";
                     p.style.letterSpacing = "0.05em";
+                    
+                    // ADDED: Make it look clickable and add hover effects
+                    p.style.cursor = "pointer";
+                    p.className = "hover:text-emerald-400 active:scale-[0.98] transition-all duration-200";
+
+                    // ADDED: Trigger Netflix Panel if "Our first meet" is clicked
+                    if (item === "Our first meet") {
+                        p.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            if(typeof openNetflixPanel === 'function') {
+                                openNetflixPanel();
+                            }
+                        });
+                    }
+
                     list.appendChild(p);
 
                     for (let char of item) {
@@ -350,7 +521,113 @@
                     isOpen = false;
                 };
             });
+
+            // ✧----------------- NETFLIX PANEL FUNCTIONALITY -----------------✧
+            
+            // Set up the Main Photo URL in the Netflix Panel on load
+            const bannerImg = document.getElementById('netflix-banner-img');
+            const bannerPlaceholder = document.getElementById('netflix-banner-placeholder');
+            if (bannerImg && firstMeetPhotoUrl) {
+                bannerImg.style.backgroundImage = `url('${firstMeetPhotoUrl}')`;
+                if (bannerPlaceholder) bannerPlaceholder.style.display = 'none';
+            }
+
+            const netflixPanel = document.getElementById('netflix-panel');
+            const netflixBack = document.getElementById('netflix-back');
+            const netflixFavorite = document.getElementById('netflix-favorite');
+            const heartSvg = document.getElementById('heart-icon-svg');
+            const netflixMylist = document.getElementById('netflix-mylist-btn');
+            const mylistIcon = document.getElementById('mylist-icon');
+            const netflixInfo = document.getElementById('netflix-info-btn');
+            const secretCard = document.getElementById('secret-details-card');
+            const hearts = Array.from(document.querySelectorAll('#netflix-hearts-container span'));
+
+            // Exposed globally so the dynamic typewriter text can click it
+            window.openNetflixPanel = function() {
+                if(netflixPanel) {
+                    netflixPanel.style.transform = "translateX(0)";
+                }
+            }
+
+            function closeNetflixPanel() {
+                if(netflixPanel) {
+                    netflixPanel.style.transform = "translateX(100%)";
+                }
+            }
+
+            if (netflixBack) {
+                netflixBack.addEventListener('click', closeNetflixPanel);
+            }
+
+            // Favorite Button (Heart Outline/Fill Switch)
+            let isFav = false;
+            if (netflixFavorite) {
+                netflixFavorite.addEventListener('click', () => {
+                    isFav = !isFav;
+                    if (isFav) {
+                        netflixFavorite.classList.remove('text-white/50');
+                        netflixFavorite.classList.add('text-pink-500');
+                        heartSvg.classList.remove('fill-none');
+                        heartSvg.classList.add('fill-current');
+                        // Mini heart pop animation
+                        netflixFavorite.style.transform = "scale(1.2)";
+                        setTimeout(() => netflixFavorite.style.transform = "none", 150);
+                    } else {
+                        netflixFavorite.classList.add('text-white/50');
+                        netflixFavorite.classList.remove('text-pink-500');
+                        heartSvg.classList.add('fill-none');
+                        heartSvg.classList.remove('fill-current');
+                    }
+                });
+            }
+
+            // My List Button Checkmark Swap
+            let addedToList = false;
+            if (netflixMylist) {
+                netflixMylist.addEventListener('click', () => {
+                    addedToList = !addedToList;
+                    if (addedToList) {
+                        mylistIcon.innerHTML = "✓";
+                        mylistIcon.classList.add('text-emerald-400');
+                    } else {
+                        mylistIcon.innerHTML = "+";
+                        mylistIcon.classList.remove('text-emerald-400');
+                    }
+                });
+            }
+
+            // Secret Info Card Collapse Toggle
+            let infoOpen = false;
+            if (netflixInfo) {
+                netflixInfo.addEventListener('click', () => {
+                    infoOpen = !infoOpen;
+                    if (infoOpen) {
+                        secretCard.classList.remove('hidden');
+                    } else {
+                        secretCard.classList.add('hidden');
+                    }
+                });
+            }
+
+            // Heart Rating Pulsing System
+            hearts.forEach((heart, idx) => {
+                heart.addEventListener('click', () => {
+                    hearts.forEach((h, hIdx) => {
+                        if (hIdx <= idx) {
+                            h.style.color = '#ef4444'; // Crimson fill
+                            h.style.transform = 'scale(1.2)';
+                            setTimeout(() => h.style.transform = 'none', 150);
+                        } else {
+                            h.style.color = 'rgba(255,255,255,0.2)'; // Faded out
+                        }
+                    });
+                });
+            });
+
         });
     </script>
 </body>
 </html>
+
+
+```
