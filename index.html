@@ -1,285 +1,66 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1805 - Our Story</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>1805 | Our Story</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
     
-    <style>
-        /* --- GLOBAL STYLES & BACKGROUND --- */
-        body, html {
-            margin: 0; padding: 0; width: 100%; height: 100%;
-            font-family: 'Montserrat', sans-serif;
-            background-color: #111;
-            /* CHANGE YOUR BACKGROUND IMAGE NAME HERE IF NEEDED */
-            background-image: url('background.jpg'); 
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            color: #f5eedc;
-            overflow-x: hidden;
-        }
-        
-        /* Dark glass overlay for readability */
-        .overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
-            z-index: 1;
-        }
-
-        .container {
-            position: relative; z-index: 2;
-            padding: 40px 25px;
-            max-width: 500px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* --- HEADER & TYPOGRAPHY --- */
-        .logo { font-size: 24px; font-weight: 700; font-family: 'Playfair Display', serif; letter-spacing: 2px; margin-bottom: 40px; }
-        .logo span.green { color: #5e9e7e; }
-        .logo span.beige { color: #f5eedc; }
-
-        .title-row { display: flex; align-items: baseline; margin-bottom: 5px; }
-        .title-big { font-family: 'Playfair Display', serif; font-size: 80px; font-weight: 600; line-height: 1; margin: 0; padding-right: 15px; color: #e6dfcc; }
-        .title-small { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 400; letter-spacing: 5px; color: #e6dfcc; margin: 0; }
-        
-        .subtitle { color: #5e9e7e; font-size: 11px; font-weight: 600; letter-spacing: 6px; text-transform: uppercase; margin-bottom: 30px; }
-        
-        .paragraph { font-size: 15px; line-height: 1.7; color: rgba(255,255,255,0.75); margin-bottom: 40px; font-weight: 300; }
-
-        /* --- BUTTONS --- */
-        .btn-play {
-            width: 100%; max-width: 320px;
-            background: #f5eedc; color: #111;
-            border: none; padding: 18px 20px;
-            border-radius: 30px; font-size: 13px; font-weight: 600; letter-spacing: 3px;
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 20px; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-            transition: transform 0.2s;
-        }
-        .btn-play:active { transform: scale(0.97); }
-        .btn-play span { color: #5e9e7e; margin-right: 12px; font-size: 16px; }
-
-        /* --- SEAMLESS MOMENTS BOX --- */
-        #moments-interactive-box {
-            width: 100%; max-width: 320px;
-            height: 55px; /* Starting closed height */
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border-radius: 30px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            cursor: pointer; overflow: hidden;
-            transition: height 0.6s cubic-bezier(0.25, 1, 0.5, 1), background 0.4s ease;
-            box-sizing: border-box;
-            position: relative;
-        }
-
-        #moments-interactive-box.is-expanded {
-            height: 380px; /* Expanded height */
-            background: rgba(0, 0, 0, 0.5);
-            justify-content: flex-start;
-            padding: 30px 20px;
-            cursor: default;
-        }
-
-        #moments-text {
-            font-size: 13px; font-weight: 500; letter-spacing: 3px;
-            color: #f5eedc; display: flex; align-items: center;
-        }
-        #moments-text span { margin-right: 10px; font-size: 16px; }
-
-        #moments-list { list-style: none; padding: 0; margin: 0; width: 100%; display: none; }
-        .moment-item {
-            margin: 18px 0; font-size: 15px; color: rgba(255, 255, 255, 0.9);
-            letter-spacing: 1px; font-family: 'Playfair Display', serif;
-            border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px;
-        }
-        
-        .close-moments-btn {
-            margin-top: 30px; color: rgba(255, 255, 255, 0.4); font-size: 11px;
-            text-align: center; width: 100%; cursor: pointer; letter-spacing: 3px; text-transform: uppercase;
-        }
-
-        /* --- FOOTER TIMER --- */
-        .timer-card {
-            margin-top: auto; padding: 30px 20px;
-            background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px; backdrop-filter: blur(15px); text-align: center;
-        }
-        .timer-header { display: flex; align-items: center; justify-content: center; margin-bottom: 25px; }
-        .timer-header span { font-size: 10px; letter-spacing: 6px; color: rgba(255,255,255,0.7); padding: 0 15px; }
-        .timer-header .line { height: 1px; width: 40px; background: rgba(255,255,255,0.2); }
-        
-        .timer-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-        .timer-num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 400; color: #f5eedc; margin-bottom: 5px; }
-        .timer-label { font-size: 8px; letter-spacing: 3px; color: rgba(255,255,255,0.5); text-transform: uppercase; }
-
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <script src="data.js"></script>
 </head>
-<body>
+<body class="selection:bg-[#d4af37] selection:text-black cursor-crosshair">
 
-    <div class="overlay"></div>
+    <div class="fixed inset-0 z-0 overflow-hidden" id="environment-layer">
+        <img id="bgImage" src="" alt="Background" class="w-full h-full object-cover object-[center_20%] opacity-90 animate-ken-burns" />
+        <div class="cinematic-overlay"></div>
+    </div>
+    
+    <div class="relative z-10 flex flex-col min-h-screen p-6 md:p-12" id="main-ui-layer">
+        <header class="flex justify-between items-center mb-auto reveal-element delay-1">
+            <h1 class="text-3xl md:text-4xl font-playfair font-black tracking-widest drop-shadow-2xl">
+                <span class="text-emerald-500">18</span><span style="color: var(--color-champagne)">05</span>
+            </h1>
+        </header>
 
-    <div class="container">
-        <!-- Logo -->
-        <div class="logo"><span class="green">18</span><span class="beige">05</span></div>
-
-        <!-- Title Section -->
-        <div class="title-row">
-            <h1 class="title-big">07</h1>
-            <h2 class="title-small">MONTHS</h2>
-        </div>
-        <div class="subtitle">TOGETHER SINCE 2025</div>
-
-        <!-- Paragraph -->
-        <p class="paragraph">
-            It took just 7 months for our story to feel like a lifetime. From late-night laughs to quiet moments, there's no one else I'd rather share my days with. A kiss from you or even just your smile can turn any day into magic. I'd choose you in every universe, every time. I love you with all my heart...
-        </p>
-
-        <!-- Buttons -->
-        <button class="btn-play">
-            <span>▶</span> PLAY OUR STORY
-        </button>
-
-        <!-- The Seamless Moments Button -->
-        <div id="moments-interactive-box">
-            <div id="moments-text"><span>✦</span> MOMENTS</div>
-            <ul id="moments-list"></ul>
-        </div>
-
-        <!-- Timer Footer -->
-        <div class="timer-card">
-            <div class="timer-header">
-                <div class="line"></div>
-                <span>TIME<br>TOGETHER</span>
-                <div class="line"></div>
+        <main class="max-w-4xl mt-12 mb-auto pointer-events-none relative z-20">
+            <div class="foil-text-container mb-4 reveal-element delay-2">
+                <h2 class="font-playfair font-bold tracking-tighter uppercase flex items-baseline gap-2 md:gap-4 drop-shadow-2xl">
+                    <span id="heroNumber" class="champagne-foil text-[6rem] md:text-[9rem] leading-none">00</span>
+                    <span id="heroLabel" class="champagne-foil text-3xl md:text-5xl tracking-[0.2em] mb-2 md:mb-4">MONTHS</span>
+                </h2>
             </div>
-            <div class="timer-grid">
-                <div><div class="timer-num">0</div><div class="timer-label">Years</div></div>
-                <div><div class="timer-num">07</div><div class="timer-label">Months</div></div>
-                <div><div class="timer-num">00</div><div class="timer-label">Weeks</div></div>
-                <div><div class="timer-num">03</div><div class="timer-label">Days</div></div>
+            <p id="togetherText" class="text-emerald-400 font-semibold text-xs md:text-lg tracking-[0.6em] uppercase mb-8 drop-shadow-md reveal-element delay-3"></p>
+            <p id="synopsisText" class="text-gray-300 text-base md:text-2xl leading-relaxed mb-12 max-w-2xl drop-shadow-lg font-light reveal-element delay-4"></p>
+            
+            <div class="flex flex-wrap gap-5 mb-12 reveal-element delay-5 pointer-events-auto">
+                <button class="relative bg-[#fcf3d7] text-[#0a0508] px-10 py-5 rounded-full font-bold text-xs md:text-sm tracking-[0.2em] uppercase transition-all flex items-center gap-4 hover:-translate-y-1 duration-500 group overflow-hidden shadow-[0_0_25px_rgba(212,175,55,0.3)] hover:shadow-[0_0_50px_rgba(212,175,55,0.7)]">
+                    <span class="text-xl relative z-10 group-hover:scale-125 transition-transform duration-500 text-emerald-700">▶</span> 
+                    <span class="relative z-10">Play Our Story</span>
+                    <div class="absolute inset-0 bg-white opacity-0 group-hover:opacity-30 transition-opacity duration-500 z-0"></div>
+                </button>
+                <button class="luxury-glass text-white px-10 py-5 rounded-full font-bold text-xs md:text-sm tracking-[0.2em] uppercase hover:bg-white/10 transition-all flex items-center gap-4 hover:-translate-y-1 duration-500 group">
+                    <span class="text-[#fcf3d7] text-lg group-hover:rotate-180 transition-transform duration-700">✧</span> 
+                    <span>Moments</span>
+                </button>
+            </div>
+        </main>
+
+        <div class="luxury-glass rounded-[2.5rem] p-8 md:p-12 w-full max-w-5xl mx-auto mt-4 mb-4 reveal-element delay-5" id="tilt-card">
+            <div class="flex items-center justify-center gap-6 mb-12 transform translate-z-10">
+                <div class="h-[1px] w-12 md:w-32 bg-gradient-to-r from-transparent to-[#fcf3d7]/60"></div>
+                <p class="text-center text-[#fcf3d7] opacity-90 uppercase tracking-[0.6em] text-[10px] md:text-sm font-bold">Time Together</p>
+                <div class="h-[1px] w-12 md:w-32 bg-gradient-to-l from-transparent to-[#fcf3d7]/60"></div>
+            </div>
+            <div class="grid grid-cols-4 md:grid-cols-7 gap-y-10 gap-x-4 justify-center items-center transform translate-z-20" id="countdown-container">
             </div>
         </div>
     </div>
 
-    <!-- VINYL PLAYER SCRIPT (This calls your existing audio.js) -->
-    <script src="audio.js?v=999"></script>
-
-    <!-- MOMENTS ANIMATION SCRIPT -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const box = document.getElementById('moments-interactive-box');
-            const textSpan = document.getElementById('moments-text');
-            const listContainer = document.getElementById('moments-list');
-            
-            const momentsData = [
-                "Our first meet",
-                "Our first date",
-                "Our first photo",
-                "Her birthday 2026",
-                "His birthday 2026"
-            ];
-
-            let state = 'closed'; 
-            const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-            // OPEN ANIMATION
-            box.onclick = async (e) => {
-                if (state !== 'closed') return; 
-                state = 'animating';
-
-                // 1. Backspace "✦ MOMENTS"
-                let currentText = textSpan.innerText;
-                while (currentText.length > 0) {
-                    currentText = currentText.slice(0, -1);
-                    textSpan.innerText = currentText;
-                    await wait(30); 
-                }
-                textSpan.style.display = 'none';
-
-                // 2. Expand Box Height
-                box.classList.add('is-expanded');
-                await wait(600); // Wait for CSS transition
-
-                // 3. Typewriter Effect for List
-                listContainer.style.display = 'block';
-                listContainer.innerHTML = ''; 
-
-                for (let i = 0; i < momentsData.length; i++) {
-                    let li = document.createElement('li');
-                    li.className = 'moment-item';
-                    listContainer.appendChild(li);
-
-                    let str = momentsData[i];
-                    for (let j = 0; j < str.length; j++) {
-                        li.innerHTML += str.charAt(j);
-                        await wait(25);
-                    }
-                    await wait(100); 
-                }
-
-                // 4. Typewriter [ CLOSE ]
-                let closeBtn = document.createElement('div');
-                closeBtn.className = 'close-moments-btn';
-                closeBtn.onclick = (event) => {
-                    event.stopPropagation(); 
-                    closeMomentsSequence();
-                };
-                listContainer.appendChild(closeBtn);
-
-                let closeStr = "[ CLOSE ]";
-                for (let j = 0; j < closeStr.length; j++) {
-                    closeBtn.innerHTML += closeStr.charAt(j);
-                    await wait(30);
-                }
-
-                state = 'open';
-            };
-
-            // CLOSE ANIMATION
-            async function closeMomentsSequence() {
-                if (state !== 'open') return;
-                state = 'animating';
-
-                // 1. Backspace List Bottom-to-Top
-                const elementsToErase = Array.from(listContainer.children).reverse();
-                for (let el of elementsToErase) {
-                    let text = el.innerText;
-                    while (text.length > 0) {
-                        text = text.slice(0, -1);
-                        el.innerText = text;
-                        await wait(15); 
-                    }
-                    el.remove();
-                }
-                listContainer.style.display = 'none';
-
-                // 2. Shrink Box
-                box.classList.remove('is-expanded');
-                await wait(600);
-
-                // 3. Type "✦ MOMENTS" back
-                textSpan.style.display = 'flex';
-                textSpan.innerText = '';
-                let originalText = "✦ MOMENTS";
-                for (let i = 0; i < originalText.length; i++) {
-                    textSpan.innerHTML += originalText.charAt(i);
-                    await wait(40);
-                }
-
-                state = 'closed';
-            }
-        });
-    </script>
+    <script src="script.js"></script>    <script src="script.js"></script>
+    <script src="audio.js"></script> 
 </body>
 </html>
-
-
-```
