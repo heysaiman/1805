@@ -75,57 +75,60 @@
         // ---------------------------
 
         document.addEventListener('DOMContentLoaded', () => {
-            const momentsBtn = document.getElementById('moments-magic-btn');
-            if (!momentsBtn) return;
+            const originalBtn = document.getElementById('moments-magic-btn');
+            if (!originalBtn) return;
 
             let isExpanded = false;
-            let originalHTML = momentsBtn.innerHTML; 
-            
-            // Create cinematic blur backdrop (Z-index updated to be in front)
-            const overlay = document.createElement('div');
-            overlay.className = "fixed inset-0 z-[9998] bg-black/70 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-700";
-            document.body.appendChild(overlay);
 
-            // Create a ghost placeholder to prevent layout glitches
-            const placeholder = document.createElement('div');
-            placeholder.style.display = "none";
-            momentsBtn.parentNode.insertBefore(placeholder, momentsBtn);
+            // Overlay setup
+            const overlay = document.createElement('div');
+            overlay.className = "fixed inset-0 z-[9990] bg-black/75 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-700";
+            document.body.appendChild(overlay);
 
             const wait = (ms) => new Promise(r => setTimeout(r, ms));
 
-            momentsBtn.addEventListener('click', async (e) => {
+            originalBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
                 if (isExpanded) return;
                 isExpanded = true;
 
-                const rect = momentsBtn.getBoundingClientRect();
+                // 1. Get exact starting coordinates
+                const rect = originalBtn.getBoundingClientRect();
+
+                // 2. Hide real button (keeps layout intact instantly)
+                originalBtn.style.opacity = '0';
+                originalBtn.style.pointerEvents = 'none';
+
+                // 3. Create the Animating Clone
+                const clone = document.createElement('div');
+                clone.innerHTML = originalBtn.innerHTML; 
+                clone.className = originalBtn.className; 
+                clone.classList.remove('hover:-translate-y-1', 'hover:bg-white/10', 'group'); 
                 
-                // Show placeholder to hold space
-                placeholder.style.width = rect.width + "px";
-                placeholder.style.height = rect.height + "px";
-                placeholder.style.display = "block";
+                // Snap clone to exact start position
+                clone.style.position = 'fixed';
+                clone.style.top = rect.top + 'px';
+                clone.style.left = rect.left + 'px';
+                clone.style.width = rect.width + 'px';
+                clone.style.height = rect.height + 'px';
+                clone.style.margin = '0';
+                clone.style.zIndex = '9999';
+                clone.style.display = 'flex';
+                clone.style.alignItems = 'center';
+                clone.style.justifyContent = 'center';
+                clone.style.boxSizing = 'border-box';
+                // Premium Apple-style spring easing
+                clone.style.transition = 'all 0.75s cubic-bezier(0.16, 1, 0.3, 1)';
+                clone.style.overflow = 'hidden';
+                
+                document.body.appendChild(clone);
 
-                // ✨ MAGIC TRICK: Teleport button to body to escape the darkness ✨
-                document.body.appendChild(momentsBtn);
-
-                // Prepare button to morph
-                momentsBtn.style.position = "fixed";
-                momentsBtn.style.top = rect.top + "px";
-                momentsBtn.style.left = rect.left + "px";
-                momentsBtn.style.width = rect.width + "px";
-                momentsBtn.style.height = rect.height + "px";
-                momentsBtn.style.margin = "0";
-                momentsBtn.style.zIndex = "9999"; // Extreme priority
-                momentsBtn.style.transition = "all 0.8s cubic-bezier(0.25, 1, 0.5, 1)";
-                momentsBtn.style.overflow = "hidden";
-                momentsBtn.classList.remove('hover:-translate-y-1', 'hover:bg-white/10');
-
-                // Fade in background dimming
+                // Fade in overlay
                 overlay.classList.remove('pointer-events-none');
                 overlay.classList.add('opacity-100');
 
-                // Erase text (Backspace animation)
-                const spans = Array.from(momentsBtn.querySelectorAll('span'));
+                // 4. Backspace animation inside clone
+                const spans = Array.from(clone.querySelectorAll('span'));
                 const textSpan = spans.find(s => s.innerText.toUpperCase().includes('MOMENTS'));
                 const iconSpan = spans.find(s => s.innerText.includes('✧'));
                 
@@ -134,40 +137,45 @@
                     while(text.length > 0) {
                         text = text.slice(0, -1);
                         textSpan.innerText = text;
-                        await wait(25);
+                        await wait(20); 
                     }
                 }
                 if (iconSpan) {
-                    iconSpan.style.transition = "opacity 0.3s";
+                    iconSpan.style.transition = "opacity 0.3s ease";
                     iconSpan.style.opacity = "0";
-                    await wait(200);
+                    await wait(150);
                 }
-                momentsBtn.innerHTML = ""; 
-
-                // Morph shape to center screen
-                momentsBtn.style.top = "50%";
-                momentsBtn.style.left = "50%";
-                momentsBtn.style.transform = "translate(-50%, -50%)";
-                momentsBtn.style.width = "90%";
-                momentsBtn.style.maxWidth = "360px";
-                momentsBtn.style.height = "420px"; 
-                momentsBtn.style.borderRadius = "2rem";
-                momentsBtn.style.padding = "40px 30px";
-                momentsBtn.style.background = "rgba(10, 5, 8, 0.85)";
-                momentsBtn.style.border = "1px solid rgba(252, 243, 215, 0.15)";
-                momentsBtn.style.flexDirection = "column";
-                momentsBtn.style.alignItems = "center";
-                momentsBtn.style.justifyContent = "flex-start";
                 
-                await wait(800);
+                clone.innerHTML = ""; 
 
-                // Setup internal content
+                // Force browser to register start position before moving
+                clone.getBoundingClientRect(); 
+
+                // 5. Morph to Center Card
+                clone.style.top = '50%';
+                clone.style.left = '50%';
+                clone.style.transform = 'translate(-50%, -50%)';
+                clone.style.width = '90%';
+                clone.style.maxWidth = '360px';
+                clone.style.height = '420px';
+                clone.style.borderRadius = '2rem';
+                clone.style.padding = '40px 30px';
+                clone.style.background = 'rgba(10, 5, 8, 0.85)';
+                clone.style.border = '1px solid rgba(252, 243, 215, 0.15)';
+                clone.style.flexDirection = 'column';
+                clone.style.justifyContent = 'flex-start';
+                
+                await wait(750); // Wait for morph to finish
+
+                // 6. Setup internal content
                 const contentWrapper = document.createElement('div');
                 contentWrapper.style.width = "100%";
                 contentWrapper.style.display = "flex";
                 contentWrapper.style.flexDirection = "column";
                 contentWrapper.style.alignItems = "center";
-                momentsBtn.appendChild(contentWrapper);
+                contentWrapper.style.opacity = "0"; // Start hidden for fade-in
+                contentWrapper.style.transition = "opacity 0.6s ease";
+                clone.appendChild(contentWrapper);
 
                 const title = document.createElement('h3');
                 title.style.color = "#fcf3d7";
@@ -176,13 +184,8 @@
                 title.style.letterSpacing = "0.3em";
                 title.style.marginBottom = "30px";
                 title.innerText = "✧ MOMENTS";
-                title.style.opacity = "0";
-                title.style.transition = "opacity 0.5s";
                 contentWrapper.appendChild(title);
                 
-                setTimeout(() => title.style.opacity = "1", 50);
-                await wait(400);
-
                 const list = document.createElement('div');
                 list.style.width = "100%";
                 list.style.display = "flex";
@@ -190,28 +193,6 @@
                 list.style.gap = "20px";
                 contentWrapper.appendChild(list);
 
-                // Typewriter loop for list
-                for (let item of myMoments) {
-                    let p = document.createElement('p');
-                    p.style.fontFamily = "'Montserrat', sans-serif";
-                    p.style.fontWeight = "300";
-                    p.style.color = "rgba(255,255,255,0.9)";
-                    p.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
-                    p.style.paddingBottom = "5px";
-                    p.style.fontSize = "14px";
-                    p.style.width = "100%";
-                    p.style.textAlign = "center";
-                    p.style.letterSpacing = "0.05em";
-                    list.appendChild(p);
-
-                    for (let char of item) {
-                        p.innerHTML += char;
-                        await wait(30);
-                    }
-                    await wait(100);
-                }
-
-                // Add Actions (+ ADD / CLOSE)
                 const actions = document.createElement('div');
                 actions.style.display = "flex";
                 actions.style.justifyContent = "space-between";
@@ -235,45 +216,71 @@
 
                 actions.appendChild(addBtn);
                 actions.appendChild(closeBtn);
-                
-                actions.style.opacity = "0";
-                actions.style.transition = "opacity 0.5s";
                 contentWrapper.appendChild(actions);
 
-                setTimeout(() => actions.style.opacity = "1", 50);
+                // Fade in wrapper
+                requestAnimationFrame(() => {
+                    contentWrapper.style.opacity = "1";
+                });
+                
+                await wait(300);
 
-                // CLOSE LOGIC (Reverse Morph)
+                // Typewriter loop
+                for (let item of myMoments) {
+                    let p = document.createElement('p');
+                    p.style.fontFamily = "'Montserrat', sans-serif";
+                    p.style.fontWeight = "300";
+                    p.style.color = "rgba(255,255,255,0.9)";
+                    p.style.borderBottom = "1px solid rgba(255,255,255,0.1)";
+                    p.style.paddingBottom = "5px";
+                    p.style.fontSize = "14px";
+                    p.style.width = "100%";
+                    p.style.textAlign = "center";
+                    p.style.letterSpacing = "0.05em";
+                    list.appendChild(p);
+
+                    for (let char of item) {
+                        p.innerHTML += char;
+                        await wait(25);
+                    }
+                    await wait(100);
+                }
+
+                // 7. FLUID CLOSE LOGIC
                 closeBtn.onclick = async (e) => {
                     e.stopPropagation();
                     
+                    // Fade out inner text
                     contentWrapper.style.opacity = "0";
                     await wait(400);
-                    momentsBtn.innerHTML = "";
-
-                    const currentRect = placeholder.getBoundingClientRect();
-                    momentsBtn.style.top = currentRect.top + "px";
-                    momentsBtn.style.left = currentRect.left + "px";
-                    momentsBtn.style.transform = "none";
-                    momentsBtn.style.width = currentRect.width + "px";
-                    momentsBtn.style.height = currentRect.height + "px";
-                    momentsBtn.style.borderRadius = "9999px"; 
-                    momentsBtn.style.padding = "0";
-                    momentsBtn.style.background = ""; 
-                    momentsBtn.style.border = "";
+                    clone.innerHTML = ""; 
                     
+                    // Recalculate original button location in case user scrolled
+                    const targetRect = originalBtn.getBoundingClientRect();
+
+                    // Fade out background blur
                     overlay.classList.remove('opacity-100');
                     overlay.classList.add('opacity-0');
 
-                    await wait(800);
+                    // Morph clone back to start position
+                    clone.style.top = targetRect.top + 'px';
+                    clone.style.left = targetRect.left + 'px';
+                    clone.style.transform = 'none'; 
+                    clone.style.width = targetRect.width + 'px';
+                    clone.style.height = targetRect.height + 'px';
+                    clone.style.borderRadius = '9999px'; 
+                    clone.style.padding = '0';
+                    clone.style.background = 'rgba(255, 255, 255, 0.05)'; 
+                    clone.style.border = '1px solid rgba(255, 255, 255, 0.1)';
+                    clone.style.backdropFilter = 'blur(12px)';
 
-                    momentsBtn.removeAttribute('style');
-                    momentsBtn.classList.add('hover:-translate-y-1', 'hover:bg-white/10');
-                    momentsBtn.innerHTML = originalHTML;
-                    
-                    // ✨ TELEPORT BACK to original location ✨
-                    placeholder.parentNode.insertBefore(momentsBtn, placeholder);
-                    placeholder.style.display = "none";
-                    
+                    await wait(750); 
+
+                    // Delete clone and restore real button
+                    clone.remove();
+                    originalBtn.style.opacity = '1';
+                    originalBtn.style.pointerEvents = 'auto';
+
                     overlay.classList.add('pointer-events-none');
                     isExpanded = false;
                 };
