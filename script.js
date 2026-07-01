@@ -58,7 +58,7 @@ const Engine = {
             let html = '';
             timeUnits.forEach(u => {
                 const style = u.isLive ? 'text-emerald-300 font-medium drop-shadow-[0_0_15px_rgba(52,211,153,0.6)]' : 'text-[#fcf3d7] font-light drop-shadow-[0_5px_15px_rgba(212,175,55,0.25)]';
-                html += `<div class="flex flex-col items-center justify-center"><span class="font-playfair text-5xl md:text-7xl \( {style} transition-all duration-300 tracking-wider"> \){u.val}</span><span class="text-[9px] md:text-xs text-gray-400 mt-4 uppercase tracking-[0.5em] font-semibold opacity-70">${u.label}</span></div>`;
+                html += `<div class="flex flex-col items-center justify-center"><span class="font-playfair text-5xl md:text-7xl ${style} transition-all duration-300 tracking-wider">${u.val}</span><span class="text-[9px] md:text-xs text-gray-400 mt-4 uppercase tracking-[0.5em] font-semibold opacity-70">${u.label}</span></div>`;
             });
             document.getElementById('countdown-container').innerHTML = html;
         };
@@ -73,13 +73,13 @@ const InteractionManager = {
         this.card = document.getElementById('tilt-card'); this.container = document.getElementById('main-ui-layer');
         this.container.addEventListener('mousemove', (e) => {
             let x = (window.innerWidth / 2 - e.pageX) / 50; let y = (window.innerHeight / 2 - e.pageY) / 50;
-            this.card.style.transform = `rotateY(\( {x}deg) rotateX( \){y}deg)`;
+            this.card.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
         });
         this.container.addEventListener('mouseleave', () => this.card.style.transform = `rotateY(0deg) rotateX(0deg)`);
         window.addEventListener('deviceorientation', (e) => {
             if (!e.gamma || !e.beta) return;
             let tiltX = Math.max(-15, Math.min(15, e.gamma / 1.5)); let tiltY = Math.max(-15, Math.min(15, (e.beta - 45) / 1.5)); 
-            this.card.style.transform = `rotateY(\( {tiltX}deg) rotateX( \){-tiltY}deg)`;
+            this.card.style.transform = `rotateY(${tiltX}deg) rotateX(${-tiltY}deg)`;
         });
     }
 };
@@ -90,7 +90,7 @@ const ParticleSystem = {
         this.setupAmbientEnvironment();
         document.addEventListener('mousemove', (e) => this.spawnMix(e.clientX, e.clientY));
         document.addEventListener('touchmove', (e) => this.spawnMix(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
-        document.addEventListener('click', (e) => { for(let i=0; i=30; i++) this.spawnMix(e.clientX, e.clientY, true); });
+        document.addEventListener('click', (e) => { for(let i=0; i<30; i++) this.spawnMix(e.clientX, e.clientY, true); });
     },
     spawnMix(x, y, isBurst = false) {
         const now = Date.now();
@@ -106,11 +106,11 @@ const ParticleSystem = {
         else { el.style.setProperty('--size', `${Math.random() * 6 + 2}px`); }
         
         const spread = isBurst ? 150 : 60; const offsetX = (Math.random() - 0.5) * (isBurst ? 40 : 20); const offsetY = (Math.random() - 0.5) * (isBurst ? 40 : 20);
-        el.style.left = `\( {x + offsetX}px`; el.style.top = ` \){y + offsetY}px`;
+        el.style.left = `${x + offsetX}px`; el.style.top = `${y + offsetY}px`;
         
         const dx = (Math.random() - 0.5) * spread; const dy = (Math.random() - 0.5) * spread - (Math.random() * 100 + 50); 
-        el.style.setProperty('--dx', `\( {dx}px`); el.style.setProperty('--dy', ` \){dy}px`);
-        el.style.setProperty('--rot-start', `\( {Math.random() * 360}deg`); el.style.setProperty('--rot-mid', ` \){Math.random() * 360 + 180}deg`); el.style.setProperty('--rot-end', `${Math.random() * 720}deg`);
+        el.style.setProperty('--dx', `${dx}px`); el.style.setProperty('--dy', `${dy}px`);
+        el.style.setProperty('--rot-start', `${Math.random() * 360}deg`); el.style.setProperty('--rot-mid', `${Math.random() * 360 + 180}deg`); el.style.setProperty('--rot-end', `${Math.random() * 720}deg`);
         
         const duration = Math.random() * 1.5 + 1.2; el.style.setProperty('--duration', `${duration}s`);
         document.body.appendChild(el); setTimeout(() => el.remove(), duration * 1000);
@@ -119,46 +119,12 @@ const ParticleSystem = {
         const container = document.getElementById('environment-layer');
         for(let i=0; i<35; i++) {
             const orb = document.createElement('div'); orb.className = 'ambient-orb'; orb.style.left = `${Math.random() * 100}vw`;
-            const size = Math.random() * 150 + 50; orb.style.width = `\( {size}px`; orb.style.height = ` \){size}px`;
+            const size = Math.random() * 150 + 50; orb.style.width = `${size}px`; orb.style.height = `${size}px`;
             orb.style.setProperty('--max-opacity', Math.random() * 0.15 + 0.05);
-            orb.style.animationDuration = `\( {Math.random() * 20 + 15}s`; orb.style.animationDelay = ` \){Math.random() * -30}s`;
+            orb.style.animationDuration = `${Math.random() * 20 + 15}s`; orb.style.animationDelay = `${Math.random() * -30}s`;
             container.appendChild(orb);
         }
     }
 };
 
-// ==================== LUXURIOUS SLIDING PANEL ====================
-function initLuxurySlidingPanel() {
-    const panel = document.getElementById('sliding-panel');
-    const heroArea = document.getElementById('hero-area');
-    const initialBottom = document.getElementById('initial-bottom');
-
-    if (!panel || !heroArea || !initialBottom) return;
-
-    const openPanel = () => {
-        panel.classList.remove('hidden');
-        requestAnimationFrame(() => {
-            panel.classList.add('show');
-        });
-    };
-
-    heroArea.addEventListener('click', openPanel);
-    initialBottom.addEventListener('click', openPanel);
-
-    document.addEventListener('click', (e) => {
-        if (panel.classList.contains('show') &&
-            !panel.contains(e.target) &&
-            !heroArea.contains(e.target) &&
-            !initialBottom.contains(e.target)) {
-            panel.classList.remove('show');
-            setTimeout(() => {
-                panel.classList.add('hidden');
-            }, 750);
-        }
-    });
-}
-
-window.addEventListener('DOMContentLoaded', () => {
-    Engine.init();
-    initLuxurySlidingPanel();
-});
+window.addEventListener('DOMContentLoaded', () => Engine.init());
