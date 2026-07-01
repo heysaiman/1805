@@ -75,16 +75,15 @@
         // ---------------------------
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Find the button instantly using the foolproof ID
             const momentsBtn = document.getElementById('moments-magic-btn');
             if (!momentsBtn) return;
 
             let isExpanded = false;
             let originalHTML = momentsBtn.innerHTML; 
             
-            // Create cinematic blur backdrop
+            // Create cinematic blur backdrop (Z-index updated to be in front)
             const overlay = document.createElement('div');
-            overlay.className = "fixed inset-0 z-[40] bg-black/60 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-700";
+            overlay.className = "fixed inset-0 z-[9998] bg-black/70 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-700";
             document.body.appendChild(overlay);
 
             // Create a ghost placeholder to prevent layout glitches
@@ -106,6 +105,9 @@
                 placeholder.style.height = rect.height + "px";
                 placeholder.style.display = "block";
 
+                // ✨ MAGIC TRICK: Teleport button to body to escape the darkness ✨
+                document.body.appendChild(momentsBtn);
+
                 // Prepare button to morph
                 momentsBtn.style.position = "fixed";
                 momentsBtn.style.top = rect.top + "px";
@@ -113,7 +115,7 @@
                 momentsBtn.style.width = rect.width + "px";
                 momentsBtn.style.height = rect.height + "px";
                 momentsBtn.style.margin = "0";
-                momentsBtn.style.zIndex = "50";
+                momentsBtn.style.zIndex = "9999"; // Extreme priority
                 momentsBtn.style.transition = "all 0.8s cubic-bezier(0.25, 1, 0.5, 1)";
                 momentsBtn.style.overflow = "hidden";
                 momentsBtn.classList.remove('hover:-translate-y-1', 'hover:bg-white/10');
@@ -267,7 +269,11 @@
                     momentsBtn.removeAttribute('style');
                     momentsBtn.classList.add('hover:-translate-y-1', 'hover:bg-white/10');
                     momentsBtn.innerHTML = originalHTML;
+                    
+                    // ✨ TELEPORT BACK to original location ✨
+                    placeholder.parentNode.insertBefore(momentsBtn, placeholder);
                     placeholder.style.display = "none";
+                    
                     overlay.classList.add('pointer-events-none');
                     isExpanded = false;
                 };
