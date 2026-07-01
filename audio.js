@@ -1,56 +1,89 @@
-// audio.js - The Intelligent Media Engine
+// audio.js - Premium Glassmorphism Audio Controller
 const AudioEngine = {
     init() {
         const musicFile = 'bg-music.mp3';
         this.bgm = new Audio(musicFile);
-        this.bgm.loop = true;
+        this.bgm.loop = false; // Turned off so the toggle "clicks off" when it ends
         this.isPlaying = false;
 
-        // Create a stylish Play/Pause button
-        const btn = document.createElement('button');
-        btn.innerText = "🔊"; // Initial Icon
-        btn.style.position = 'fixed';
-        btn.style.bottom = '20px';
-        btn.style.right = '20px';
-        btn.style.padding = '10px 15px';
-        btn.style.background = 'rgba(255, 255, 255, 0.1)';
-        btn.style.color = 'white';
-        btn.style.border = '1px solid rgba(255, 255, 255, 0.3)';
-        btn.style.borderRadius = '50px';
-        btn.style.zIndex = '9999';
-        btn.style.backdropFilter = 'blur(5px)';
-        document.body.appendChild(btn);
+        // 1. Create the Luxury Glass Container
+        const toggle = document.createElement('div');
+        Object.assign(toggle.style, {
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            width: '60px',
+            height: '30px',
+            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05))',
+            backdropFilter: 'blur(15px)',
+            borderRadius: '30px',
+            border: '1px solid rgba(255, 255, 255, 0.3)',
+            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
+            cursor: 'pointer',
+            zIndex: '9999',
+            display: 'flex',
+            alignItems: 'center',
+            padding: '0 4px',
+            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+        });
 
-        // The logic to start/stop
+        // 2. Create the Luxury Slider Handle
+        const slider = document.createElement('div');
+        Object.assign(slider.style, {
+            width: '22px',
+            height: '22px',
+            background: 'white',
+            borderRadius: '50%',
+            boxShadow: '0 2px 5px rgba(0,0,0,0.3)',
+            transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+        });
+        toggle.appendChild(slider);
+        document.body.appendChild(toggle);
+
+        // 3. UI Sync Logic
+        const updateUI = (playing) => {
+            this.isPlaying = playing;
+            if (this.isPlaying) {
+                slider.style.transform = 'translateX(30px)';
+                toggle.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1))';
+            } else {
+                slider.style.transform = 'translateX(0px)';
+                toggle.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05))';
+            }
+        };
+
+        // 4. Music Logic
         const toggleMusic = () => {
             if (this.isPlaying) {
                 this.bgm.pause();
-                btn.innerText = "🔇"; // Show Replay icon
-                this.isPlaying = false;
+                updateUI(false);
             } else {
-                this.bgm.play();
-                btn.innerText = "🔊"; // Show Mute icon
-                this.isPlaying = true;
+                this.bgm.play().catch(e => console.log("User interaction required."));
+                updateUI(true);
             }
         };
 
-        // On first interaction (tap/swipe), start the music automatically
-        const startOnFirstTap = () => {
-            if (!this.isPlaying) {
-                this.bgm.play();
-                this.isPlaying = true;
-                btn.innerText = "🔊";
-            }
-            document.removeEventListener('click', startOnFirstTap);
-            document.removeEventListener('touchstart', startOnFirstTap);
+        // Automatic "Off" when music ends
+        this.bgm.addEventListener('ended', () => {
+            updateUI(false);
+        });
+
+        // Event Listeners
+        toggle.onclick = (e) => {
+            e.stopPropagation();
+            toggleMusic();
         };
 
-        document.addEventListener('click', startOnFirstTap, { once: true });
-        document.addEventListener('touchstart', startOnFirstTap, { once: true });
-
-        // Button click toggles the state
-        btn.onclick = toggleMusic;
+        // Start on first touch (Anywhere on the site)
+        document.addEventListener('click', () => {
+            if (!this.isPlaying) toggleMusic();
+        }, { once: true });
+        
+        document.addEventListener('touchstart', () => {
+            if (!this.isPlaying) toggleMusic();
+        }, { once: true });
     }
 };
 
 window.addEventListener('DOMContentLoaded', () => AudioEngine.init());
+
