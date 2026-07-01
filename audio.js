@@ -1,89 +1,72 @@
-// audio.js - Premium Glassmorphism Audio Controller
+// audio.js - Instant-Trigger Engine
 const AudioEngine = {
     init() {
         const musicFile = 'bg-music.mp3';
         this.bgm = new Audio(musicFile);
-        this.bgm.loop = false; // Turned off so the toggle "clicks off" when it ends
+        this.bgm.loop = false;
         this.isPlaying = false;
 
-        // 1. Create the Luxury Glass Container
-        const toggle = document.createElement('div');
-        Object.assign(toggle.style, {
-            position: 'fixed',
-            top: '20px',
-            right: '20px',
-            width: '60px',
-            height: '30px',
-            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05))',
-            backdropFilter: 'blur(15px)',
-            borderRadius: '30px',
-            border: '1px solid rgba(255, 255, 255, 0.3)',
-            boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)',
-            cursor: 'pointer',
-            zIndex: '9999',
-            display: 'flex',
-            alignItems: 'center',
-            padding: '0 4px',
-            transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+        // 1. Create the UI Component
+        const container = document.createElement('div');
+        Object.assign(container.style, {
+            position: 'fixed', top: '20px', right: '20px', width: '70px', height: '34px',
+            background: '#1a1a2e', borderRadius: '50px', border: '2px solid #2d2d44',
+            display: 'flex', alignItems: 'center', padding: '3px', cursor: 'pointer',
+            zIndex: '9999', transition: 'background 0.3s ease'
         });
 
-        // 2. Create the Luxury Slider Handle
-        const slider = document.createElement('div');
-        Object.assign(slider.style, {
-            width: '22px',
-            height: '22px',
-            background: 'white',
-            borderRadius: '50%',
-            boxShadow: '0 2px 5px rgba(0,0,0,0.3)',
-            transition: 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+        const knob = document.createElement('div');
+        Object.assign(knob.style, {
+            width: '28px', height: '28px', background: 'linear-gradient(145deg, #ffffff, #e6e6e6)',
+            borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '12px', transition: 'transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)'
         });
-        toggle.appendChild(slider);
-        document.body.appendChild(toggle);
-
-        // 3. UI Sync Logic
-        const updateUI = (playing) => {
-            this.isPlaying = playing;
-            if (this.isPlaying) {
-                slider.style.transform = 'translateX(30px)';
-                toggle.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.1))';
-            } else {
-                slider.style.transform = 'translateX(0px)';
-                toggle.style.background = 'linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05))';
-            }
-        };
-
-        // 4. Music Logic
-        const toggleMusic = () => {
-            if (this.isPlaying) {
-                this.bgm.pause();
-                updateUI(false);
-            } else {
-                this.bgm.play().catch(e => console.log("User interaction required."));
-                updateUI(true);
-            }
-        };
-
-        // Automatic "Off" when music ends
-        this.bgm.addEventListener('ended', () => {
-            updateUI(false);
-        });
-
-        // Event Listeners
-        toggle.onclick = (e) => {
-            e.stopPropagation();
-            toggleMusic();
-        };
-
-        // Start on first touch (Anywhere on the site)
-        document.addEventListener('click', () => {
-            if (!this.isPlaying) toggleMusic();
-        }, { once: true });
         
-        document.addEventListener('touchstart', () => {
-            if (!this.isPlaying) toggleMusic();
-        }, { once: true });
+        container.appendChild(knob);
+        document.body.appendChild(container);
+
+        // 2. Playback Logic
+        const playMusic = () => {
+            if (this.isPlaying) return;
+            this.bgm.play().then(() => {
+                this.isPlaying = true;
+                knob.style.transform = 'translateX(36px)';
+                knob.innerHTML = '🔊';
+                container.style.background = '#4e44ce';
+            }).catch(e => console.log("Waiting for user gesture..."));
+        };
+
+        const stopMusic = () => {
+            this.bgm.pause();
+            this.isPlaying = false;
+            knob.style.transform = 'translateX(0px)';
+            knob.innerHTML = '🔇';
+            container.style.background = '#1a1a2e';
+        };
+
+        // 3. Listen to ANY interaction on the page (Stardust, scroll, click)
+        const triggerHandler = () => {
+            playMusic();
+            // Remove listeners so it only triggers the first time
+            document.removeEventListener('click', triggerHandler);
+            document.removeEventListener('touchstart', triggerHandler);
+        };
+
+        document.addEventListener('click', triggerHandler);
+        document.addEventListener('touchstart', triggerHandler);
+
+        // 4. Manual Toggle Control
+        container.onclick = (e) => {
+            e.stopPropagation();
+            this.isPlaying ? stopMusic() : playMusic();
+        };
+
+        // Auto-reset
+        this.bgm.addEventListener('ended', stopMusic);
+        
+        // Initial state
+        knob.innerHTML = '🔇';
     }
 };
 
 window.addEventListener('DOMContentLoaded', () => AudioEngine.init());
-
