@@ -79,10 +79,13 @@
             if (!originalBtn) return;
 
             let isExpanded = false;
-
-            // Overlay setup
+            
+            // Premium blur overlay with GPU flags
             const overlay = document.createElement('div');
-            overlay.className = "fixed inset-0 z-[9990] bg-black/75 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-700";
+            overlay.className = "fixed inset-0 z-[9990] bg-black/75 backdrop-blur-md opacity-0 pointer-events-none";
+            overlay.style.transition = "opacity 0.8s cubic-bezier(0.32, 0.72, 0, 1)";
+            overlay.style.willChange = "opacity";
+            overlay.style.transform = "translateZ(0)"; 
             document.body.appendChild(overlay);
 
             const wait = (ms) => new Promise(r => setTimeout(r, ms));
@@ -92,42 +95,44 @@
                 if (isExpanded) return;
                 isExpanded = true;
 
-                // 1. Get exact starting coordinates
-                const rect = originalBtn.getBoundingClientRect();
+                // 1. Get exact start coordinates in pure pixels
+                const startRect = originalBtn.getBoundingClientRect();
 
-                // 2. Hide real button (keeps layout intact instantly)
+                // 2. Hide original button immediately
                 originalBtn.style.opacity = '0';
                 originalBtn.style.pointerEvents = 'none';
 
-                // 3. Create the Animating Clone
+                // 3. Setup Hardware-Accelerated Clone
                 const clone = document.createElement('div');
                 clone.innerHTML = originalBtn.innerHTML; 
                 clone.className = originalBtn.className; 
                 clone.classList.remove('hover:-translate-y-1', 'hover:bg-white/10', 'group'); 
                 
-                // Snap clone to exact start position
+                // Snap clone to exact start pixels
                 clone.style.position = 'fixed';
-                clone.style.top = rect.top + 'px';
-                clone.style.left = rect.left + 'px';
-                clone.style.width = rect.width + 'px';
-                clone.style.height = rect.height + 'px';
+                clone.style.top = startRect.top + 'px';
+                clone.style.left = startRect.left + 'px';
+                clone.style.width = startRect.width + 'px';
+                clone.style.height = startRect.height + 'px';
                 clone.style.margin = '0';
                 clone.style.zIndex = '9999';
                 clone.style.display = 'flex';
                 clone.style.alignItems = 'center';
                 clone.style.justifyContent = 'center';
                 clone.style.boxSizing = 'border-box';
-                // Premium Apple-style spring easing
-                clone.style.transition = 'all 0.75s cubic-bezier(0.16, 1, 0.3, 1)';
+                
+                // FORCE GPU RENDERING for absolute maximum fluidity
+                clone.style.willChange = 'top, left, width, height, border-radius, background-color';
+                clone.style.transform = 'translateZ(0)'; 
                 clone.style.overflow = 'hidden';
                 
                 document.body.appendChild(clone);
 
-                // Fade in overlay
+                // Start overlay fade
                 overlay.classList.remove('pointer-events-none');
                 overlay.classList.add('opacity-100');
 
-                // 4. Backspace animation inside clone
+                // 4. Backspace animation (optimized to run before moving to prevent DOM lag)
                 const spans = Array.from(clone.querySelectorAll('span'));
                 const textSpan = spans.find(s => s.innerText.toUpperCase().includes('MOMENTS'));
                 const iconSpan = spans.find(s => s.innerText.includes('✧'));
@@ -137,27 +142,32 @@
                     while(text.length > 0) {
                         text = text.slice(0, -1);
                         textSpan.innerText = text;
-                        await wait(20); 
+                        await wait(15); 
                     }
                 }
                 if (iconSpan) {
-                    iconSpan.style.transition = "opacity 0.3s ease";
+                    iconSpan.style.transition = "opacity 0.2s ease";
                     iconSpan.style.opacity = "0";
-                    await wait(150);
+                    await wait(100);
                 }
-                
                 clone.innerHTML = ""; 
 
-                // Force browser to register start position before moving
+                // 5. Calculate precise end coordinates in pixels (No % math for the browser!)
+                const targetWidth = Math.min(window.innerWidth * 0.9, 360);
+                const targetHeight = 420;
+                const targetTop = (window.innerHeight - targetHeight) / 2;
+                const targetLeft = (window.innerWidth - targetWidth) / 2;
+
+                // 6. Force browser to register start position before applying transitions
                 clone.getBoundingClientRect(); 
 
-                // 5. Morph to Center Card
-                clone.style.top = '50%';
-                clone.style.left = '50%';
-                clone.style.transform = 'translate(-50%, -50%)';
-                clone.style.width = '90%';
-                clone.style.maxWidth = '360px';
-                clone.style.height = '420px';
+                // 7. Apply iOS Spring Curve Transition and execute move
+                clone.style.transition = 'top 0.8s cubic-bezier(0.32, 0.72, 0, 1), left 0.8s cubic-bezier(0.32, 0.72, 0, 1), width 0.8s cubic-bezier(0.32, 0.72, 0, 1), height 0.8s cubic-bezier(0.32, 0.72, 0, 1), border-radius 0.8s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.8s ease';
+                
+                clone.style.top = targetTop + 'px';
+                clone.style.left = targetLeft + 'px';
+                clone.style.width = targetWidth + 'px';
+                clone.style.height = targetHeight + 'px';
                 clone.style.borderRadius = '2rem';
                 clone.style.padding = '40px 30px';
                 clone.style.background = 'rgba(10, 5, 8, 0.85)';
@@ -165,16 +175,16 @@
                 clone.style.flexDirection = 'column';
                 clone.style.justifyContent = 'flex-start';
                 
-                await wait(750); // Wait for morph to finish
+                await wait(800); // Wait for perfect morph completion
 
-                // 6. Setup internal content
+                // 8. Setup internal content layer (Fades in smoothly)
                 const contentWrapper = document.createElement('div');
                 contentWrapper.style.width = "100%";
                 contentWrapper.style.display = "flex";
                 contentWrapper.style.flexDirection = "column";
                 contentWrapper.style.alignItems = "center";
-                contentWrapper.style.opacity = "0"; // Start hidden for fade-in
-                contentWrapper.style.transition = "opacity 0.6s ease";
+                contentWrapper.style.opacity = "0"; 
+                contentWrapper.style.transition = "opacity 0.5s ease";
                 clone.appendChild(contentWrapper);
 
                 const title = document.createElement('h3');
@@ -213,6 +223,11 @@
                 closeBtn.style.fontSize = "12px";
                 closeBtn.style.letterSpacing = "0.2em";
                 closeBtn.style.cursor = "pointer";
+                closeBtn.style.transition = "color 0.3s";
+                
+                // Add tiny hover effect to close button
+                closeBtn.onmouseenter = () => closeBtn.style.color = "#fff";
+                closeBtn.onmouseleave = () => closeBtn.style.color = "rgba(255,255,255,0.5)";
 
                 actions.appendChild(addBtn);
                 actions.appendChild(closeBtn);
@@ -223,9 +238,9 @@
                     contentWrapper.style.opacity = "1";
                 });
                 
-                await wait(300);
+                await wait(200);
 
-                // Typewriter loop
+                // 9. Typewriter loop
                 for (let item of myMoments) {
                     let p = document.createElement('p');
                     p.style.fontFamily = "'Montserrat', sans-serif";
@@ -243,40 +258,38 @@
                         p.innerHTML += char;
                         await wait(25);
                     }
-                    await wait(100);
+                    await wait(80);
                 }
 
-                // 7. FLUID CLOSE LOGIC
+                // 10. REVERSE LOGIC (Hardware Accelerated Close)
                 closeBtn.onclick = async (e) => {
                     e.stopPropagation();
                     
-                    // Fade out inner text
+                    // Fade out inner text quickly
                     contentWrapper.style.opacity = "0";
-                    await wait(400);
+                    await wait(300);
                     clone.innerHTML = ""; 
                     
-                    // Recalculate original button location in case user scrolled
-                    const targetRect = originalBtn.getBoundingClientRect();
+                    // Recalculate original button location in pure pixels (in case of scrolling)
+                    const endRect = originalBtn.getBoundingClientRect();
 
                     // Fade out background blur
                     overlay.classList.remove('opacity-100');
                     overlay.classList.add('opacity-0');
 
-                    // Morph clone back to start position
-                    clone.style.top = targetRect.top + 'px';
-                    clone.style.left = targetRect.left + 'px';
-                    clone.style.transform = 'none'; 
-                    clone.style.width = targetRect.width + 'px';
-                    clone.style.height = targetRect.height + 'px';
+                    // Morph clone back to start position pixels
+                    clone.style.top = endRect.top + 'px';
+                    clone.style.left = endRect.left + 'px';
+                    clone.style.width = endRect.width + 'px';
+                    clone.style.height = endRect.height + 'px';
                     clone.style.borderRadius = '9999px'; 
                     clone.style.padding = '0';
                     clone.style.background = 'rgba(255, 255, 255, 0.05)'; 
                     clone.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-                    clone.style.backdropFilter = 'blur(12px)';
+                    
+                    await wait(800); 
 
-                    await wait(750); 
-
-                    // Delete clone and restore real button
+                    // Delete clone and pop real button back in
                     clone.remove();
                     originalBtn.style.opacity = '1';
                     originalBtn.style.pointerEvents = 'auto';
