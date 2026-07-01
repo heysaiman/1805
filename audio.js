@@ -1,38 +1,37 @@
 (function() {
-    // 1. Remove previous instance
+    // 1. Clean up old elements
     const existing = document.getElementById('vinyl-player-root');
     if (existing) existing.remove();
 
     // 2. High-Fidelity Styles
     const style = document.createElement('style');
     style.innerHTML = `
-        #vinyl-player-root { position: fixed; top: 30px; right: 30px; z-index: 999999; cursor: pointer; display: flex; align-items: center; }
+        #vinyl-player-root { position: fixed; top: 15px; right: 15px; z-index: 999999; display: flex; align-items: center; justify-content: center; }
         
-        /* The Record with Grooves */
+        /* The Record (Glassmorphism) */
         #vinyl-disc {
-            width: 90px; height: 90px; border-radius: 50%;
-            background: radial-gradient(circle, #333 10%, #111 20%, #000 30%, #111 40%, #000 50%, #111 60%, #000 70%, #111 80%, #000 90%, #111 100%);
-            border: 2px solid #222; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 60px; height: 60px; border-radius: 50%;
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             display: flex; align-items: center; justify-content: center; position: relative;
-            transition: transform 0.3s;
+            cursor: pointer; transition: transform 0.3s;
         }
-        /* Glossy Reflection */
-        #vinyl-disc::after {
-            content: ""; position: absolute; width: 100%; height: 100%; border-radius: 50%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 50%);
-            pointer-events: none;
-        }
-        #vinyl-label { width: 35px; height: 35px; border-radius: 50%; background: #c62828; box-shadow: inset 0 0 10px rgba(0,0,0,0.4); border: 2px solid #fff; }
-
-        /* The Pin / Tonearm */
+        #vinyl-disc::before { content: ""; position: absolute; width: 90%; height: 90%; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); }
+        #vinyl-disc::after { content: ""; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 60%); }
+        #vinyl-label { width: 20px; height: 20px; border-radius: 50%; background: #c62828; z-index: 2; box-shadow: inset 0 0 5px rgba(0,0,0,0.5); }
+        
+        /* The Corner-Anchored Hinge & Tonearm */
+        #tonearm-hinge { position: fixed; top: 0; right: 0; width: 30px; height: 30px; z-index: -1; }
         #tonearm {
-            width: 70px; height: 8px; background: linear-gradient(to right, #ccc, #eee);
-            position: absolute; top: -5px; right: 35px;
-            transform-origin: 100% 50%; transform: rotate(-30deg); 
-            transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            z-index: -1; box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+            width: 70px; height: 4px; background: linear-gradient(to right, #ccc, #fff);
+            position: absolute; top: 10px; right: 10px;
+            transform-origin: 100% 0%; /* Pivots from the very corner */
+            transform: rotate(45deg); /* Parked position */
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.3);
         }
-        .playing-arm { transform: rotate(-15deg) !important; }
+        .playing-arm { transform: rotate(15deg) !important; }
         
         .spinning { animation: spin 3s linear infinite; }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -42,7 +41,7 @@
     // 3. Inject Structure
     const root = document.createElement('div');
     root.id = 'vinyl-player-root';
-    root.innerHTML = `<div id="tonearm"></div><div id="vinyl-disc"><div id="vinyl-label"></div></div>`;
+    root.innerHTML = `<div id="tonearm-hinge"><div id="tonearm"></div></div><div id="vinyl-disc"><div id="vinyl-label"></div></div>`;
     document.body.appendChild(root);
 
     // 4. Audio Engine
@@ -52,7 +51,8 @@
     const arm = document.getElementById('tonearm');
     let playing = false;
 
-    root.onclick = () => {
+    // Toggle Logic
+    const toggle = () => {
         if (!playing) {
             audio.play().catch(e => console.log("User tap required"));
             disc.classList.add('spinning');
@@ -64,5 +64,10 @@
             arm.classList.remove('playing-arm');
             playing = false;
         }
+    };
+
+    root.onclick = (e) => {
+        e.stopPropagation();
+        toggle();
     };
 })();
