@@ -8,8 +8,65 @@ const Engine = {
         this.titleHasCounted = false;
 
         this.startClock();
+        this.runGirlfriendDaySequence(); // Natively injected animation sequence
         InteractionManager.init();
         ParticleSystem.init();
+    },
+
+    runGirlfriendDaySequence() {
+        const today = new Date();
+        // Check if today is August 1st or 2nd (Months are 0-indexed, 7 = August)
+        if (today.getMonth() === 7 && (today.getDate() === 1 || today.getDate() === 2)) {
+            const tiltCard = document.getElementById('tilt-card');
+            const countdownContainer = document.getElementById('countdown-container');
+
+            if (!tiltCard || !countdownContainer) return;
+
+            // 1. Create the Animated GF Day Message
+            const gfDayDiv = document.createElement('div');
+            gfDayDiv.id = 'gf-day-overlay';
+            gfDayDiv.className = 'flex flex-col items-center justify-center text-center w-full py-8';
+            gfDayDiv.style.opacity = '0';
+            gfDayDiv.style.transition = 'opacity 1s ease-in-out';
+            gfDayDiv.innerHTML = `
+                <h2 class="text-3xl md:text-5xl font-playfair font-black uppercase tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[#fcf3d7] to-[#d4af37] drop-shadow-[0_0_20px_rgba(212,175,55,0.6)] mb-6">
+                    Happy Girlfriend's Day
+                </h2>
+                <p class="text-gray-300 text-sm md:text-lg max-w-lg leading-relaxed font-light px-4">
+                    Wishing happy girlfriend's day to my capable and gorgeous partner... <br>
+                    <span class="text-[#d4af37] font-semibold italic tracking-wide mt-3 block">oh sorry, my third parent !</span>
+                </p>
+            `;
+
+            // 2. Hide the countdown clock temporarily (it will keep ticking silently in the background)
+            const originalDisplay = window.getComputedStyle(countdownContainer).display;
+            countdownContainer.style.display = 'none';
+
+            // 3. Inject the GF Day message
+            tiltCard.insertBefore(gfDayDiv, countdownContainer);
+
+            // 4. Fade IN the Girlfriend's Day Message
+            setTimeout(() => {
+                gfDayDiv.style.opacity = '1';
+            }, 100);
+
+            // 5. Exactly 30 seconds later... fade it out and seamlessly restore the countdown
+            setTimeout(() => {
+                gfDayDiv.style.opacity = '0';
+
+                setTimeout(() => {
+                    gfDayDiv.remove();
+                    countdownContainer.style.opacity = '0';
+                    countdownContainer.style.display = originalDisplay;
+
+                    // Trigger browser reflow for a perfectly smooth fade-in
+                    void countdownContainer.offsetWidth;
+
+                    countdownContainer.style.transition = 'opacity 1s ease-in-out';
+                    countdownContainer.style.opacity = '1';
+                }, 1000); // Wait for the text to finish fading out
+            }, 30000); // 30,000 milliseconds = 30 seconds
+        }
     },
 
     startClock() {
@@ -57,9 +114,7 @@ const Engine = {
 
             let html = '';
             timeUnits.forEach(u => {
-                // WINE & GOLD MODIFICATION: Swapped emerald for gold in the live counter
                 const style = u.isLive ? 'text-[#d4af37] font-medium drop-shadow-[0_0_15px_rgba(212,175,55,0.6)]' : 'text-[#fcf3d7] font-light drop-shadow-[0_5px_15px_rgba(212,175,55,0.25)]';
-                // FIXED SYNTAX: Restored HTML tags and injected the numerical values
                 html += `<div class="flex flex-col items-center justify-center"><span class="font-playfair text-5xl md:text-7xl ${style} transition-all duration-300 tracking-wider">${u.val}</span><span class="text-xs tracking-[0.3em] uppercase text-gray-400 mt-2">${u.label}</span></div>`;
             });
             document.getElementById('countdown-container').innerHTML = html;
@@ -87,13 +142,12 @@ const InteractionManager = {
 };
 
 const ParticleSystem = {
-    lastSpawn: 0, throttle: 25, emojis: ['🤍', '✨', '🤎', '🍷'], // Added a wine glass emoji
+    lastSpawn: 0, throttle: 25, emojis: ['🤍', '✨', '🤎', '🍷'],
     init() {
         this.setupAmbientEnvironment();
         document.addEventListener('mousemove', (e) => this.spawnMix(e.clientX, e.clientY));
         document.addEventListener('touchmove', (e) => this.spawnMix(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
         document.addEventListener('click', (e) => { 
-            // WINE & GOLD: Trigger liquid ripple on click
             this.createRipple(e.clientX, e.clientY);
             for(let i=0; i<30; i++) this.spawnMix(e.clientX, e.clientY, true); 
         });
