@@ -1466,5 +1466,20 @@
   });
 </script>
 <script src="apology.js"></script>
+<script>
+  // Failsafe: Automatically sweeps away the invisible apology layer 
+  // after 21 seconds so it doesn't block the Moments screen underneath.
+  setTimeout(() => {
+    document.querySelectorAll('body > *').forEach(el => {
+      const style = window.getComputedStyle(el);
+      if (style.position === 'fixed' && (style.opacity === '0' || style.opacity < 0.1)) {
+        el.style.pointerEvents = 'none';
+        el.style.display = 'none';
+      }
+    });
+  }, 21000);
+</script>
 </body>
+</html>
+
 </html>
